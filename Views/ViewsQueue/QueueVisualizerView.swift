@@ -1,0 +1,157 @@
+//
+//  QueueVisualizerView.swift
+//  DSAK
+//
+//  Created by Atul on 11/02/26.
+//
+import SwiftUI
+
+struct QueueVisualizerView: View {
+    @Environment(\.dismiss) var dismiss
+    
+    // State for Queue Items
+    @State private var queueItems: [Int] = []
+    
+    // State for Reactive Code
+    @State private var codeSnippet: String = "Queue<Integer> queue = new LinkedList<>();"
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            
+            // 1. Header
+//            HStack {
+//                Spacer()
+//                Text("Queue Visualizer")
+//                    .font(.headline)
+//                    .foregroundStyle(.white)
+//                Spacer()
+//            }
+//            .padding()
+            
+            // 2. VISUALIZATION AREA (Horizontal)
+            ZStack {
+                // Container Box
+                RoundedRectangle(cornerRadius: 12)
+                    .strokeBorder(Color.gray.opacity(0.3), lineWidth: 3)
+                    .frame(height: 100)
+                    .padding(.horizontal)
+                    .background(Color.appBackground.opacity(0.1))
+                
+                // The Queue Items (Horizontal Stack)
+                HStack(spacing: 10) {
+                    ForEach(queueItems, id: \.self) { item in
+                        Text("\(item)")
+                            .font(.headline)
+                            .bold()
+                            .foregroundStyle(.white)
+                            .frame(width: 60, height: 60)
+                            .background(
+                                Color.blue
+                            )
+                            .cornerRadius(8)
+                            .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .opacity))
+                    }
+                }
+                .animation(.spring(response: 0.3, dampingFraction: 1), value: queueItems)
+                .padding(.horizontal)
+            }
+            .frame(maxHeight: .infinity)
+            
+            // 3. CONTROLS
+            HStack(spacing: 40) {
+                // DEQUEUE Button
+                Button(action: dequeueItem) {
+                    VStack {
+                        Image(systemName: "arrow.left.circle")
+                            .font(.system(size: 44))
+                        Text("Dequeue")
+                            .font(.caption)
+                            .bold()
+                    }
+                    .foregroundStyle(queueItems.isEmpty ? .gray : .red)
+                }
+                .disabled(queueItems.isEmpty)
+                
+                // ENQUEUE Button
+                Button(action: enqueueItem) {
+                    VStack {
+                        Image(systemName: "arrow.right.circle.fill")
+                            .font(.system(size: 44))
+                        Text("Enqueue")
+                            .font(.caption)
+                            .bold()
+                    }
+                    .foregroundStyle(queueItems.count >= 5 ? .gray : .green)
+                }
+                .disabled(queueItems.count >= 5)
+            }
+            .padding(.vertical, 20)
+            
+            // 4. CODE INSIGHT
+            VStack(alignment: .leading, spacing: 8) {
+                Text("JAVA CODE INSIGHT")
+                    .font(.caption2)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.gray)
+                    .padding(.horizontal)
+                
+                HStack {
+                    Text(codeSnippet)
+                        .font(.system(.body, design: .monospaced))
+                        .foregroundStyle(.green)
+                        .contentTransition(.numericText())
+                    Spacer()
+                }
+                .padding()
+                .background(Color(uiColor: .secondarySystemBackground).opacity(0.1))
+                .cornerRadius(12)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                )
+                .padding(.horizontal)
+            }
+            .padding(.bottom, 30)
+            .frame(height: 126)
+        }
+        .background(Color.appBackground.ignoresSafeArea())
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Done") { dismiss() }
+            }
+            ToolbarItem(placement: .principal) {
+                Text("Queue Visualizer")
+                    .font(.headline)
+                    .foregroundStyle(.white)
+            }
+
+        }
+    }
+    
+    // MARK: - Logic
+    
+    func enqueueItem() {
+        guard queueItems.count < 5 else { return }
+        let newValue = Int.random(in: 10...99)
+        queueItems.append(newValue) // Add to end
+        
+        withAnimation {
+            codeSnippet = "queue.add(\(newValue));"
+        }
+    }
+    
+    func dequeueItem() {
+        guard !queueItems.isEmpty else { return }
+        _ = queueItems.removeFirst() // Remove from front
+        
+        withAnimation {
+            codeSnippet = "queue.poll();"
+        }
+    }
+}
+
+#Preview {
+    NavigationStack {
+        QueueVisualizerView()
+    }
+}
