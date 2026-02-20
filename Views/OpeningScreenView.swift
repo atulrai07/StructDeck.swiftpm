@@ -114,7 +114,8 @@ struct OpeningScreenView: View {
             // Present the Accessibility Sheet
             .sheet(isPresented: $showAccessibilitySheet) {
                 AccessibilityInfoView()
-                    .presentationDetents([.height(600)])
+                    .presentationDetents([.fraction(0.90)])  // or .fraction(0.75)
+                    .presentationDragIndicator(.visible)
             }
         }
     }

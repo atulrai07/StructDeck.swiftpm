@@ -16,7 +16,7 @@ struct AccessibilityInfoView: View {
                 Color.appBackground.opacity(0.8).ignoresSafeArea()
                 
                 VStack(spacing: 25) {
-                    Image(systemName: "figure.walk.circle.fill")
+                    Image(systemName: "accessibility.fill")
                         .font(.system(size: 80))
                         .foregroundStyle(.blue)
                         .padding(.top)
@@ -38,6 +38,11 @@ struct AccessibilityInfoView: View {
                             title: "VoiceOver Optimized",
                             desc: "Complex visualizations described structurally for non-visual learners."
                         )
+                        AccessibilityFeatureRow(
+                            icon: "info.circle",
+                            title: "To Turn on Voice Over",
+                            desc: "Open Settings > Accessibility > Switch on the Voice Over switch."
+                        )
                     }
                     .padding()
                     
@@ -45,16 +50,8 @@ struct AccessibilityInfoView: View {
                     
                     // Button to jump directly to iOS System Accessibility Settings
                     Button {
-                        // URL scheme to directly open the Accessibility page in iOS Settings
-                        if let url = URL(string: "App-Prefs:root=ACCESSIBILITY") {
-                            if UIApplication.shared.canOpenURL(url) {
-                                UIApplication.shared.open(url)
-                            } else {
-                                // Fallback to app settings if the system blocks the direct link
-                                if let fallbackUrl = URL(string: UIApplication.openSettingsURLString) {
-                                    UIApplication.shared.open(fallbackUrl)
-                                }
-                            }
+                        if let url = URL(string: UIApplication.openSettingsURLString) {
+                            UIApplication.shared.open(url)
                         }
                     } label: {
                         Text("Open Accessibility")
@@ -104,6 +101,8 @@ struct AccessibilityFeatureRow: View {
                 Text(desc)
                     .font(.subheadline)
                     .foregroundStyle(.gray)
+                    .fixedSize(horizontal: false, vertical: true)  // Add this
+                    .lineLimit(nil)
             }
         }
         .accessibilityElement(children: .combine)
