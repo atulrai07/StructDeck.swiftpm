@@ -64,38 +64,39 @@ struct LinkedListQuizView: View {
                 }
                 .padding(.horizontal)
                 
-                Spacer()
-                
-                // Feedback
-                if showFeedback {
-                    VStack(spacing: 16) {
-                        Text(isCorrect ? questions[currentQuestionIndex].explanation : "Not quite. Try again!")
-                            .font(.subheadline)
-                            .foregroundStyle(isCorrect ? .green : .red)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
-                        
-                        if isCorrect {
-                            if currentQuestionIndex < questions.count - 1 {
-                                Button("Next Question") { nextQuestion() }
-                                    .buttonStyle(PrimaryButtonStyle())
-                            } else {
-                                NavigationLink(destination: CompletionView()) {
-                                    Text("See Results")
-                                        .font(.headline)
-                                        .bold()
-                                        .foregroundStyle(.white)
-                                        .frame(maxWidth: .infinity)
-                                        .padding()
-                                        .background(Color.blue)
-                                        .cornerRadius(16)
-                                }
-                            }
+                // Feedback (Now Always Visible)
+                VStack(spacing: 16) {
+                    // Feedback Text
+                    Text(selectedOption == nil ? " " : (isCorrect ? questions[currentQuestionIndex].explanation : "Not quite. Try again!"))
+                        .font(.subheadline)
+                        .foregroundStyle(isCorrect ? .green : .red)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                        .frame(minHeight: 40, alignment: .top)
+                    
+                    // Navigation Buttons
+                    if currentQuestionIndex < questions.count - 1 {
+                        Button("Next Question") { nextQuestion() }
+                            .buttonStyle(PrimaryButtonStyle())
+                            .disabled(!isCorrect)
+                            .opacity(isCorrect ? 1.0 : 0.5)
+                    } else {
+                        NavigationLink(destination: CompletionView()) {
+                            Text("See Results")
+                                .font(.headline)
+                                .bold()
+                                .foregroundStyle(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.blue)
+                                .cornerRadius(16)
                         }
+                        .disabled(!isCorrect)
+                        .opacity(isCorrect ? 1.0 : 0.5)
                     }
-                    .padding(.bottom, 30)
-                    .padding(.horizontal)
                 }
+                .padding(.bottom, 30)
+                .padding(.horizontal)
             }
             .background(Color.appBackground.ignoresSafeArea())
             //header

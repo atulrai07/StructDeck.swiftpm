@@ -147,7 +147,6 @@ struct StackVisualizerView: View {
     }
 }
 
-// ✅ Compatibility Modifier (iOS 17 Safe)
 struct SensoryFeedbackModifier: ViewModifier {
     var trigger: [Int]
     

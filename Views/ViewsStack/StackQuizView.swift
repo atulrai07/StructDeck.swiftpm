@@ -23,12 +23,20 @@ struct StackQuizView: View {
             VStack(spacing: 24) {
                 
                 // Empty Space might add something later
-                HStack(alignment:.top) {
-                    Color.clear.frame(width: 20)
-                }
-                .padding()
                 
-                // 2. Question Text
+                
+                
+                Text("Question \(currentQuestionIndex + 1) of \(questions.count)")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.gray)
+                    .accessibilityLabel("Question \(currentQuestionIndex + 1) out of \(questions.count)")
+                    .padding(.bottom,20)
+                    .padding(.top,80)
+                
+                
+                
+                // Question Text
                 VStack(alignment: .leading, spacing: 12) {
                     Text(questions[currentQuestionIndex].question)
                         .font(.title2)
@@ -66,59 +74,57 @@ struct StackQuizView: View {
                                     .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                             )
                         }
-                        .disabled(showFeedback && isCorrect) // Lock only if we got it right
+                        .disabled(showFeedback && isCorrect)
+                        .accessibilityLabel(
+                            showFeedback ?
+                            (selectedOption == index ? (isCorrect ? "\(questions[currentQuestionIndex].options[index]), Selected, Correct" : "\(questions[currentQuestionIndex].options[index]), Selected, Incorrect") : "\(questions[currentQuestionIndex].options[index])")
+                            : "\(questions[currentQuestionIndex].options[index])"
+                        )
+                        .accessibilityHint("Double tap to select this option")
                     }
                 }
                 .padding(.horizontal)
-                .accessibilityElement(children: .combine)
                 
-                Spacer()
-                
-                // Feedback & Navigation Area
-                if showFeedback {
-                    VStack(spacing: 16) {
-                        Text(isCorrect ? questions[currentQuestionIndex].explanation : "Not quite. Try again!")
-                            .font(.subheadline)
-                            .foregroundStyle(isCorrect ? .green : .red)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
-                        
-                        if isCorrect {
-                            if currentQuestionIndex < questions.count - 1 {
-                                Button("Next Question") {
-                                    nextQuestion()
-                                }
-                                .buttonStyle(PrimaryButtonStyle())
-                            } else {
-                                // Link to Completion Screen
-                                NavigationLink(destination: CompletionView()) {
-                                    Text("See Results")
-                                        .font(.headline)
-                                        .bold()
-                                        .foregroundStyle(.white)
-                                        .frame(maxWidth: .infinity)
-                                        .padding()
-                                        .background(Color.blue)
-                                        .cornerRadius(16)
-                                }
-                            }
+                // Feedback & Navigation Area (Now Always Visible)
+                VStack(spacing: 16) {
+                    // Feedback Text
+                    Text(selectedOption == nil ? " " : (isCorrect ? questions[currentQuestionIndex].explanation : "Not quite, select another option"))
+                        .font(.subheadline)
+                        .foregroundStyle(isCorrect ? .green : .red)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                        .frame(minHeight: 40, alignment: .top) // minHeight prevents the button from jumping up/down when text is empty
+                    
+                    // Navigation Buttons
+                    if currentQuestionIndex < questions.count - 1 {
+                        Button("Next Question") {
+                            nextQuestion()
                         }
+                        .buttonStyle(PrimaryButtonStyle())
+                        .disabled(!isCorrect)
+                        .opacity(isCorrect ? 1.0 : 0.5)
+                    } else {
+                        // Link to Completion Screen
+                        NavigationLink(destination: CompletionView()) {
+                            Text("See Results")
+                                .font(.headline)
+                                .bold()
+                                .foregroundStyle(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.blue)
+                                .cornerRadius(16)
+                        }
+                        .disabled(!isCorrect)
+                        .opacity(isCorrect ? 1.0 : 0.5)
                     }
-                    .padding(.bottom, 30)
-                    .padding(.horizontal)
                 }
+                .padding(.bottom, 30)
+                .padding(.horizontal)
+                .navigationTitle("Quiz")
+                .navigationBarTitleDisplayMode(.inline)
             }
             .background(Color.appBackground.ignoresSafeArea())
-            .toolbar{
-                ToolbarItem(placement: .principal){
-                    //Progress Header
-                    Text("Question \(currentQuestionIndex + 1) of \(questions.count)")
-                        .font(.subheadline)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.gray)
-                        .accessibilityLabel("Question \(currentQuestionIndex + 1) out of \(questions.count)")
-                }
-            }
         }
     }
     
@@ -130,7 +136,6 @@ struct StackQuizView: View {
         
         if index == questions[currentQuestionIndex].correctAnswerIndex {
             isCorrect = true
-            
         } else {
             isCorrect = false
         }
@@ -166,6 +171,7 @@ struct PrimaryButtonStyle: ButtonStyle {
             .opacity(configuration.isPressed ? 0.8 : 1.0)
     }
 }
+
 #Preview {
     NavigationStack {
         StackQuizView()

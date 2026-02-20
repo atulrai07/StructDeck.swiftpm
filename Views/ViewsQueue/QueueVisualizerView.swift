@@ -46,6 +46,10 @@ struct QueueVisualizerView: View {
                 .padding(.horizontal)
             }
             .frame(maxHeight: .infinity)
+            // STRUCTURAL AUDIO DESCRIPTION
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(queueItems.isEmpty ? "Empty Queue." : "Queue containing \(queueItems.count) items. The front item is \(queueItems.first!).")
+            .accessibilityHint("Use the Enqueue and Dequeue buttons below to modify the queue.")
             
             // CONTROLS
             HStack(spacing: 40) {
@@ -61,6 +65,8 @@ struct QueueVisualizerView: View {
                     .foregroundStyle(queueItems.isEmpty ? .gray : .red)
                 }
                 .disabled(queueItems.isEmpty)
+                .accessibilityLabel("Dequeue")
+                .accessibilityHint("Removes the front item from the queue.") // Explains button action
                 
                 // ENQUEUE Button
                 Button(action: enqueueItem) {
@@ -74,16 +80,22 @@ struct QueueVisualizerView: View {
                     .foregroundStyle(queueItems.count >= 5 ? .gray : .green)
                 }
                 .disabled(queueItems.count >= 5)
+                .accessibilityLabel("Enqueue")
+                .accessibilityHint("Adds a random number to the back of the queue.") // Explains button action
             }
             .padding(.vertical, 20)
             
-            // 4. CODE INSIGHT
+            // HAPTIC FEEDBACK: Vibrates every time the queue array changes
+            .queueHaptic(trigger: queueItems)
+            
+            // 4. CODE IN'SIGHT
             VStack(alignment: .leading, spacing: 8) {
                 Text("JAVA CODE INSIGHT")
                     .font(.caption2)
                     .fontWeight(.bold)
                     .foregroundStyle(.gray)
                     .padding(.horizontal)
+                    .accessibilityHidden(true)
                 
                 HStack {
                     Text(codeSnippet)
@@ -100,6 +112,8 @@ struct QueueVisualizerView: View {
                         .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                 )
                 .padding(.horizontal)
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Java Code Snippet: \(codeSnippet)")
             }
             .padding(.bottom, 30)
             .frame(height: 126)
@@ -115,7 +129,7 @@ struct QueueVisualizerView: View {
         }
     }
     
-    // MARK: - Logic
+    // Logic
     
     func enqueueItem() {
         guard queueItems.count < 5 else { return }
@@ -133,6 +147,19 @@ struct QueueVisualizerView: View {
         
         withAnimation {
             codeSnippet = "queue.poll();"
+        }
+    }
+}
+
+// haptic is not compatible with ios 17 and < 
+extension View {
+    func queueHaptic(trigger: [Int]) -> some View {
+        Group {
+            if #available(iOS 17.0, *) {
+                self.sensoryFeedback(.impact(weight: .medium), trigger: trigger)
+            } else {
+                self
+            }
         }
     }
 }

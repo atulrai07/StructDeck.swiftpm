@@ -50,6 +50,7 @@ struct QueueTheoryCardsView: View {
                     }
                     .foregroundStyle(.white)
                 }
+                .accessibilityHint("Opens the interactive Queue Visualizer.") // hint for visualizer
             }
             
             // Page Counter
@@ -59,10 +60,12 @@ struct QueueTheoryCardsView: View {
                     Text("\(index + 1) of \(cards.count)")
                         .font(.headline)
                         .foregroundStyle(.gray)
+                        .accessibilityLabel("Page \(index + 1) of \(cards.count)") //page label
                 } else {
                     Text("1 of \(cards.count)")
                         .font(.headline)
                         .foregroundStyle(.gray)
+                        .accessibilityLabel("Page 1 of \(cards.count)") //page label
                 }
             }
         }
@@ -87,6 +90,7 @@ struct QueueTheoryCardCell: View {
                 .font(.system(size: 80))
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(card.isBridge ? .green : .teal)
+                .accessibilityHidden(true) // Hide large icon
             
             VStack(spacing: 16) {
                 Text(card.title)
@@ -100,6 +104,7 @@ struct QueueTheoryCardCell: View {
                     .foregroundStyle(.gray)
                     .padding(.horizontal, 20)
             }
+            .accessibilityElement(children: .combine) // Combine title and body text to read seamlessly
             
             Spacer()
             
@@ -118,6 +123,7 @@ struct QueueTheoryCardCell: View {
                     .padding(.horizontal, 40)
                     .padding(.bottom, 50)
                 }
+                .accessibilityHint("Navigates to the Queue Quiz.") // Explain button action
             } else {
                 Image(systemName: "chevron.compact.down")
                     .font(.system(size: 40))
@@ -132,6 +138,7 @@ struct QueueTheoryCardCell: View {
                         isAnimating = true
                     }
                     .padding(.bottom, 50)
+                    .accessibilityHidden(true)
             }
         }
         .padding()

@@ -27,12 +27,17 @@ struct QueueTopicOverviewView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             HStack {
                                 Image(systemName: "clock")
+                                    .accessibilityHidden(true)
                                 Text("Estimated time: 12 minutes")
                             }
+                            .accessibilityElement(children: .combine)
+                            
                             HStack(alignment: .top) {
                                 Image(systemName: "target")
+                                    .accessibilityHidden(true)
                                 Text("Goal: Understand Queue behavior well enough to build logics and solve problems.")
                             }
+                            .accessibilityElement(children: .combine)
                         }
                         .font(.subheadline)
                         .foregroundStyle(.gray)
@@ -55,6 +60,7 @@ struct QueueTopicOverviewView: View {
                                 )
                                 .cornerRadius(16)
                         }
+                        .accessibilityHint("Opens the interactive theory cards for Queue.")
                     }
                     .padding(.top,15)
                 }
