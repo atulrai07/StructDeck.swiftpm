@@ -31,6 +31,7 @@ struct BinaryTreeVisualizerView: View {
 //                .padding(.bottom, 20)
                 
                 // Canvas
+                Spacer()
                 ScrollView([.horizontal, .vertical], showsIndicators: false) {
                     ZStack {
                         if let root = rootNode {
@@ -67,6 +68,7 @@ struct BinaryTreeVisualizerView: View {
                     .frame(maxWidth: .infinity, minHeight: 400)
                     .id(updateTrigger)
                 }
+                .frame(height:450)
                 .background(Color.appBackground)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
@@ -144,18 +146,18 @@ struct BinaryTreeVisualizerView: View {
                 .frame(height:140)
             }
         }
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button("Done") { dismiss() }
-                    .foregroundStyle(.white)
-            }
-            ToolbarItem(placement: .principal) {
-                Text("Binary Tree Visualizer")
-                    .font(.headline)
-                    .foregroundStyle(.white)
+        .navigationTitle("Binary Tree Visualizer")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar{
+            ToolbarItem(placement: .topBarTrailing){
+                Button{
+                    dismiss()
+                }label: {
+                    Text("Done")
+                }
             }
         }
-        .toolbarBackground(.hidden, for: .navigationBar)
+        
     }
     
     // MARK: - Logic
@@ -339,5 +341,6 @@ class TreeNode: Identifiable {
 #Preview {
     NavigationStack {
         BinaryTreeVisualizerView()
+            .preferredColorScheme(.dark)
     }
 }

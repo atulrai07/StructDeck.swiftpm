@@ -15,6 +15,7 @@ struct TopicOverviewView: View {
             VStack(alignment: .leading, spacing: 0) {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
+                        Spacer()
                         // Steps
                         VStack(spacing: 16) {
                             OverviewStepRow(
@@ -78,31 +79,8 @@ struct TopicOverviewView: View {
             }
             .padding(.horizontal)
             .background(Color.appBackground.ignoresSafeArea())
-            .navigationBarBackButtonHidden(true)
-            .toolbar{
-                ToolbarItem(placement: .topBarLeading){
-                    Button{
-                        dismiss()
-                    }label: {
-                        Image(systemName: "chevron.left")
-                    }
-                    .accessibilityLabel("Back to Dashboard")
-                }
-                ToolbarItem(placement: .topBarTrailing){
-                    Button{
-                        
-                    }label: {
-                        Image(systemName: "info")
-                    }
-                    .accessibilityLabel("More Information")
-                }
-                ToolbarItem(placement: .title){
-                    Text("Stack")
-                        .font(.system(size: 22, weight: .bold))
-                        .foregroundStyle(.white)
-                        .accessibilityAddTraits(.isHeader)
-                }
-            }
+            .navigationTitle("Stack")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

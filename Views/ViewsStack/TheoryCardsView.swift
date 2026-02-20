@@ -141,3 +141,9 @@ struct TheoryCardCell: View {
     }
 }
 
+#Preview {
+    NavigationStack {
+        TheoryCardsView()
+            .preferredColorScheme(.dark)
+    }
+}

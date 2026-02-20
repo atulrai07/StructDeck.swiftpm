@@ -14,6 +14,7 @@ struct QueueTopicOverviewView: View {
             VStack(alignment: .leading, spacing: 0) {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
+                        Spacer()
                         // Steps
                         VStack(spacing: 16) {
                             OverviewStepRow(number: "1", title: "Learn the core idea", desc: "Short, swipeable cards that explain how Queue works.")
@@ -30,7 +31,7 @@ struct QueueTopicOverviewView: View {
                             }
                             HStack(alignment: .top) {
                                 Image(systemName: "target")
-                                Text("Goal: Understand Queue behavior")
+                                Text("Goal: Understand Queue behavior well enough to build logics and solve problems.")
                             }
                         }
                         .font(.subheadline)
@@ -60,33 +61,15 @@ struct QueueTopicOverviewView: View {
             }
             .padding(.horizontal)
             .background(Color.appBackground.ignoresSafeArea())
-            .navigationBarBackButtonHidden(true)
-            //header back button
-            .toolbar{
-                ToolbarItem(placement: .topBarLeading){
-                    Button{
-                        dismiss()
-                    }label: {
-                        Image(systemName: "chevron.left")
-                    }
-                }
-                ToolbarItem(placement: .topBarTrailing){
-                    Button{
-                        
-                    }label: {
-                        Image(systemName: "info")
-                    }
-                }
-                ToolbarItem(placement: .title){
-                    Text("Queue")
-                        .font(.system(size: 22, weight: .bold))
-                        .foregroundStyle(.white)
-                }
-            }
+            .navigationTitle("Queue")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
 
 #Preview {
-    QueueTopicOverviewView()
+    NavigationStack {
+        QueueTopicOverviewView()
+            .preferredColorScheme(.dark)
+    }
 }

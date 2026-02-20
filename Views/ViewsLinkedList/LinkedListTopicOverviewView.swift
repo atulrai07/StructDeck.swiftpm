@@ -17,8 +17,8 @@ struct LinkedListTopicOverviewView: View {
                         // Steps
                         VStack(spacing: 16) {
                             OverviewStepRow(number: "1", title: "Learn the core idea", desc: "Understand Nodes, Data, and Pointers.")
-                            OverviewStepRow(number: "2", title: "See it in action", desc: "Visualize adding nodes to the chain.")
-                            OverviewStepRow(number: "3", title: "Check your understanding", desc: "Verify your knowledge with a quiz.")
+                            OverviewStepRow(number: "2", title: "See it in action", desc: "Visualize how link list stores data by adding nodes to the chain.")
+                            OverviewStepRow(number: "3", title: "Check your understanding", desc: "Verify your knowledge with a quick quiz of 3 questions.")
                         }
                         
                         // Time
@@ -29,7 +29,7 @@ struct LinkedListTopicOverviewView: View {
                             }
                             HStack(alignment: .top) {
                                 Image(systemName: "target")
-                                Text("Goal: Understand Dynamic Memory")
+                                Text("Goal: Understand Dynamic Memory well enough to build logics for Coding.")
                             }
                         }
                         .font(.subheadline)
@@ -59,32 +59,17 @@ struct LinkedListTopicOverviewView: View {
             }
             .padding(.horizontal)
             .background(Color.appBackground.ignoresSafeArea())
-            .navigationBarBackButtonHidden(true)
-            .toolbar{
-                ToolbarItem(placement: .topBarLeading){
-                    Button{
-                        dismiss()
-                    }label: {
-                        Image(systemName: "chevron.left")
-                    }
-                }
-                ToolbarItem(placement: .topBarTrailing){
-                    Button{
-                        
-                    }label: {
-                        Image(systemName: "info")
-                    }
-                }
-                ToolbarItem(placement: .title){
-                    Text("Linked List")
-                        .font(.system(size: 22, weight: .bold))
-                        .foregroundStyle(.white)
-                }
-            }
+            .navigationTitle("Linked List")
+            .navigationBarTitleDisplayMode(.inline)
+            
+            
         }
     }
 }
 
 #Preview {
-    LinkedListTopicOverviewView()
+    NavigationStack {
+        LinkedListTopicOverviewView()
+            .preferredColorScheme(.dark)
+    }
 }

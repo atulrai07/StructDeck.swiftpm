@@ -13,7 +13,7 @@ struct AccessibilityInfoView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color("appBackground").opacity(0.5).ignoresSafeArea()
+                Color.appBackground.opacity(0.8).ignoresSafeArea()
                 
                 VStack(spacing: 25) {
                     Image(systemName: "figure.walk.circle.fill")
@@ -30,32 +30,34 @@ struct AccessibilityInfoView: View {
                         AccessibilityFeatureRow(
                             icon: "waveform",
                             title: "Haptic Feedback",
-                            desc: "Feel the data structures move with physical vibrations during stack and tree operations."
+                            desc: "Feel the data structures move with physical vibrations during visualizer operations."
                         )
                         
                         AccessibilityFeatureRow(
                             icon: "mouth.fill",
                             title: "VoiceOver Optimized",
-                            desc: "Complex visualizations like Binary Trees are described structurally for non-visual learners."
-                        )
-                        
-                        AccessibilityFeatureRow(
-                            icon: "textformat.size",
-                            title: "Dynamic Type",
-                            desc: "All theory cards adjust perfectly to your preferred text size settings."
+                            desc: "Complex visualizations described structurally for non-visual learners."
                         )
                     }
                     .padding()
                     
                     Spacer()
                     
-                    // Button to jump directly to iOS Settings
+                    // Button to jump directly to iOS System Accessibility Settings
                     Button {
-                        if let url = URL(string: UIApplication.openSettingsURLString) {
-                            UIApplication.shared.open(url)
+                        // URL scheme to directly open the Accessibility page in iOS Settings
+                        if let url = URL(string: "App-Prefs:root=ACCESSIBILITY") {
+                            if UIApplication.shared.canOpenURL(url) {
+                                UIApplication.shared.open(url)
+                            } else {
+                                // Fallback to app settings if the system blocks the direct link
+                                if let fallbackUrl = URL(string: UIApplication.openSettingsURLString) {
+                                    UIApplication.shared.open(fallbackUrl)
+                                }
+                            }
                         }
                     } label: {
-                        Text("Open System Accessibility Settings")
+                        Text("Open Accessibility")
                             .font(.headline)
                             .bold()
                             .foregroundStyle(.white)

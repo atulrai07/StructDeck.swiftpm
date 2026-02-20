@@ -18,9 +18,9 @@ struct LinkedListVisualizerView: View {
     var body: some View {
         VStack(spacing: 20) {
             
-            // 1. Header -> toolbar
-    
-            // 2. VISUALIZATION AREA (Horizontal Chain)
+            // Header -> toolbar
+            Spacer()
+            // VISUALIZATION AREA (Canvas)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 0) {
                     
@@ -73,9 +73,11 @@ struct LinkedListVisualizerView: View {
                 RoundedRectangle(cornerRadius: 12)
                     .strokeBorder(Color.gray.opacity(0.3), lineWidth: 2)
             )
-            .padding(.horizontal)
+            .padding(.horizontal,10)
             
-            // 3. CONTROLS
+            Spacer()
+            
+            // CONTROLS
             HStack(spacing: 30) {
                 // REMOVE HEAD
                 Button(action: removeHead) {
@@ -103,10 +105,9 @@ struct LinkedListVisualizerView: View {
                 }
                 .disabled(listItems.count >= 5)
             }
-            .padding(.vertical, 20)
             
             
-            // 4. CODE INSIGHT
+            // CODE INSIGHT
             VStack(alignment: .leading, spacing: 8) {
                 Text("JAVA CODE INSIGHT")
                     .font(.caption2)
@@ -132,19 +133,20 @@ struct LinkedListVisualizerView: View {
             }
             .padding(.top, 30)
             .frame(height:130)
+            .navigationTitle("Linked List Visulaizer")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar{
+                ToolbarItem(placement: .topBarTrailing){
+                    Button{
+                        dismiss()
+                    }label: {
+                        Text("Done")
+                    }
+                }
+            }
         }
         .frame(maxHeight: .infinity)
         .background(Color.appBackground.ignoresSafeArea())
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button("Done") { dismiss() }
-            }
-            ToolbarItem(placement: .title) {
-                Text("Linked List Visualizer")
-                    .foregroundStyle(.white)
-                    .bold()
-            }
-        }
     }
     
     // MARK: - Logic
@@ -209,5 +211,6 @@ struct NodeView: View {
 #Preview {
     NavigationStack {
         LinkedListVisualizerView()
+            .preferredColorScheme(.dark)
     }
 }

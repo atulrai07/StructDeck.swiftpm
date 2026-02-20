@@ -96,16 +96,8 @@ struct QueueQuizView: View {
                 }
             }
             .background(Color.appBackground.ignoresSafeArea())
-            .navigationBarBackButtonHidden(true)
             //header
             .toolbar{
-                ToolbarItem(placement:.topBarLeading){
-                    Button{
-                        dismiss()
-                    }label:{
-                        Image(systemName: "chevron.left")
-                    }
-                }
                 ToolbarItem(placement:.title){
                     Text("Question \(currentQuestionIndex + 1) of \(questions.count)")
                         .font(.subheadline)
@@ -143,5 +135,8 @@ struct QueueQuizView: View {
 }
 
 #Preview {
-    QueueQuizView()
+    NavigationStack {
+        QueueQuizView()
+            .preferredColorScheme(.dark)
+    }
 }

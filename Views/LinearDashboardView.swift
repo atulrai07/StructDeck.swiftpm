@@ -96,7 +96,7 @@ struct LinearDashboardView: View {
         .navigationTitle("Modules")
         .navigationBarTitleDisplayMode(.large)
         // Modifier
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search topics...")
+        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search topics")
     }
 }
 

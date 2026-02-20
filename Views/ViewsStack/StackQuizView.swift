@@ -22,16 +22,8 @@ struct StackQuizView: View {
         NavigationStack {
             VStack(spacing: 24) {
                 
-                // 1. Progress Header
+                // Empty Space might add something later
                 HStack(alignment:.top) {
-                    Spacer()
-                    Text("Question \(currentQuestionIndex + 1) of \(questions.count)")
-                        .font(.subheadline)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.gray)
-                        .accessibilityLabel("Question \(currentQuestionIndex + 1) out of \(questions.count)")
-                    Spacer()
-                    // Balancing spacer
                     Color.clear.frame(width: 20)
                 }
                 .padding()
@@ -50,7 +42,7 @@ struct StackQuizView: View {
                 
                 Spacer()
                 
-                // 3. Options Grid
+                // Options Grid
                 VStack(spacing: 16) {
                     ForEach(0..<questions[currentQuestionIndex].options.count, id: \.self) { index in
                         Button(action: {
@@ -82,7 +74,7 @@ struct StackQuizView: View {
                 
                 Spacer()
                 
-                // 4. Feedback & Navigation Area
+                // Feedback & Navigation Area
                 if showFeedback {
                     VStack(spacing: 16) {
                         Text(isCorrect ? questions[currentQuestionIndex].explanation : "Not quite. Try again!")
@@ -117,17 +109,14 @@ struct StackQuizView: View {
                 }
             }
             .background(Color.appBackground.ignoresSafeArea())
-            .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        HStack(spacing: 4) {
-                            Image(systemName: "chevron.left")
-                        }
-                        .foregroundStyle(.white)
-                    }
+            .toolbar{
+                ToolbarItem(placement: .principal){
+                    //Progress Header
+                    Text("Question \(currentQuestionIndex + 1) of \(questions.count)")
+                        .font(.subheadline)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.gray)
+                        .accessibilityLabel("Question \(currentQuestionIndex + 1) out of \(questions.count)")
                 }
             }
         }

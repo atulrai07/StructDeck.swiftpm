@@ -17,18 +17,8 @@ struct QueueVisualizerView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            
-            // 1. Header
-//            HStack {
-//                Spacer()
-//                Text("Queue Visualizer")
-//                    .font(.headline)
-//                    .foregroundStyle(.white)
-//                Spacer()
-//            }
-//            .padding()
-            
-            // 2. VISUALIZATION AREA (Horizontal)
+            Spacer()
+            // VISUALIZATION AREA (canvas)
             ZStack {
                 // Container Box
                 RoundedRectangle(cornerRadius: 12)
@@ -57,7 +47,7 @@ struct QueueVisualizerView: View {
             }
             .frame(maxHeight: .infinity)
             
-            // 3. CONTROLS
+            // CONTROLS
             HStack(spacing: 40) {
                 // DEQUEUE Button
                 Button(action: dequeueItem) {
@@ -115,14 +105,11 @@ struct QueueVisualizerView: View {
             .frame(height: 126)
         }
         .background(Color.appBackground.ignoresSafeArea())
+        .navigationTitle("Queue Visualizer")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button("Done") { dismiss() }
-            }
-            ToolbarItem(placement: .principal) {
-                Text("Queue Visualizer")
-                    .font(.headline)
-                    .foregroundStyle(.white)
             }
 
         }
@@ -153,5 +140,6 @@ struct QueueVisualizerView: View {
 #Preview {
     NavigationStack {
         QueueVisualizerView()
+            .preferredColorScheme(.dark)
     }
 }

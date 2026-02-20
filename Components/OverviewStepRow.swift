@@ -16,7 +16,7 @@ struct OverviewStepRow: View {
         HStack(alignment: .top, spacing: 16) {
             ZStack {
                 Circle()
-                    .fill(Color(uiColor: .systemGray6))
+                    .fill(Color.white)
                     .frame(width: 32, height: 32)
                 
                 Text(number)
@@ -51,6 +51,7 @@ struct OverviewStepRow: View {
         desc: "here will be the topic overview"
     )
     .padding()
-    .background(Color("appBackground"))
+    .background(Color.appBackground)
+    .preferredColorScheme(.dark)
 }
 

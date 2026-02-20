@@ -99,18 +99,9 @@ struct BinaryTreeQuizView: View {
                 }
             }
             .background(Color.appBackground.ignoresSafeArea())
-            .navigationBarBackButtonHidden(true)
             
-            // Custom Toolbar
+            // question number Toolbar
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .foregroundStyle(.white)
-                    }
-                }
                 ToolbarItem(placement: .principal) {
                     Text("Question \(currentQuestionIndex + 1) of \(questions.count)")
                         .font(.subheadline)
@@ -151,5 +142,7 @@ struct BinaryTreeQuizView: View {
 
 
 #Preview {
-    BinaryTreeQuizView()
+    NavigationStack {
+        BinaryTreeQuizView()
+    }
 }

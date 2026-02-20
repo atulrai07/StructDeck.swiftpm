@@ -25,7 +25,7 @@ struct PopularTopicCard: View {
                     .foregroundStyle(.white)
             }
             .frame(height: 120)
-            
+            .padding(.bottom,-4)
             // Text Bottom
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
@@ -39,7 +39,7 @@ struct PopularTopicCard: View {
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
             //.background(Color(white: 0.12)) // Dark gray text area
-            .background(Color.gray.opacity(0.1))
+            .background(Color.gray.opacity(0.2))
         }
         .frame(width: 160)
         .clipShape(RoundedRectangle(cornerRadius: 16))
@@ -54,6 +54,6 @@ struct PopularTopicCard: View {
         colors: [.blue, .purple]
     )
     .padding()
-    .background(Color("appBackground"))
+    .background(Color.appBackground)
     .preferredColorScheme(.dark)
 }

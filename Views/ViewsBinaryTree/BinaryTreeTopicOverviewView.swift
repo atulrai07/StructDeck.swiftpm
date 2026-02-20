@@ -15,9 +15,9 @@ struct BinaryTreeTopicOverviewView: View {
             VStack(alignment: .leading, spacing: 0) {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
-                        
                         // Steps
                         VStack(spacing: 16) {
+                            
                             OverviewStepRow(
                                 number: "1",
                                 title: "Learn the core idea",
@@ -31,7 +31,7 @@ struct BinaryTreeTopicOverviewView: View {
                             OverviewStepRow(
                                 number: "3",
                                 title: "Check your understanding",
-                                desc: "Verify your knowledge with a quiz."
+                                desc: "Verify your knowledge with a quiz of 6 questions."
                             )
                         }
                         
@@ -43,7 +43,7 @@ struct BinaryTreeTopicOverviewView: View {
                             }
                             HStack(alignment: .top) {
                                 Image(systemName: "target")
-                                Text("Goal: Understand Hierarchical Data")
+                                Text("Goal: Understand hierarchical data structure well enough to build logic.")
                             }
                         }
                         .font(.subheadline)
@@ -71,35 +71,15 @@ struct BinaryTreeTopicOverviewView: View {
             }
             .padding(.horizontal)
             .background(Color.appBackground.ignoresSafeArea())
-            .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .foregroundStyle(.white)
-                    }
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        // Info action placeholder
-                    } label: {
-                        Image(systemName: "info.circle")
-                            .foregroundStyle(.white)
-                    }
-                }
-                ToolbarItem(placement: .principal) { // .principal places it in the center
-                    Text("Binary Tree")
-                        .font(.system(size: 22, weight: .bold))
-                        .foregroundStyle(.white)
-                }
-            }
+            .navigationTitle("Binary Tree")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
 
 #Preview {
-    BinaryTreeTopicOverviewView()
-        .preferredColorScheme(.dark)
+    NavigationStack {
+        BinaryTreeTopicOverviewView()
+            .preferredColorScheme(.dark)
+    }
 }
