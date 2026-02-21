@@ -22,11 +22,14 @@ struct LinkedListQuizView: View {
         NavigationStack {
             VStack(spacing: 24) {
                 // Header
-                HStack(alignment: .top) {
-                    Color.clear.frame(width: 20)
-                }
-                .padding()
                 
+                Text("Question \(currentQuestionIndex + 1) of \(questions.count)")
+                    .font(.title)
+                    .bold()
+                    .foregroundStyle(.gray)
+                    .padding(.top, 80)
+                    .padding(.bottom, 20)
+
                 // Question
                 VStack(alignment: .leading, spacing: 12) {
                     Text(questions[currentQuestionIndex].question)
@@ -95,19 +98,13 @@ struct LinkedListQuizView: View {
                         .opacity(isCorrect ? 1.0 : 0.5)
                     }
                 }
-                .padding(.bottom, 30)
+                .padding(.bottom, 20)
                 .padding(.horizontal)
             }
             .background(Color.appBackground.ignoresSafeArea())
-            //header
-            .toolbar{
-                ToolbarItem(placement:.title){
-                    Text("Question \(currentQuestionIndex + 1) of \(questions.count)")
-                        .font(.subheadline)
-                        .bold()
-                        .foregroundStyle(.gray)
-                }
-            }
+            .navigationTitle("Linked List Quiz")
+            .navigationBarTitleDisplayMode(.inline)
+            
         }
     }
     

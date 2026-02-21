@@ -97,11 +97,28 @@ struct OpeningScreenView: View {
                 }
                 .padding(.bottom, 40)
             }
-            .background(Color.appBackground.ignoresSafeArea())
-            .navigationTitle("Home")
-            .navigationBarTitleDisplayMode(.large)
+            .background(DoubleGlowBackground())
+            //.navigationTitle("Home")
+            //.navigationBarTitleDisplayMode(.large)
             // Accessibility Button
             .toolbar {
+                if #available(iOS 26.0, *) {
+                    ToolbarItem(placement: .subtitle) {
+                        Text("Home")
+                            .font(.largeTitle)
+                            .bold()
+                            .padding(.trailing, 200)
+                    }
+                    
+    
+                } else {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Text("Home")
+                            .font(.title)
+                            .bold()
+                    }
+                }
+                
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         showAccessibilitySheet = true

@@ -20,10 +20,14 @@ struct QueueQuizView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 24) {
-                HStack() {
-                    Color.clear.frame(width: 20)
-                }
-                .padding()
+                
+                Text("Question \(currentQuestionIndex + 1) of \(questions.count)")
+                    .font(.title)
+                    .bold()
+                    .foregroundStyle(.gray)
+                    .padding(.top,80)
+                    .padding(.bottom,20)
+                    .accessibilityLabel("Question \(currentQuestionIndex + 1) out of \(questions.count)")
                 
                 // Question
                 VStack(alignment: .leading, spacing: 12) {
@@ -98,20 +102,19 @@ struct QueueQuizView: View {
                         }
                         .disabled(!isCorrect)
                         .opacity(isCorrect ? 1.0 : 0.5)
+                        
                     }
                 }
                 .padding(.bottom, 20)
                 .padding(.horizontal)
+                .navigationTitle("Queue Quiz")
+                .navigationBarTitleDisplayMode(.inline)
             }
             .background(Color.appBackground.ignoresSafeArea())
             //header
             .toolbar{
                 ToolbarItem(placement:.title){
-                    Text("Question \(currentQuestionIndex + 1) of \(questions.count)")
-                        .font(.subheadline)
-                        .bold()
-                        .foregroundStyle(.gray)
-                        .accessibilityLabel("Question \(currentQuestionIndex + 1) out of \(questions.count)")
+                    
                 }
             }
         }

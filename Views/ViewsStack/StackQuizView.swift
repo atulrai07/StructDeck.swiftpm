@@ -121,7 +121,7 @@ struct StackQuizView: View {
                 }
                 .padding(.bottom, 30)
                 .padding(.horizontal)
-                .navigationTitle("Quiz")
+                .navigationTitle("Stack Quiz")
                 .navigationBarTitleDisplayMode(.inline)
             }
             .background(Color.appBackground.ignoresSafeArea())

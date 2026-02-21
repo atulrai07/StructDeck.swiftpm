@@ -22,11 +22,12 @@ struct BinaryTreeQuizView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 24) {
-                // Spacer for Toolbar
-                HStack(alignment: .top) {
-                    Color.clear.frame(width: 20)
-                }
-                .padding()
+                Text("Question \(currentQuestionIndex + 1) of \(questions.count)")
+                    .font(.title)
+                    .bold()
+                    .foregroundStyle(.gray)
+                    .padding(.top,80)
+                    .padding(.bottom, 20)
                 
                 // Question Text
                 VStack(alignment: .leading, spacing: 12) {
@@ -100,16 +101,8 @@ struct BinaryTreeQuizView: View {
                 .padding(.horizontal)
             }
             .background(Color.appBackground.ignoresSafeArea())
-            
-            // question number Toolbar
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Question \(currentQuestionIndex + 1) of \(questions.count)")
-                        .font(.subheadline)
-                        .bold()
-                        .foregroundStyle(.gray)
-                }
-            }
+            .navigationTitle("Binary Tree Quiz")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
     
