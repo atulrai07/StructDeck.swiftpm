@@ -40,6 +40,8 @@ struct NonLinearDashboardView: View {
                             time: item.time
                         )
                     }
+                    .accessibilityLabel("\(item.title). \(item.subtitle). \(item.time).")
+                    .accessibilityHint("Double tap to open the \(item.title) module.")
                 }
                 
                 //Empty State (Optional)

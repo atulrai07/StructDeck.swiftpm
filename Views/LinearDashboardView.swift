@@ -42,6 +42,8 @@ struct LinearDashboardView: View {
                         )
                         .padding(.bottom,5)
                     }
+                    .accessibilityLabel("\(item.title). \(item.subtitle). \(item.time).")
+                    .accessibilityHint("Double tap to open the \(item.title) module.")
                 }
                 
                 //Show message if no results found

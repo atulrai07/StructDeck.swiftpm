@@ -76,6 +76,9 @@ struct BinaryTreeVisualizerView: View {
                         .strokeBorder(Color.gray.opacity(0.3), lineWidth: 2)
                 )
                 .padding(.horizontal)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(rootNode == nil ? "Tree is empty." : "Binary tree with \(countNodes(rootNode)) nodes. Root value is \(rootNode!.value).")
+                .accessibilityHint("Use the Insert, Undo, and Reset buttons below to modify the tree.")
                 
                 // Controls
                 HStack(spacing: 30) {
@@ -91,6 +94,8 @@ struct BinaryTreeVisualizerView: View {
                         .foregroundStyle(rootNode == nil ? .gray : .red)
                     }
                     .disabled(rootNode == nil)
+                    .accessibilityLabel("Reset")
+                    .accessibilityHint("Double tap to clear the entire tree.")
                     
                     // 2. UNDO / DELETE LAST (New Button)
                     Button(action: deleteLastNode) {
@@ -104,6 +109,8 @@ struct BinaryTreeVisualizerView: View {
                         .foregroundStyle(rootNode == nil ? .gray : .orange)
                     }
                     .disabled(rootNode == nil)
+                    .accessibilityLabel("Undo")
+                    .accessibilityHint("Double tap to remove the last inserted node.")
                     
                     // 3. INSERT
                     Button(action: insertNodeLevelOrder) {
@@ -116,6 +123,8 @@ struct BinaryTreeVisualizerView: View {
                         }
                         .foregroundStyle(.green)
                     }
+                    .accessibilityLabel("Insert")
+                    .accessibilityHint("Double tap to add a new node to the tree.")
                 }
                 .padding(.vertical, 20)
                 
@@ -126,6 +135,7 @@ struct BinaryTreeVisualizerView: View {
                         .fontWeight(.bold)
                         .foregroundStyle(.gray)
                         .padding(.horizontal)
+                        .accessibilityHidden(true)
                     
                     HStack {
                         Text(codeSnippet)
@@ -142,6 +152,8 @@ struct BinaryTreeVisualizerView: View {
                             .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                     )
                     .padding(.horizontal)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Java Code Snippet: \(codeSnippet)")
                 }
                 .padding(.bottom, 30)
                 .frame(height:140)
@@ -183,6 +195,8 @@ struct BinaryTreeVisualizerView: View {
     
     func insertNodeLevelOrder() {
         let newValue = Int.random(in: 10...99)
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
         withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
             if rootNode == nil {
                 rootNode = TreeNode(value: newValue)
@@ -214,7 +228,8 @@ struct BinaryTreeVisualizerView: View {
     // NEW: Delete Last Node Logic
     func deleteLastNode() {
         guard let root = rootNode else { return }
-        
+        let generator = UIImpactFeedbackGenerator(style: .rigid)
+        generator.impactOccurred()
         withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
             // Case: Only root exists
             if root.left == nil && root.right == nil {
@@ -258,11 +273,18 @@ struct BinaryTreeVisualizerView: View {
     }
     
     func resetTree() {
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.warning)
         withAnimation {
             rootNode = nil
             codeSnippet = "tree.clear();"
             updateTrigger = UUID()
         }
+    }
+    
+    func countNodes(_ node: TreeNode?) -> Int {
+        guard let node = node else { return 0 }
+        return 1 + countNodes(node.left) + countNodes(node.right)
     }
 }
 

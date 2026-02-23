@@ -23,16 +23,22 @@ struct BinaryTreeTopicOverviewView: View {
                                 title: "Learn the core idea",
                                 desc: "Understand Root, Leaves, and Parent-Child relationships."
                             )
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel("Step 1. Learn the core idea. Understand Root, Leaves, and Parent-Child relationships.")
                             OverviewStepRow(
                                 number: "2",
                                 title: "See it in action",
                                 desc: "Visualize how nodes connect hierarchically."
                             )
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel("Step 2. See it in action. Visualize how nodes connect hierarchically.")
                             OverviewStepRow(
                                 number: "3",
                                 title: "Check your understanding",
                                 desc: "Verify your knowledge with a quiz of 6 questions."
                             )
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel("Step 3. Check your understanding. Verify your knowledge with a quiz of 6 questions.")
                         }
                         
                         // Time & Goal
@@ -41,10 +47,14 @@ struct BinaryTreeTopicOverviewView: View {
                                 Image(systemName: "clock")
                                 Text("Estimated time: 20 minutes")
                             }
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel("Estimated time: 20 minutes.")
                             HStack(alignment: .top) {
                                 Image(systemName: "target")
                                 Text("Goal: Understand hierarchical data structure well enough to build logic.")
                             }
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel("Goal: Understand hierarchical data structure well enough to build logic.")
                         }
                         .font(.subheadline)
                         .foregroundStyle(.gray)
@@ -65,6 +75,8 @@ struct BinaryTreeTopicOverviewView: View {
                                 .background(Color.blue)
                                 .cornerRadius(16)
                         }
+                        .accessibilityLabel("Start Learning")
+                        .accessibilityHint("Double tap to begin the Binary Tree theory cards.")
                     }
                     .padding(.top, 35)
                 }

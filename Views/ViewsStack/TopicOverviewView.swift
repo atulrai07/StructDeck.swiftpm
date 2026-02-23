@@ -18,6 +18,7 @@ struct TopicOverviewView: View {
                         Spacer()
                         // Steps
                         VStack(spacing: 16) {
+                            
                             OverviewStepRow(
                                 number: "1",
                                 title: "Learn the core idea",
@@ -34,6 +35,12 @@ struct TopicOverviewView: View {
                                 number: "3",
                                 title: "Check your understanding",
                                 desc: "3 quick questions to confirm you're ready."
+                            )
+                            
+                            OverviewStepRow(
+                                number: "4",
+                                title: "Review your results",
+                                desc: "Get instant feedback on your quiz and complete the module."
                             )
                         }
                         

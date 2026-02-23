@@ -22,7 +22,8 @@ struct OpeningScreenView: View {
                             .font(.title2)
                             .bold()
                             .foregroundStyle(.white)
-                            .padding(.horizontal)
+                            .padding()
+                            .accessibilityAddTraits(.isHeader)
                         
                         // Linear Structures Card
                         NavigationLink(destination: LinearDashboardView()) {
@@ -35,6 +36,8 @@ struct OpeningScreenView: View {
                                 ]
                             )
                         }
+                        .accessibilityLabel("Linear Structures. Explore stacks, queues, and linked lists.")
+                        .accessibilityHint("Double tap to browse linear data structure modules.")
                         .padding(.horizontal)
                         
                         // Non-Linear Structures Card
@@ -48,6 +51,8 @@ struct OpeningScreenView: View {
                                 ]
                             )
                         }
+                        .accessibilityLabel("Non-Linear Structures. Explore trees and graphs.")
+                        .accessibilityHint("Double tap to browse non-linear data structure modules.")
                         .padding(.horizontal)
                         
                     }
@@ -59,6 +64,7 @@ struct OpeningScreenView: View {
                             .bold()
                             .foregroundStyle(.white)
                             .padding(.horizontal)
+                            .accessibilityAddTraits(.isHeader)
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16) {
@@ -71,6 +77,8 @@ struct OpeningScreenView: View {
                                         colors: [.blue,.red, .purple]
                                     )
                                 }
+                                .accessibilityLabel("Stack. Last In, First Out. 12 minutes.")
+                                .accessibilityHint("Double tap to learn about stacks.")
                                 
                                 // tree
                                 NavigationLink(destination: BinaryTreeTopicOverviewView()) {
@@ -81,6 +89,8 @@ struct OpeningScreenView: View {
                                         colors: [.green,.mint, .blue,.yellow]
                                     )
                                 }
+                                .accessibilityLabel("Binary Tree. Hierarchical structure. 20 minutes.")
+                                .accessibilityHint("Double tap to learn about binary trees.")
                                 
                                 // Linked List
                                 NavigationLink(destination: LinkedListTopicOverviewView()) {
@@ -91,6 +101,8 @@ struct OpeningScreenView: View {
                                         colors: [.cyan, .blue,.white]
                                     )
                                 }
+                                .accessibilityLabel("Linked List. Pointer-based structure. 15 minutes.")
+                                .accessibilityHint("Double tap to learn about linked lists.")
                             }
                             .padding(.horizontal)
                         }
@@ -127,13 +139,14 @@ struct OpeningScreenView: View {
                         Image(systemName: "accessibility.fill")
                     }
                     .accessibilityLabel("Accessibility Information")
+                    .accessibilityHint("Double tap to view accessibility features and settings.")
                 }
             }
             
             // sheet for accessibility
             .sheet(isPresented: $showAccessibilitySheet) {
                 AccessibilityInfoView()
-                    .presentationDetents([.fraction(0.90)])
+                    .presentationDetents([.fraction(0.75)])
                     .presentationDragIndicator(.visible)
             }
         }

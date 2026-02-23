@@ -131,7 +131,7 @@ struct LinkedListTheoryCardCell: View {
             }
         }
         .padding()
-        .background(gradientAppBackground())
+        .background(gradientAppBackground().opacity(0))
     }
 }
 

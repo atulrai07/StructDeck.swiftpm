@@ -47,10 +47,12 @@ struct BinaryTreeTheoryCardsView: View {
                     Text("\(index + 1) of \(cards.count)")
                         .font(.headline)
                         .foregroundStyle(.gray)
+                        .accessibilityLabel("Page \(index + 1) of \(cards.count)")
                 } else {
                     Text("1 of \(cards.count)")
                         .font(.headline)
                         .foregroundStyle(.gray)
+                        .accessibilityLabel("Page 1 of \(cards.count)")
                 }
             }
             
@@ -65,6 +67,8 @@ struct BinaryTreeTheoryCardsView: View {
                     }
                     .foregroundStyle(.white)
                 }
+                .accessibilityLabel("Visualize")
+                .accessibilityHint("Double tap to open the interactive Binary Tree visualizer.")
             }
         }
         .sheet(isPresented: $visualizeSheet) {
@@ -89,6 +93,7 @@ struct BinaryTreeTheoryCardCell: View {
                 .font(.system(size: 80))
                 .symbolRenderingMode(.hierarchical)
                 .foregroundStyle(card.isBridge ? .green : .mint)
+                .accessibilityHidden(true)
             
             VStack(spacing: 16) {
                 Text(card.title)
@@ -102,6 +107,7 @@ struct BinaryTreeTheoryCardCell: View {
                     .foregroundStyle(.gray)
                     .padding(.horizontal, 20)
             }
+            .accessibilityElement(children: .combine)
             
             Spacer()
             
@@ -120,6 +126,8 @@ struct BinaryTreeTheoryCardCell: View {
                     .padding(.horizontal, 40)
                     .padding(.bottom, 50)
                 }
+                .accessibilityLabel("Take the Quiz")
+                .accessibilityHint("Double tap to start the Binary Tree quiz.")
             } else {
                 Image(systemName: "chevron.compact.down")
                     .font(.system(size: 40))
@@ -134,6 +142,7 @@ struct BinaryTreeTheoryCardCell: View {
                         isAnimating = true
                     }
                     .padding(.bottom, 40)
+                    .accessibilityHidden(true)
             }
         }
         .padding()

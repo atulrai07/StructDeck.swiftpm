@@ -30,6 +30,7 @@ struct BinaryTreeQuizView: View {
                     .foregroundStyle(.gray)
                     .padding(.top,80)
                     .padding(.bottom, 20)
+                    .accessibilityLabel("Question \(currentQuestionIndex + 1) of \(questions.count)")
                 
                 // Question Text
                 VStack(alignment: .leading, spacing: 12) {
@@ -41,6 +42,7 @@ struct BinaryTreeQuizView: View {
                 }
                 .padding(.horizontal)
                 .padding(.top, 20)
+                .accessibilityAddTraits(.isHeader)
                 
                 Spacer()
                 
@@ -64,6 +66,8 @@ struct BinaryTreeQuizView: View {
                             .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.gray.opacity(0.3), lineWidth: 1))
                         }
                         .disabled(showFeedback && isCorrect)
+                        .accessibilityLabel("\(questions[currentQuestionIndex].options[index]). Option \(index + 1) of \(questions[currentQuestionIndex].options.count)")
+                        .accessibilityHint("Double tap to select this answer.")
                     }
                 }
                 .padding(.horizontal)
@@ -84,6 +88,7 @@ struct BinaryTreeQuizView: View {
                             .buttonStyle(PrimaryButtonStyle())
                             .disabled(!isCorrect)
                             .opacity(isCorrect ? 1.0 : 0.5)
+                            .accessibilityHint(isCorrect ? "Double tap to go to the next question." : "Answer correctly to proceed.")
                     } else {
                         NavigationLink(destination: CompletionView(correctCount: questions.count - wrongAnswers, totalCount: questions.count)) {
                             Text("See Results")
@@ -97,6 +102,8 @@ struct BinaryTreeQuizView: View {
                         }
                         .disabled(!isCorrect)
                         .opacity(isCorrect ? 1.0 : 0.5)
+                        .accessibilityLabel("See Results")
+                        .accessibilityHint(isCorrect ? "Double tap to view your quiz score." : "Answer correctly to see your results.")
                     }
                 }
                 .padding(.bottom, 30)

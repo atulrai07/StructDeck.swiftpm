@@ -45,25 +45,6 @@ struct AccessibilityInfoView: View {
                         )
                     }
                     .padding()
-                    
-                    Spacer()
-                    
-                    Button {
-                        if let url = URL(string: UIApplication.openSettingsURLString) {
-                            UIApplication.shared.open(url)
-                        }
-                    } label: {
-                        Text("Open Accessibility")
-                            .font(.headline)
-                            .bold()
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.blue)
-                            .cornerRadius(16)
-                    }
-                    .padding(.horizontal)
-                    .padding(.bottom, 20)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
