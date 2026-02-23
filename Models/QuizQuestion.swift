@@ -122,4 +122,55 @@ struct QuizData {
             explanation: "A skewed tree loses the benefit of binary division, degrading to O(n) speed."
         )
     ]
+    
+    static let dijkstraQuestions: [QuizQuestion] = [
+        QuizQuestion(
+            question: "What is Dijkstra's primarily used for?",
+            options: ["Sorting", "Finding shortest path", "Searching trees", "Filtering arrays"],
+            correctAnswerIndex: 1,
+            explanation: "Dijkstra's is a pathfinding algorithm for finding the shortest path between nodes."
+        ),
+        QuizQuestion(
+            question: "Does Dijkstra's algorithm work with negative edge weights?",
+            options: ["Yes, always", "Only on acyclic graphs", "No, it fails", "Only on trees"],
+            correctAnswerIndex: 2,
+            explanation: "Dijkstra's greedy approach assumes weights are non-negative. Bellman-Ford is needed for negative weights."
+        ),
+        QuizQuestion(
+            question: "Which data structure is often used to optimize Dijkstra's?",
+            options: ["Stack", "Hash Map", "Priority Queue", "Linked List"],
+            correctAnswerIndex: 2,
+            explanation: "A min-priority queue helps efficiently fetch the next node with the smallest distance."
+        )
+    ]
+    
+    static let bfsQuestions: [QuizQuestion] = [
+        QuizQuestion(
+            question: "Which data structure does BFS use?",
+            options: ["Stack", "Queue", "Priority Queue", "Tree"],
+            correctAnswerIndex: 1,
+            explanation: "BFS uses a Queue to explore neighbors level-by-level."
+        ),
+        QuizQuestion(
+            question: "In what order does BFS explore a graph?",
+            options: ["Deepest first", "Level by level", "Randomly", "Alphabetically"],
+            correctAnswerIndex: 1,
+            explanation: "BFS expands outward, visiting nodes level by level."
+        )
+    ]
+    
+    static let dfsQuestions: [QuizQuestion] = [
+        QuizQuestion(
+            question: "Which data structure does DFS use inherently?",
+            options: ["Queue", "Hash Map", "Stack", "Array"],
+            correctAnswerIndex: 2,
+            explanation: "DFS uses a Stack (either explicitly or via the call stack with recursion)."
+        ),
+        QuizQuestion(
+            question: "What is a common use case for DFS?",
+            options: ["Shortest path in unweighted graph", "Finding connected components", "Level-order traversal", "Sorting"],
+            correctAnswerIndex: 1,
+            explanation: "DFS is excellent for exploring deeply to find connected components or cycles."
+        )
+    ]
 }

@@ -411,10 +411,73 @@ struct TheoryData {
         ),
         // Card 17 (Bridge)
         TheoryCard(
-                title: "Time to Build",
-                bodyText: "Enough theory, let's practice.\n\nGet ready to plant root nodes, define branches, and visualize how a Binary Tree grows in real-time.",
-                iconName: "swift",
-                isBridge: true
-            )
-        ]
+            title: "Time to Build",
+            bodyText: "Enough theory, let's practice.\n\nGet ready to plant root nodes, define branches, and visualize how a Binary Tree grows in real-time.",
+            iconName: "swift",
+            isBridge: true
+        )
+    ]
+    
+    static let dijkstraCards: [TheoryCard] = [
+        TheoryCard(
+            title: "What is Dijkstra's Algorithm?",
+            bodyText: "It's an algorithm used to find the shortest path from a starting node to all other nodes in a weighted graph.",
+            iconName: "point.topleft.down.curvedto.point.bottomright.up",
+            isBridge: false
+        ),
+        TheoryCard(
+            title: "Greedy Approach",
+            bodyText: "Dijkstra always picks the closest unvisited node. This 'greedy' choice guarantees finding the shortest path.",
+            iconName: "hands.sparkles.fill",
+            isBridge: false
+        ),
+        TheoryCard(
+            title: "Time to Build",
+            bodyText: "Let's interactive with the graph visualizer to see Dijkstra in action.",
+            iconName: "swift",
+            isBridge: true
+        )
+    ]
+    
+    static let bfsCards: [TheoryCard] = [
+        TheoryCard(
+            title: "What is BFS?",
+            bodyText: "Breadth-First Search explores level by level, visiting all immediate neighbors before moving deeper.",
+            iconName: "arrow.up.and.down.and.arrow.left.and.right",
+            isBridge: false
+        ),
+        TheoryCard(
+            title: "Queue Data Structure",
+            bodyText: "BFS uses a Queue (FIFO) to keep track of which nodes to visit next.",
+            iconName: "tray.2.fill",
+            isBridge: false
+        ),
+        TheoryCard(
+            title: "Time to Build",
+            bodyText: "Let's interactive with the tree visualizer to see BFS in action.",
+            iconName: "swift",
+            isBridge: true
+        )
+    ]
+
+    static let dfsCards: [TheoryCard] = [
+        TheoryCard(
+            title: "What is DFS?",
+            bodyText: "Depth-First Search dives as deep as possible down one branch before backtracking.",
+            iconName: "arrow.down.to.line",
+            isBridge: false
+        ),
+        TheoryCard(
+            title: "Stack Data Structure",
+            bodyText: "DFS uses a Stack (LIFO) or recursion to remember paths to backtrack to.",
+            iconName: "square.stack.3d.up.fill",
+            isBridge: false
+        ),
+        TheoryCard(
+            title: "Time to Build",
+            bodyText: "Let's interactive with the tree visualizer to see DFS in action.",
+            iconName: "swift",
+            isBridge: true
+        )
+    ]
 }

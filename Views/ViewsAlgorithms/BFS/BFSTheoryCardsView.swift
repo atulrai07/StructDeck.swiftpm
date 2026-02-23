@@ -1,21 +1,19 @@
 //
-//  BinaryTreeTheoryCardsView.swift
+//  BFSTheoryCardsView.swift
 //  DSAK
-//
-//  Created by Atul on 18/02/26.
 //
 
 import SwiftUI
 
-struct BinaryTreeTheoryCardsView: View {
+struct BFSTheoryCardsView: View {
     @Environment(\.dismiss) var dismiss
 
     
     // Page Number State
     @State private var currentCardID: TheoryCard.ID?
     
-    // LOAD BINARY TREE DATA
-    let cards: [TheoryCard] = TheoryData.binaryTreeCards
+    // LOAD BFS DATA
+    let cards: [TheoryCard] = TheoryData.bfsCards
     
     var body: some View {
         ZStack {
@@ -24,7 +22,7 @@ struct BinaryTreeTheoryCardsView: View {
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVStack(spacing: 0) {
                     ForEach(cards) { card in
-                        BinaryTreeTheoryCardCell(card: card)
+                        BFSTheoryCardCell(card: card)
                             .modifier(ContainerFrameModifier())
                     }
                 }
@@ -59,7 +57,7 @@ struct BinaryTreeTheoryCardsView: View {
             // Visualize Button
             ToolbarItem(placement: .topBarTrailing) {
                 NavigationLink {
-                    BinaryTreeVisualizerView()
+                    BFSVisualizerView()
                 } label: {
                     HStack {
                         Text("Visualize")
@@ -68,14 +66,14 @@ struct BinaryTreeTheoryCardsView: View {
                     .foregroundStyle(.white)
                 }
                 .accessibilityLabel("Visualize")
-                .accessibilityHint("Double tap to open the interactive Binary Tree visualizer.")
+                .accessibilityHint("Double tap to open the interactive BFS visualizer.")
             }
         }
 
     }
 }
 
-struct BinaryTreeTheoryCardCell: View {
+struct BFSTheoryCardCell: View {
     let card: TheoryCard
     @State private var isAnimating = false
     
@@ -86,7 +84,7 @@ struct BinaryTreeTheoryCardCell: View {
             Image(systemName: card.iconName)
                 .font(.system(size: 80))
                 .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(card.isBridge ? .green : .mint)
+                .foregroundStyle(card.isBridge ? .purple : .indigo)
                 .accessibilityHidden(true)
             
             VStack(spacing: 16) {
@@ -106,7 +104,7 @@ struct BinaryTreeTheoryCardCell: View {
             Spacer()
             
             if card.isBridge {
-                NavigationLink(destination: BinaryTreeQuizView()) {
+                NavigationLink(destination: BFSQuizView()) {
                     HStack {
                         Text("Take the Quiz")
                             .font(.headline)
@@ -121,7 +119,7 @@ struct BinaryTreeTheoryCardCell: View {
                     .padding(.bottom, 50)
                 }
                 .accessibilityLabel("Take the Quiz")
-                .accessibilityHint("Double tap to start the Binary Tree quiz.")
+                .accessibilityHint("Double tap to start the BFS quiz.")
             } else {
                 Image(systemName: "chevron.compact.down")
                     .font(.system(size: 40))
@@ -146,51 +144,7 @@ struct BinaryTreeTheoryCardCell: View {
 
 #Preview {
     NavigationStack {
-        BinaryTreeTheoryCardsView()
+        BFSTheoryCardsView()
             .preferredColorScheme(.dark)
-    }
-}
-
-// MARK: - Compatibility Modifiers
-
-struct ContainerFrameModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 17.0, *) {
-            content.containerRelativeFrame(.vertical)
-        } else {
-            content
-        }
-    }
-}
-
-struct ScrollTargetLayoutModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 17.0, *) {
-            content.scrollTargetLayout()
-        } else {
-            content
-        }
-    }
-}
-
-struct ScrollTargetBehaviorModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 17.0, *) {
-            content.scrollTargetBehavior(.paging)
-        } else {
-            content
-        }
-    }
-}
-
-struct ScrollPositionModifier: ViewModifier {
-    @Binding var currentCardID: TheoryCard.ID?
-    
-    func body(content: Content) -> some View {
-        if #available(iOS 17.0, *) {
-            content.scrollPosition(id: $currentCardID)
-        } else {
-            content
-        }
     }
 }

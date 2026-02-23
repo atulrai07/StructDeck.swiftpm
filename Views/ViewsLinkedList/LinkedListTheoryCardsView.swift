@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LinkedListTheoryCardsView: View {
     @Environment(\.dismiss) var dismiss
-    @State private var visualizeSheet: Bool = false
+
     @State private var currentCardID: TheoryCard.ID?
     
     let cards: [TheoryCard] = TheoryData.linkedListCards
@@ -51,8 +51,8 @@ struct LinkedListTheoryCardsView: View {
             }
             
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    visualizeSheet = true
+                NavigationLink {
+                    LinkedListVisualizerView()
                 } label: {
                     HStack {
                         Text("Visualize")
@@ -61,13 +61,7 @@ struct LinkedListTheoryCardsView: View {
                 }
             }
         }
-        .sheet(isPresented: $visualizeSheet) {
-            NavigationStack {
-                LinkedListVisualizerView()
-            }
-            .presentationDetents([.large])
-            .presentationDragIndicator(.visible)
-        }
+
     }
 }
 

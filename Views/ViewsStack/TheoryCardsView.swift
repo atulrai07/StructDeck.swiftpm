@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TheoryCardsView: View {
     @Environment(\.dismiss) var dismiss
-    @State private var visualizeSheet : Bool = false
+
     @State private var currentCardID: TheoryCard.ID?
     
     let cards: [TheoryCard] = TheoryData.stackCards
@@ -38,9 +38,9 @@ struct TheoryCardsView: View {
         }
         .toolbar {
             ToolbarItem(placement : .topBarTrailing){
-                Button{
-                    visualizeSheet = true
-                }label: {
+                NavigationLink {
+                    StackVisualizerView()
+                } label: {
                     HStack {
                         Text("Visualize")
                         Image(systemName: "chevron.left.forwardslash.chevron.right")
@@ -62,13 +62,6 @@ struct TheoryCardsView: View {
                         .foregroundStyle(.white)
                         .accessibilityLabel("Page 1 of \(cards.count)")
                 }
-            }
-        }
-        .sheet(isPresented: $visualizeSheet){
-             NavigationStack {
-                StackVisualizerView()
-                    .presentationDetents([.large])
-                    .presentationDragIndicator(.visible)
             }
         }
     }

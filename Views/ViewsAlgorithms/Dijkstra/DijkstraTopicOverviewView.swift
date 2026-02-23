@@ -1,64 +1,68 @@
 //
-//  TopicOverviewView.swift
+//  DijkstraTopicOverviewView.swift
 //  DSAK
-//
-//  Created by Atul on 30/12/25.
 //
 
 import SwiftUI
 
-struct TopicOverviewView: View {
+struct DijkstraTopicOverviewView: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 0) {
-                ScrollView(showsIndicators:false) {
+                ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
-                        Spacer()
                         // Steps
                         VStack(spacing: 16) {
                             
                             OverviewStepRow(
                                 number: "1",
                                 title: "Learn the core idea",
-                                desc: "Short, swipeable cards that explain how Stack works."
+                                desc: "Understand Shortest Paths, Nodes, Edges, and Weights."
                             )
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel("Step 1. Learn the core idea. Understand Shortest Paths, Nodes, Edges, and Weights.")
                             
                             OverviewStepRow(
                                 number: "2",
                                 title: "See it in action",
-                                desc: "Interactive visualization where you push & pop elements."
+                                desc: "Visualize how the algorithm finds the shortest path."
                             )
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel("Step 2. See it in action. Visualize how the algorithm finds the shortest path.")
                             
                             OverviewStepRow(
                                 number: "3",
                                 title: "Check your understanding",
-                                desc: "3 quick questions to confirm you're ready."
+                                desc: "Verify your knowledge with a quiz of 5 questions."
                             )
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel("Step 3. Check your understanding. Verify your knowledge with a quiz of 5 questions.")
                             
                             OverviewStepRow(
                                 number: "4",
                                 title: "Review your results",
                                 desc: "Get instant feedback on your quiz and complete the module."
                             )
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel("Step 4. Review your results. Get instant feedback on your quiz and complete the module.")
                         }
                         
                         // Time & Goal
                         VStack(alignment: .leading, spacing: 12) {
                             HStack {
                                 Image(systemName: "clock")
-                                    .accessibilityHidden(true)
-                                Text("Estimated time: 10 minutes")
+                                Text("Estimated time: 25 minutes")
                             }
-                            .accessibilityElement(children: .combine) // Groups icon and text for VO
-                            
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel("Estimated time: 25 minutes.")
                             HStack(alignment: .top) {
                                 Image(systemName: "target")
-                                    .accessibilityHidden(true)
-                                Text("Goal: Understand Stack well enough to start coding")
+                                Text("Goal: Understand the greedy algorithm for finding shortest paths in graphs.")
                             }
-                            .accessibilityElement(children: .combine) // Groups icon and text for VO
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel("Goal: Understand the greedy algorithm for finding shortest paths in graphs.")
                         }
                         .font(.subheadline)
                         .foregroundStyle(.gray)
@@ -66,9 +70,9 @@ struct TopicOverviewView: View {
                         
                         Spacer(minLength: 50)
                         
-                        // Navigation Button
+                        // Start Button
                         NavigationLink {
-                            TheoryCardsView()
+                            DijkstraTheoryCardsView()
                         } label: {
                             Text("Start Learning")
                                 .font(.headline)
@@ -79,14 +83,15 @@ struct TopicOverviewView: View {
                                 .background(Color.blue)
                                 .cornerRadius(16)
                         }
-                        .accessibilityHint("Opens the interactive theory cards for Stack.")
+                        .accessibilityLabel("Start Learning")
+                        .accessibilityHint("Double tap to begin the Dijkstra theory cards.")
                     }
-                    .padding(.top,15)
+                    .padding(.top, 35)
                 }
             }
             .padding(.horizontal)
             .background(gradientAppBackground())
-            .navigationTitle("Stack")
+            .navigationTitle("Dijkstra")
             .navigationBarTitleDisplayMode(.inline)
         }
     }
@@ -94,7 +99,7 @@ struct TopicOverviewView: View {
 
 #Preview {
     NavigationStack {
-        TopicOverviewView()
+        DijkstraTopicOverviewView()
             .preferredColorScheme(.dark)
     }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct QueueTheoryCardsView: View {
     @Environment(\.dismiss) var dismiss
-    @State private var visualizeSheet: Bool = false
+
     @State private var currentCardID: TheoryCard.ID?
     
     // LOAD QUEUE DATA
@@ -41,8 +41,8 @@ struct QueueTheoryCardsView: View {
             
             // Visualize Button
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    visualizeSheet = true
+                NavigationLink {
+                    QueueVisualizerView()
                 } label: {
                     HStack {
                         Text("Visualize")
@@ -50,7 +50,7 @@ struct QueueTheoryCardsView: View {
                     }
                     .foregroundStyle(.white)
                 }
-                .accessibilityHint("Opens the interactive Queue Visualizer.") // hint for visualizer
+                .accessibilityHint("Opens the interactive Queue Visualizer.")
             }
             
             // Page Counter
@@ -69,13 +69,7 @@ struct QueueTheoryCardsView: View {
                 }
             }
         }
-        .sheet(isPresented: $visualizeSheet) {
-            NavigationStack {
-                QueueVisualizerView()
-            }
-            .presentationDetents([.large])
-            .presentationDragIndicator(.visible)
-        }
+
     }
 }
 

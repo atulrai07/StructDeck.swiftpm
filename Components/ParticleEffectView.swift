@@ -4,12 +4,6 @@
 //
 //  Created by Atul on 24/02/26.
 //
-//
-//  ParticleEffectView.swift
-//  StructDeck
-//
-//  Created by Atul on 24/02/26.
-//
 
 import SwiftUI
 import Combine
@@ -36,9 +30,9 @@ final class ParticleSystem: ObservableObject {
 
     // Physics tuning
     private let particleCount  = 500
-    private let repulsionRadius  = 130.0
-    private let repulsionForce   = 20.0
-    private let returnSpeed      = 0.055
+    private let repulsionRadius  = 90.0
+    private let repulsionForce   = 15.0
+    private let returnSpeed      = 0.035
     private let friction         = 0.80
     private let maxDrift         = 0.30
 
@@ -249,7 +243,6 @@ struct ParticleEffectView: View {
             .onChange(of: geo.size) { newSize in
                 system.setup(size: newSize)
             }
-            // NEW: Global touch tracker instead of DragGesture
             .background(
                 WindowTouchTracker { location in
                     system.touchPoint = location

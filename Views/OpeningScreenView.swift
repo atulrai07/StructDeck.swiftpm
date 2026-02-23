@@ -25,10 +25,10 @@ struct OpeningScreenView: View {
                             .padding(.horizontal)
                             .accessibilityAddTraits(.isHeader)
                         
-                        // Linear Structures Card
-                        NavigationLink(destination: LinearDashboardView()) {
+                        // Data Structures Card
+                        NavigationLink(destination: DataStructuresDashboardView()) {
                             CollectionCard(
-                                title: "Linear\nStructures",
+                                title: "Data\nStructures",
                                 books: [
                                     BookData(color: .pink, icon: "square.stack.3d.up.fill"),
                                     BookData(color: .green, icon: "tray.full.fill"),
@@ -36,23 +36,23 @@ struct OpeningScreenView: View {
                                 ]
                             )
                         }
-                        .accessibilityLabel("Linear Structures. Explore stacks, queues, and linked lists.")
-                        .accessibilityHint("Double tap to browse linear data structure modules.")
+                        .accessibilityLabel("Data Structures. Explore stacks, queues, linked lists, and trees.")
+                        .accessibilityHint("Double tap to browse data structure modules.")
                         .padding(.horizontal)
                         
-                        // Non-Linear Structures Card
-                        NavigationLink(destination: NonLinearDashboardView()) {
+                        // Algorithms Card
+                        NavigationLink(destination: AlgorithmsDashboardView()) {
                             CollectionCard(
-                                title: "Non-Linear\nStructures",
+                                title: "Algorithms\n",
                                 books: [
-                                    BookData(color: .green, icon: "leaf.fill"),
-                                    BookData(color: .orange, icon: "point.3.filled.connected.trianglepath.dotted"),
-                                    BookData(color: .teal, icon: "network")
+                                    BookData(color: .orange, icon: "point.topleft.down.curvedto.point.bottomright.up"),
+                                    BookData(color: .purple, icon: "arrow.up.and.down.and.arrow.left.and.right"),
+                                    BookData(color: .teal, icon: "arrow.down.to.line")
                                 ]
                             )
                         }
-                        .accessibilityLabel("Non-Linear Structures. Explore trees and graphs.")
-                        .accessibilityHint("Double tap to browse non-linear data structure modules.")
+                        .accessibilityLabel("Algorithms. Explore Dijkstra, BFS, and DFS.")
+                        .accessibilityHint("Double tap to browse algorithm modules.")
                         .padding(.horizontal)
                         
                     }

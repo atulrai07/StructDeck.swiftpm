@@ -1,5 +1,5 @@
 //
-//  LinearDashboardView.swift
+//  DataStructuresDashboardView.swift
 //  DSAK
 //
 //  Created by Atul on 30/12/25.
@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct LinearDashboardView: View {
+struct DataStructuresDashboardView: View {
     //Search State
     @State private var searchText = ""
     
     //The Data Source (defined in Models/ModuleItem.swift)
-    let modules = ModuleItem.linearModules
+    let modules = ModuleItem.dataStructureModules
     
     //Logic for search
     var filteredModules: [ModuleItem] {
@@ -68,7 +68,7 @@ struct LinearDashboardView: View {
 
 #Preview {
     NavigationStack {
-        LinearDashboardView()
+        DataStructuresDashboardView()
             .preferredColorScheme(.dark)
     }
 }
