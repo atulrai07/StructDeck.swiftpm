@@ -39,7 +39,7 @@ struct OverviewStepRow: View {
             
         }
         .padding()
-        .background(Color(uiColor: .systemGray6).opacity(0.1))
+        .background(Color(uiColor: .systemGray6).opacity(0.5))
         .cornerRadius(16)
     }
 }

@@ -118,91 +118,91 @@ struct TheoryData {
     ]
     
     static let queueCards: [TheoryCard] = [
-            // Card 1
-            TheoryCard(
-                title: "What is a Queue?",
-                bodyText: "A Queue is a linear data structure where elements are added at one end and removed from the other.",
-                iconName: "tray.2.fill",
-                isBridge: false
-            ),
-            // Card 2
-            TheoryCard(
-                title: "FIFO Rule",
-                bodyText: "Queue follows FIFO – First In, First Out.\n\nThe element added first is the one removed first.",
-                iconName: "arrow.right.to.line",
-                isBridge: false
-            ),
-            // Card 3
-            TheoryCard(
-                title: "FIFO Mental Model",
-                bodyText: "Think of a line at a ticket counter.\n\nThe person who arrives first is served first. New people join at the back.",
-                iconName: "person.3.sequence.fill",
-                isBridge: false
-            ),
-            // Card 4
-            TheoryCard(
-                title: "Queue Structure",
-                bodyText: "A Queue has two open ends:\n\nFront: Where elements are removed.\nRear: Where new elements are added.",
-                iconName: "arrow.left.and.right",
-                isBridge: false
-            ),
-            // Card 5
-            TheoryCard(
-                title: "Enqueue Operation",
-                bodyText: "Enqueue adds a new element to the Rear of the queue.\n\nThe queue grows from the back.",
-                iconName: "plus.circle.fill",
-                isBridge: false
-            ),
-            // Card 6
-            TheoryCard(
-                title: "Dequeue Operation",
-                bodyText: "Dequeue removes an element from the Front of the queue.\n\nThe next element in line moves up.",
-                iconName: "minus.circle.fill",
-                isBridge: false
-            ),
-            // Card 7
-            TheoryCard(
-                title: "Peek Operation",
-                bodyText: "Peek lets you view the Front element without removing it.\n\nThe queue remains unchanged.",
-                iconName: "eye.fill",
-                isBridge: false
-            ),
-            // Card 8
-            TheoryCard(
-                title: "Queue Constraints",
-                bodyText: "You cannot dequeue from an empty queue.\n\nJust like stacks, this error is called Queue Underflow.",
-                iconName: "exclamationmark.triangle.fill",
-                isBridge: false
-            ),
-            // Card 9
-            TheoryCard(
-                title: "Advanced Queues",
-                bodyText: "Beyond simple queues, there are Circular Queues, Priority Queues, and Deques (Double-Ended Queues).",
-                iconName: "arrow.triangle.2.circlepath",
-                isBridge: false
-            ),
-            // Card 10
-            TheoryCard(
-                title: "Why Queues Matter",
-                bodyText: "Queues are essential for printer tasks, CPU task scheduling, and handling requests in web servers.",
-                iconName: "printer.fill",
-                isBridge: false
-            ),
-            // Card 11
-            TheoryCard(
-                title: "Time Complexity",
-                bodyText: "Enqueue, Dequeue, and Peek operations are highly efficient.\n\nThey usually take constant time - O(1).",
-                iconName: "clock.fill",
-                isBridge: false
-            ),
-            // Card 12 (Bridge to Visualizer)
-            TheoryCard(
-                title: "Time to Build",
-                bodyText: "You understand the logic.\n\nNow let’s see how a Queue behaves step by step and how it’s written in Java code.",
-                iconName: "swift",
-                isBridge: true
-            )
-        ]
+        // Card 1
+        TheoryCard(
+            title: "What is a Queue?",
+            bodyText: "A Queue is a linear data structure that operates sequentially.\n\nUnlike arrays where you can access any element at any time, a queue strictly enforces exactly where data enters and where it exits.",
+            iconName: "tray.2.fill",
+            isBridge: false
+        ),
+        // Card 2
+        TheoryCard(
+            title: "FIFO Rule",
+            bodyText: "Queues strictly follow the FIFO principle:\n\n• First In\n• First Out\n\nThe absolute oldest element in the structure is always the very next one to be removed.",
+            iconName: "arrow.right.to.line",
+            isBridge: false
+        ),
+        // Card 3
+        TheoryCard(
+            title: "FIFO Mental Model",
+            bodyText: "Think of a physical line at a coffee shop or a movie theater.\n\n• The person who arrives first gets served first.\n• Anyone new who arrives must join at the very back of the line.",
+            iconName: "person.3.sequence.fill",
+            isBridge: false
+        ),
+        // Card 4
+        TheoryCard(
+            title: "Queue Structure",
+            bodyText: "A Queue operates using two distinct open ends:\n\n• Front (Head): The exit point where elements are removed.\n• Rear (Tail): The entry point where new elements join the queue.",
+            iconName: "arrow.left.and.right",
+            isBridge: false
+        ),
+        // Card 5
+        TheoryCard(
+            title: "Enqueue Operation",
+            bodyText: "The act of adding data is called 'Enqueue'.\n\nWhen you Enqueue an item, it is strictly placed at the Rear of the queue. It must patiently wait for all elements ahead of it to be processed.",
+            iconName: "plus.circle.fill",
+            isBridge: false
+        ),
+        // Card 6
+        TheoryCard(
+            title: "Dequeue Operation",
+            bodyText: "The act of removing data is called 'Dequeue'.\n\nWhen you Dequeue, you strictly remove the item currently at the Front. The item immediately behind it then shifts up to become the new Front.",
+            iconName: "minus.circle.fill",
+            isBridge: false
+        ),
+        // Card 7
+        TheoryCard(
+            title: "Peek Operation",
+            bodyText: "Need to know who is next in line without actually serving them?\n\nThe 'Peek' (or Front) operation looks at the element currently at the Front of the queue without removing it or altering the structure.",
+            iconName: "eye.fill",
+            isBridge: false
+        ),
+        // Card 8
+        TheoryCard(
+            title: "Queue Constraints",
+            bodyText: "Queues have limits based on their environment.\n\n• Underflow: Trying to Dequeue from a completely empty queue.\n• Overflow: Trying to Enqueue into a queue that has reached its maximum memory capacity.",
+            iconName: "exclamationmark.triangle.fill",
+            isBridge: false
+        ),
+        // Card 9
+        TheoryCard(
+            title: "Advanced Queues",
+            bodyText: "Standard queues are just the beginning. Advanced variations include:\n\n• Priority Queues: VIP elements bypass the line based on importance.\n• Circular Queues: The rear connects back to the front to save memory.\n• Deques: Double-ended queues allow adding/removing from both sides.",
+            iconName: "arrow.triangle.2.circlepath",
+            isBridge: false
+        ),
+        // Card 10
+        TheoryCard(
+            title: "Why Queues Matter",
+            bodyText: "Queues power asynchronous background tasks in modern computing:\n\n• Printer spooling (printing documents in exact order).\n• CPU task scheduling.\n• Handling traffic surges on Web Servers without dropping requests.",
+            iconName: "printer.fill",
+            isBridge: false
+        ),
+        // Card 11
+        TheoryCard(
+            title: "Time Complexity",
+            bodyText: "Because we always know exactly where the Front and Rear pointers are, queue operations are incredibly fast.\n\n• Enqueue: O(1) constant time\n• Dequeue: O(1) constant time\n• Peek: O(1) constant time",
+            iconName: "clock.fill",
+            isBridge: false
+        ),
+        // Card 12 (Bridge to Visualizer)
+        TheoryCard(
+            title: "Time to Build",
+            bodyText: "You understand the theory, now it's time for practice.\n\nStep into the interactive visualizer to Enqueue and Dequeue elements in real-time, and watch how the underlying Java code adapts.",
+            iconName: "swift",
+            isBridge: true
+        )
+    ]
     
     static let linkedListCards: [TheoryCard] = [
             // Card 1
@@ -295,14 +295,14 @@ struct TheoryData {
         // Card 1
         TheoryCard(
             title: "Beyond the Line",
-            bodyText: "Arrays and Linked Lists are linear (one after another). Binary Trees are hierarchical (like a family tree).",
+            bodyText: "Unlike Arrays and Linked Lists which store data sequentially.\n\nBinary Trees organize data hierarchically, exactly like a family tree or a corporate organization chart.",
             iconName: "network",
             isBridge: false
         ),
         // Card 2
         TheoryCard(
             title: "What is a Binary Tree?",
-            bodyText: "It is a data structure made of nodes. 'Binary' means each node has at most two children: Left and Right.",
+            bodyText: "A non-linear data structure made of interconnected nodes.\n\n'Binary' means every node is strictly limited to at most two children:\n• Left Child\n• Right Child",
             iconName: "arrow.triangle.branch",
             isBridge: false
         ),
@@ -310,28 +310,28 @@ struct TheoryData {
         // Card 3
         TheoryCard(
             title: "The Root",
-            bodyText: "The topmost node is the Root. It is the only node without a parent. Everything starts here.",
+            bodyText: "The topmost node is called the Root.\n\n• It serves as the single entry point.\n• It is the only node without a parent.\n• Every traversal starts here.",
             iconName: "crown.fill", // King/Top
             isBridge: false
         ),
         // Card 4
         TheoryCard(
             title: "Parent & Child",
-            bodyText: "If Node A points to Node B:\n• A is the Parent\n• B is the Child\nNodes share a family-like relationship.",
+            bodyText: "Nodes share a family-like relationship.\n\nIf Node A connects down to Node B:\n• Node A is the Parent\n• Node B is the Child\n\nA child only ever has one parent.",
             iconName: "figure.2.and.child.holdinghands",
             isBridge: false
         ),
         // Card 5
         TheoryCard(
             title: "Leaf Nodes",
-            bodyText: "Nodes at the very bottom with NO children are called Leaves. They connect to nothing (NULL).",
+            bodyText: "Nodes positioned at the very bottom edges are called Leaves.\n\nA node is a Leaf if it has absolutely no children (both left and right pointers are NULL).",
             iconName: "leaf.fill",
             isBridge: false
         ),
         // Card 6
         TheoryCard(
             title: "Subtrees",
-            bodyText: "Every child node is effectively the 'Root' of its own smaller tree, called a Subtree.",
+            bodyText: "Trees are inherently recursive.\n\nEvery child node acts as the 'Root' of its own independent smaller tree.\n\nThese nested structures are called Left and Right Subtrees.",
             iconName: "square.grid.3x1.below.line.grid.1x2",
             isBridge: false
         ),
@@ -339,29 +339,29 @@ struct TheoryData {
         // Card 7
         TheoryCard(
             title: "Depth & Height",
-            bodyText: "Depth: How far a node is from the Root.\nHeight: How far the Root is from the deepest Leaf.",
+            bodyText: "These measure the tree's scale:\n\n• Depth: Number of edges from Root down to a node.\n• Height: Longest path from Root to the deepest Leaf.",
             iconName: "ruler.fill",
             isBridge: false
         ),
         
         // Card 8
         TheoryCard(
-            title: "Binary Search Tree (BST)",
-            bodyText: "A special type of Binary Tree where data is sorted organized to make searching fast.",
+            title: "Binary Search Tree",
+            bodyText: "A Binary Search Tree (BST) is a powerful variant where data is strictly ordered.\n\nThis built-in sorting logic dramatically reduces search times, making it incredibly fast to find specific values.",
             iconName: "magnifyingglass.circle.fill",
             isBridge: false
         ),
         // Card 9
         TheoryCard(
             title: "The Golden Rule: Left",
-            bodyText: "In a BST, any value SMALLER than the parent goes to the LEFT child.",
+            bodyText: "The first rule of a BST:\n\nEvery value in the Left Subtree must be strictly LESS than the parent node.\n\nThis allows algorithms to instantly ignore half the tree when searching for smaller numbers.",
             iconName: "arrow.down.left",
             isBridge: false
         ),
         // Card 10
         TheoryCard(
             title: "The Golden Rule: Right",
-            bodyText: "In a BST, any value LARGER than the parent goes to the RIGHT child.",
+            bodyText: "The second rule of a BST:\n\nEvery value in the Right Subtree must be strictly GREATER than the parent node.\n\nThis binary decision makes finding large numbers highly efficient.",
             iconName: "arrow.down.right",
             isBridge: false
         ),
@@ -369,28 +369,28 @@ struct TheoryData {
         // Card 11
         TheoryCard(
             title: "Traversing the Tree",
-            bodyText: "Since it's not a straight line, we need rules to visit every node. These rules are called Traversals.",
+            bodyText: "Since a tree isn't a straight line, you cannot simply loop from start to finish.\n\nWe use specific rules called 'Traversals' to guarantee that we visit every node exactly once.",
             iconName: "figure.walk",
             isBridge: false
         ),
         // Card 12
         TheoryCard(
             title: "In-Order Traversal",
-            bodyText: "Left → Root → Right.\n\nResult: Use this to get sorted data from a BST (e.g., 1, 2, 3).",
+            bodyText: "Order: Left → Root → Right\n\nResult:\nWhen used on a BST, this outputs data in perfect, ascending sorted order (e.g., 1, 2, 3).",
             iconName: "text.line.first.and.arrowtriangle.forward",
             isBridge: false
         ),
         // Card 13
         TheoryCard(
             title: "Pre-Order Traversal",
-            bodyText: "Root → Left → Right.\n\nResult: Good for copying a tree structure exactly.",
+            bodyText: "Order: Root → Left → Right\n\nResult:\nIdeal for cloning or creating an exact structural copy of a binary tree.",
             iconName: "arrow.up.and.down.and.arrow.left.and.right",
             isBridge: false
         ),
         // Card 14
         TheoryCard(
             title: "Post-Order Traversal",
-            bodyText: "Left → Right → Root.\n\nResult: Good for deleting a tree (delete children first, then parent).",
+            bodyText: "Order: Left → Right → Root\n\nResult:\nSafest way to delete a tree (it deletes children first, then the parent).",
             iconName: "trash.fill",
             isBridge: false
         ),
@@ -398,21 +398,21 @@ struct TheoryData {
         // Card 15
         TheoryCard(
             title: "Balanced vs Skewed",
-            bodyText: "A balanced tree is efficient O(log n). A 'skewed' tree looks like a line and is slow O(n).",
+            bodyText: "Balanced Tree:\nSplits data evenly. Lightning-fast O(log n).\n\nSkewed Tree:\nNodes pile on one side. Sluggish O(n) (like a linked list).",
             iconName: "scalemass.fill",
             isBridge: false
         ),
         // Card 16
         TheoryCard(
             title: "Real World Uses",
-            bodyText: "Used in Database indexing, File Systems, and Auto-complete suggestions.",
+            bodyText: "Trees power modern computing:\n\n• Database Indexing (B-Trees)\n• File Systems (Folders/Files)\n• Auto-complete (Tries)",
             iconName: "server.rack",
             isBridge: false
         ),
         // Card 17 (Bridge)
         TheoryCard(
                 title: "Time to Build",
-                bodyText: "Enough theory. Let's plant some nodes and watch the tree grow dynamically.",
+                bodyText: "Enough theory, let's practice.\n\nGet ready to plant root nodes, define branches, and visualize how a Binary Tree grows in real-time.",
                 iconName: "swift",
                 isBridge: true
             )
