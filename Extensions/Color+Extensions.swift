@@ -11,7 +11,7 @@ extension Color {
 import SwiftUI
 
 // A reusable background view containing two radial glows
-struct DoubleGlowBackground: View {
+struct gradientAppBackground: View {
     var body: some View {
         ZStack {
             // 1. The Base Dark Color (Fills the whole screen)
@@ -53,5 +53,5 @@ struct DoubleGlowBackground: View {
     }
 }
 #Preview{
-    DoubleGlowBackground()
+    gradientAppBackground()
 }

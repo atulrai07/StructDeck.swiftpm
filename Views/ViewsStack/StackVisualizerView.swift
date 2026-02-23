@@ -25,7 +25,8 @@ struct StackVisualizerView: View {
                     RoundedRectangle(cornerRadius: 12)
                         .strokeBorder(Color.gray.opacity(0.3), lineWidth: 2)
                         .frame(width: 140, height: 350)
-                        .background(Color.appBackground)
+                        .background(.gray.opacity(0.2))
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
                     
                     VStack(spacing: 4) {
                         ForEach(stackItems.reversed(), id: \.self) { item in
@@ -78,8 +79,6 @@ struct StackVisualizerView: View {
                     .accessibilityHint("Adds a random number to the top of the stack.")
                 }
                 .padding(.vertical, 20)
-                
-                // ✅ iOS 17 Compatible Sensory Feedback
                 .modifier(SensoryFeedbackModifier(trigger: stackItems))
                 
                 // 4. CODE INSIGHT (Bottom)
@@ -114,7 +113,7 @@ struct StackVisualizerView: View {
                 .navigationTitle("Stack Visualizer")
                 .navigationBarTitleDisplayMode(.inline)
             }
-            .background(Color.appBackground.ignoresSafeArea())
+            .background(Color.black)
             .toolbar{
                 ToolbarItem(placement: .topBarTrailing){
                     Button{

@@ -13,7 +13,7 @@ struct AccessibilityInfoView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.appBackground.opacity(0.8).ignoresSafeArea()
+                Color.appBackground.opacity(0.2).ignoresSafeArea()
                 
                 VStack(spacing: 25) {
                     Image(systemName: "accessibility.fill")
@@ -48,7 +48,6 @@ struct AccessibilityInfoView: View {
                     
                     Spacer()
                     
-                    // Button to jump directly to iOS System Accessibility Settings
                     Button {
                         if let url = URL(string: UIApplication.openSettingsURLString) {
                             UIApplication.shared.open(url)

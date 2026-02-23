@@ -15,6 +15,8 @@ struct LinkedListQuizView: View {
     @State private var selectedOption: Int? = nil
     @State private var isCorrect: Bool = false
     @State private var showFeedback: Bool = false
+    @State private var wrongAnswers: Int = 0
+    @State private var hasMadeWrongChoice: Bool = false
     
     let questions: [QuizQuestion] = QuizData.linkedListQuestions
     
@@ -84,7 +86,7 @@ struct LinkedListQuizView: View {
                             .disabled(!isCorrect)
                             .opacity(isCorrect ? 1.0 : 0.5)
                     } else {
-                        NavigationLink(destination: CompletionView()) {
+                        NavigationLink(destination: CompletionView(correctCount: questions.count - wrongAnswers, totalCount: questions.count)) {
                             Text("See Results")
                                 .font(.headline)
                                 .bold()
@@ -101,7 +103,7 @@ struct LinkedListQuizView: View {
                 .padding(.bottom, 20)
                 .padding(.horizontal)
             }
-            .background(Color.appBackground.ignoresSafeArea())
+            .background(gradientAppBackground())
             .navigationTitle("Linked List Quiz")
             .navigationBarTitleDisplayMode(.inline)
             
@@ -116,6 +118,10 @@ struct LinkedListQuizView: View {
             isCorrect = true
         } else {
             isCorrect = false
+            if !hasMadeWrongChoice {
+                wrongAnswers += 1
+                hasMadeWrongChoice = true
+            }
         }
     }
     
@@ -124,6 +130,7 @@ struct LinkedListQuizView: View {
         selectedOption = nil
         isCorrect = false
         showFeedback = false
+        hasMadeWrongChoice = false
     }
     
     func getBackgroundColor(for index: Int) -> Color {

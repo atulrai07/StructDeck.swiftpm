@@ -17,7 +17,7 @@ struct QueueTheoryCardsView: View {
     
     var body: some View {
         ZStack {
-            Color.appBackground.ignoresSafeArea()
+            gradientAppBackground()
             
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVStack(spacing: 0) {
@@ -142,7 +142,7 @@ struct QueueTheoryCardCell: View {
             }
         }
         .padding()
-        .background(Color.appBackground)
+        .background(gradientAppBackground().opacity(0))
     }
 }
 

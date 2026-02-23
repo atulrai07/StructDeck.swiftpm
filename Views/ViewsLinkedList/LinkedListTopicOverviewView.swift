@@ -58,7 +58,7 @@ struct LinkedListTopicOverviewView: View {
                 }
             }
             .padding(.horizontal)
-            .background(Color.appBackground.ignoresSafeArea())
+            .background(gradientAppBackground())
             .navigationTitle("Linked List")
             .navigationBarTitleDisplayMode(.inline)
             

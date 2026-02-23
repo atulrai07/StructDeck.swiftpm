@@ -16,7 +16,7 @@ struct LinkedListTheoryCardsView: View {
     
     var body: some View {
         ZStack {
-            Color.appBackground.ignoresSafeArea()
+            gradientAppBackground()
             
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVStack(spacing: 0) {
@@ -130,7 +130,7 @@ struct LinkedListTheoryCardCell: View {
             }
         }
         .padding()
-        .background(Color.appBackground)
+        .background(gradientAppBackground())
     }
 }
 

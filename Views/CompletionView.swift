@@ -10,6 +10,22 @@ import SwiftUI
 struct CompletionView: View {
     @Environment(\.dismiss) var dismiss
     
+    let correctCount: Int
+    let totalCount: Int
+    
+    private var scoreMessage: String {
+        let percentage = totalCount > 0 ? (Double(correctCount) / Double(totalCount)) * 100 : 0
+        if percentage == 100 {
+            return "Perfect Score! You nailed every question."
+        } else if percentage >= 70 {
+            return "Great job! You have a solid understanding."
+        } else if percentage >= 40 {
+            return "Good effort! Review the concepts and try again."
+        } else {
+            return "Keep learning! Practice makes perfect."
+        }
+    }
+    
     var body: some View {
         VStack(spacing: 30) {
             Spacer()
@@ -31,15 +47,13 @@ struct CompletionView: View {
             }
             .padding(.bottom, 20)
             
-            // 2. Confidence Text
+            // 2. Score Text
             VStack(spacing: 12) {
-                Text("You're Conceptually Ready")
-                    .font(.title)
-                    .bold()
+                Text("\(correctCount) / \(totalCount)")
+                    .font(.system(size: 48, weight: .bold, design: .rounded))
                     .foregroundStyle(.white)
                 
-                Text("Start practicing DSA questions online related to this topic online to strengthen your understanding.")
-
+                Text(scoreMessage)
                     .font(.body)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.gray)
@@ -57,7 +71,6 @@ struct CompletionView: View {
             
             Spacer()
             
-            // ✅ NEW: Hides only the "Back" button, keeps the Title visible
             NavigationLink(destination: OpeningScreenView().navigationBarBackButtonHidden(true)) {
                 Text("Back to Topics")
                     .font(.headline)
@@ -74,7 +87,7 @@ struct CompletionView: View {
             }
         }
         .padding()
-        .background(Color.appBackground.ignoresSafeArea())
+        .background(gradientAppBackground())
         .navigationBarHidden(true)
     }
 }
@@ -101,6 +114,6 @@ struct CompletionBadge: View {
 }
 
 #Preview {
-    CompletionView()
+    CompletionView(correctCount: 2, totalCount: 3)
         .preferredColorScheme(.dark)
 }

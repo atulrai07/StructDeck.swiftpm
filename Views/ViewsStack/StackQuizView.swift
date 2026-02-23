@@ -15,6 +15,8 @@ struct StackQuizView: View {
     @State private var selectedOption: Int? = nil
     @State private var isCorrect: Bool = false
     @State private var showFeedback: Bool = false
+    @State private var wrongAnswers: Int = 0
+    @State private var hasMadeWrongChoice: Bool = false
     
     let questions: [QuizQuestion] = QuizData.stackQuestions
     
@@ -27,7 +29,7 @@ struct StackQuizView: View {
                 
                 
                 Text("Question \(currentQuestionIndex + 1) of \(questions.count)")
-                    .font(.title)
+                    .font(.title3)
                     .fontWeight(.bold)
                     .foregroundStyle(.gray)
                     .accessibilityLabel("Question \(currentQuestionIndex + 1) out of \(questions.count)")
@@ -105,7 +107,7 @@ struct StackQuizView: View {
                         .opacity(isCorrect ? 1.0 : 0.5)
                     } else {
                         // Link to Completion Screen
-                        NavigationLink(destination: CompletionView()) {
+                        NavigationLink(destination: CompletionView(correctCount: questions.count - wrongAnswers, totalCount: questions.count)) {
                             Text("See Results")
                                 .font(.headline)
                                 .bold()
@@ -124,7 +126,7 @@ struct StackQuizView: View {
                 .navigationTitle("Stack Quiz")
                 .navigationBarTitleDisplayMode(.inline)
             }
-            .background(Color.appBackground.ignoresSafeArea())
+            .background(gradientAppBackground())
         }
     }
     
@@ -138,6 +140,10 @@ struct StackQuizView: View {
             isCorrect = true
         } else {
             isCorrect = false
+            if !hasMadeWrongChoice {
+                wrongAnswers += 1
+                hasMadeWrongChoice = true
+            }
         }
     }
     
@@ -147,6 +153,7 @@ struct StackQuizView: View {
         selectedOption = nil
         isCorrect = false
         showFeedback = false
+        hasMadeWrongChoice = false
     }
     
     func getBackgroundColor(for index: Int) -> Color {

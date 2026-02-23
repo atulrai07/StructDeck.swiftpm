@@ -54,6 +54,6 @@ struct PopularTopicCard: View {
         colors: [.blue, .purple]
     )
     .padding()
-    .background(Color.appBackground)
+    .background(gradientAppBackground())
     .preferredColorScheme(.dark)
 }

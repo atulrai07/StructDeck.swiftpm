@@ -146,7 +146,7 @@ struct LinkedListVisualizerView: View {
             }
         }
         .frame(maxHeight: .infinity)
-        .background(Color.appBackground.ignoresSafeArea())
+        .background(gradientAppBackground())
     }
     
     // MARK: - Logic

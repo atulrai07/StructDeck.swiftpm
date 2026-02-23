@@ -66,7 +66,7 @@ struct QueueTopicOverviewView: View {
                 }
             }
             .padding(.horizontal)
-            .background(Color.appBackground.ignoresSafeArea())
+            .background(gradientAppBackground())
             .navigationTitle("Queue")
             .navigationBarTitleDisplayMode(.inline)
         }

@@ -78,7 +78,7 @@ struct TopicOverviewView: View {
                 }
             }
             .padding(.horizontal)
-            .background(Color.appBackground.ignoresSafeArea())
+            .background(gradientAppBackground())
             .navigationTitle("Stack")
             .navigationBarTitleDisplayMode(.inline)
         }

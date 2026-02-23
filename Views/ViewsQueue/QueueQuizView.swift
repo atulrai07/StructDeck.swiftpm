@@ -13,6 +13,8 @@ struct QueueQuizView: View {
     @State private var selectedOption: Int? = nil
     @State private var isCorrect: Bool = false
     @State private var showFeedback: Bool = false
+    @State private var wrongAnswers: Int = 0
+    @State private var hasMadeWrongChoice: Bool = false
     
     // LOAD QUEUE DATA HERE
     let questions: [QuizQuestion] = QuizData.queueQuestions
@@ -90,7 +92,7 @@ struct QueueQuizView: View {
                             .disabled(!isCorrect)
                             .opacity(isCorrect ? 1.0 : 0.5)
                     } else {
-                        NavigationLink(destination: CompletionView()) {
+                        NavigationLink(destination: CompletionView(correctCount: questions.count - wrongAnswers, totalCount: questions.count)) {
                             Text("See Results")
                                 .font(.headline)
                                 .bold()
@@ -110,7 +112,7 @@ struct QueueQuizView: View {
                 .navigationTitle("Queue Quiz")
                 .navigationBarTitleDisplayMode(.inline)
             }
-            .background(Color.appBackground.ignoresSafeArea())
+            .background(gradientAppBackground())
             //header
             .toolbar{
                 ToolbarItem(placement:.title){
@@ -130,6 +132,10 @@ struct QueueQuizView: View {
             UINotificationFeedbackGenerator().notificationOccurred(.success)
         } else {
             isCorrect = false
+            if !hasMadeWrongChoice {
+                wrongAnswers += 1
+                hasMadeWrongChoice = true
+            }
             //  Error Haptic
             UINotificationFeedbackGenerator().notificationOccurred(.error)
         }
@@ -140,6 +146,7 @@ struct QueueQuizView: View {
         selectedOption = nil
         isCorrect = false
         showFeedback = false
+        hasMadeWrongChoice = false
     }
     
     func getBackgroundColor(for index: Int) -> Color {

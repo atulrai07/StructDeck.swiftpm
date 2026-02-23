@@ -118,7 +118,7 @@ struct QueueVisualizerView: View {
             .padding(.bottom, 30)
             .frame(height: 126)
         }
-        .background(Color.appBackground.ignoresSafeArea())
+        .background(gradientAppBackground())
         .navigationTitle("Queue Visualizer")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

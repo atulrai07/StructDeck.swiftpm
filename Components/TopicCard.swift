@@ -10,7 +10,7 @@ import SwiftUI
 struct TopicCard: View {
     let title: String
     let subtitle: String
-    let gradientColors: [Color]
+    let cardBackground: AnyShapeStyle
     let iconName: String
     let time: String
     
@@ -18,14 +18,14 @@ struct TopicCard: View {
         ZStack {
             // Background Gradient
             RoundedRectangle(cornerRadius: 24)
-                .fill(LinearGradient(colors: gradientColors, startPoint: .topLeading, endPoint: .bottomTrailing))
+                .fill(cardBackground)
                 .opacity(0.9)
             
             VStack(alignment: .leading, spacing: 16) {
                 HStack(alignment: .top) {
                     Image(systemName: iconName)
                         .font(.system(size: 40))
-                        .foregroundStyle(.white.opacity(0.9))
+                        .foregroundStyle(.blue)
                     
                     VStack(alignment: .leading, spacing: 4) {
                         Text(title)
@@ -86,5 +86,5 @@ struct TopicCard: View {
 }
 
 #Preview {
-    TopicCard(title: "Something", subtitle: "subtitle", gradientColors: [.blue,.red,.purple], iconName: "Icon", time: "23:45")
+    TopicCard(title: "Something", subtitle: "subtitle", cardBackground: AnyShapeStyle(.thinMaterial), iconName: "trash", time: "23:45")
 }

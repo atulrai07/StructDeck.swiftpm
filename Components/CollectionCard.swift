@@ -15,18 +15,17 @@ struct CollectionCard: View {
         HStack(spacing: 0) {
             // Title Left
             Text(title)
-                .font(.title2)
+                .font(.title)
                 .fontWeight(.bold)
                 .foregroundStyle(.white)
                 .multilineTextAlignment(.leading)
-                .padding(.leading, 24)
+                .padding(.leading, 20)
             
             Spacer()
             
             // The Books Visual Right
             ZStack(alignment: .trailing) {
                 ForEach(Array(books.enumerated()), id: \.offset) { index, book in
-                    // We calculate offset to fan them out like cards
                     BookView(color: book.color, icon: book.icon)
                         .offset(x: CGFloat(index * -35)) // Fan out to the left
                         .zIndex(Double(books.count - index)) // Front items on top
@@ -36,19 +35,19 @@ struct CollectionCard: View {
             .padding(.trailing, 24)
             .padding(.vertical, 20)
         }
-        .frame(height: 160)
-        .background(Color.gray.opacity(0.2)) // Dark Card Background
+        .frame(height: 190)
+        .background(Color.gray.opacity(0.2)) // Card Background
         .cornerRadius(24)
     }
 }
 
-// Helper Model for Books
+// Model for Books
 struct BookData {
     let color: Color
     let icon: String
 }
 
-// The Single "Book Spine" View
+// The Single View
 struct BookView: View {
     let color: Color
     let icon: String
@@ -58,7 +57,7 @@ struct BookView: View {
             // Book Spine
             RoundedRectangle(cornerRadius: 6)
                 .fill(color.gradient)
-                .frame(width: 70, height: 110)
+                .frame(width: 80, height: 135)
                 .overlay(
                     HStack {
                         Color.white.opacity(0.2)
@@ -91,5 +90,5 @@ struct BookView: View {
         ]
     )
     .padding()
-    .background(Color.appBackground)
+    .background(gradientAppBackground())
 }

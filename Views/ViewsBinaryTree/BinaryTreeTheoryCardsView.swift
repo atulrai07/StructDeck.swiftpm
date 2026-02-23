@@ -19,7 +19,7 @@ struct BinaryTreeTheoryCardsView: View {
     
     var body: some View {
         ZStack {
-            Color.appBackground.ignoresSafeArea()
+            gradientAppBackground()
             
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVStack(spacing: 0) {
@@ -136,7 +136,7 @@ struct BinaryTreeTheoryCardCell: View {
             }
         }
         .padding()
-        .background(Color.appBackground)
+        .background(gradientAppBackground().opacity(0))
     }
 }
 

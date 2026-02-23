@@ -2,7 +2,7 @@
 //  TheoryCardsView.swift
 //  DSAK
 //
-//  Created by Atul on 30/12/25.
+//  Created by Atul on 31/12/25.
 //
 
 import SwiftUI
@@ -16,7 +16,7 @@ struct TheoryCardsView: View {
     
     var body: some View {
         ZStack {
-            Color.appBackground.ignoresSafeArea()
+            gradientAppBackground()
             
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVStack(spacing: 0) {
@@ -68,6 +68,7 @@ struct TheoryCardsView: View {
              NavigationStack {
                 StackVisualizerView()
                     .presentationDetents([.large])
+                    .presentationDragIndicator(.visible)
             }
         }
     }
@@ -137,7 +138,7 @@ struct TheoryCardCell: View {
             }
         }
         .padding()
-        .background(Color.appBackground)
+        .background(gradientAppBackground().opacity(0))
     }
 }
 

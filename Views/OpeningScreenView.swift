@@ -16,7 +16,7 @@ struct OpeningScreenView: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 30) {
                     
-                    // 2. "Start Learning" Section
+                    // "Start Learning" Section
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Start Learning")
                             .font(.title2)
@@ -49,9 +49,10 @@ struct OpeningScreenView: View {
                             )
                         }
                         .padding(.horizontal)
+                        
                     }
                     
-                    // 3. "Popular Topics" Section
+                    // "Popular Topics" Section
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Popular Topics")
                             .font(.title2)
@@ -97,7 +98,7 @@ struct OpeningScreenView: View {
                 }
                 .padding(.bottom, 40)
             }
-            .background(DoubleGlowBackground())
+            .background(gradientAppBackground())
             //.navigationTitle("Home")
             //.navigationBarTitleDisplayMode(.large)
             // Accessibility Button
@@ -128,10 +129,11 @@ struct OpeningScreenView: View {
                     .accessibilityLabel("Accessibility Information")
                 }
             }
-            // Present the Accessibility Sheet
+            
+            // sheet for accessibility
             .sheet(isPresented: $showAccessibilitySheet) {
                 AccessibilityInfoView()
-                    .presentationDetents([.fraction(0.90)])  // or .fraction(0.75)
+                    .presentationDetents([.fraction(0.90)])
                     .presentationDragIndicator(.visible)
             }
         }
