@@ -74,6 +74,7 @@ struct QueueTheoryCardsView: View {
                 QueueVisualizerView()
             }
             .presentationDetents([.large])
+            .presentationDragIndicator(.visible)
         }
     }
 }

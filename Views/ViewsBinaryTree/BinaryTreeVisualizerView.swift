@@ -16,7 +16,7 @@ struct BinaryTreeVisualizerView: View {
     
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            Color.VisualizerBackgroundColor.ignoresSafeArea()
             
             VStack(spacing: 0) {
                 // Header
@@ -69,7 +69,7 @@ struct BinaryTreeVisualizerView: View {
                     .id(updateTrigger)
                 }
                 .frame(height:450)
-                .background(.gray.opacity(0.2))
+                .background(.gray.opacity(0.1))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)

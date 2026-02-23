@@ -61,7 +61,7 @@ struct BinaryTreeTheoryCardsView: View {
                 } label: {
                     HStack {
                         Text("Visualize")
-                        Image(systemName: "swift")
+                        Image(systemName: "chevron.left.forwardslash.chevron.right")
                     }
                     .foregroundStyle(.white)
                 }
@@ -72,6 +72,7 @@ struct BinaryTreeTheoryCardsView: View {
                 BinaryTreeVisualizerView()
             }
             .presentationDetents([.large])
+            .presentationDragIndicator(.visible)
         }
     }
 }

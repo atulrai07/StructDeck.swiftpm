@@ -18,7 +18,7 @@ struct LinkedListVisualizerView: View {
     var body: some View {
         VStack(spacing: 20) {
             
-            // Header -> toolbar
+            // Header -> toolbar and title
             Spacer()
             // VISUALIZATION AREA (Canvas)
             ScrollView(.horizontal, showsIndicators: false) {
@@ -68,11 +68,12 @@ struct LinkedListVisualizerView: View {
                 .frame(minHeight: 150)
                 .animation(.spring(response: 0.5, dampingFraction: 0.7), value: listItems)
             }
-            .background(Color.appBackground.opacity(0))
+            .background(.gray.opacity(0.1))
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
                     .strokeBorder(Color.gray.opacity(0.3), lineWidth: 2)
             )
+            .clipShape(RoundedRectangle(cornerRadius: 12))
             .padding(.horizontal,10)
             
             Spacer()
@@ -146,7 +147,7 @@ struct LinkedListVisualizerView: View {
             }
         }
         .frame(maxHeight: .infinity)
-        .background(gradientAppBackground())
+        .background(Color.VisualizerBackgroundColor)
     }
     
     // MARK: - Logic

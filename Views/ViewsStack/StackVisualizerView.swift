@@ -20,12 +20,12 @@ struct StackVisualizerView: View {
         NavigationStack {
             VStack(spacing: 20) {
                 
-                // 2. VISUALIZATION AREA (Top)
+                // VISUALIZATION AREA (canvas)
                 ZStack(alignment: .bottom) {
                     RoundedRectangle(cornerRadius: 12)
                         .strokeBorder(Color.gray.opacity(0.3), lineWidth: 2)
                         .frame(width: 140, height: 350)
-                        .background(.gray.opacity(0.2))
+                        .background(.gray.opacity(0.1))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                     
                     VStack(spacing: 4) {
@@ -113,7 +113,7 @@ struct StackVisualizerView: View {
                 .navigationTitle("Stack Visualizer")
                 .navigationBarTitleDisplayMode(.inline)
             }
-            .background(Color.black)
+            .background(Color.VisualizerBackgroundColor)
             .toolbar{
                 ToolbarItem(placement: .topBarTrailing){
                     Button{

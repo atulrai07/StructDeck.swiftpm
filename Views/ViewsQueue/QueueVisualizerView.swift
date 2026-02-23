@@ -24,8 +24,10 @@ struct QueueVisualizerView: View {
                 RoundedRectangle(cornerRadius: 12)
                     .strokeBorder(Color.gray.opacity(0.3), lineWidth: 3)
                     .frame(height: 100)
+                    .background(.gray.opacity(0.1))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
                     .padding(.horizontal)
-                    .background(Color.appBackground.opacity(0.1))
+                    
                 
                 // The Queue Items (Horizontal Stack)
                 HStack(spacing: 10) {
@@ -118,7 +120,7 @@ struct QueueVisualizerView: View {
             .padding(.bottom, 30)
             .frame(height: 126)
         }
-        .background(gradientAppBackground())
+        .background(Color.VisualizerBackgroundColor)
         .navigationTitle("Queue Visualizer")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

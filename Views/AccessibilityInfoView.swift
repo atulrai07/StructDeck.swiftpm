@@ -16,7 +16,7 @@ struct AccessibilityInfoView: View {
                 Color.appBackground.opacity(0.2).ignoresSafeArea()
                 
                 VStack(spacing: 25) {
-                    Image(systemName: "accessibility.fill")
+                    Image(systemName: "voiceover")
                         .font(.system(size: 80))
                         .foregroundStyle(.blue)
                         .padding(.top)
@@ -26,7 +26,7 @@ struct AccessibilityInfoView: View {
                         .font(.title.bold())
                         .foregroundStyle(.white)
                     
-                    VStack(alignment: .leading, spacing: 20) {
+                    VStack(alignment: .leading, spacing: 44) {
                         AccessibilityFeatureRow(
                             icon: "waveform",
                             title: "Haptic Feedback",
@@ -76,36 +76,6 @@ struct AccessibilityInfoView: View {
                 }
             }
         }
-    }
-}
-
-// Reusable row for accessibility features
-struct AccessibilityFeatureRow: View {
-    let icon: String
-    let title: String
-    let desc: String
-    
-    var body: some View {
-        HStack(alignment: .top, spacing: 15) {
-            Image(systemName: icon)
-                .font(.title2)
-                .foregroundStyle(.blue)
-                .frame(width: 30)
-                .accessibilityHidden(true)
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .font(.headline)
-                    .foregroundStyle(.white)
-                Text(desc)
-                    .font(.subheadline)
-                    .foregroundStyle(.gray)
-                    .fixedSize(horizontal: false, vertical: true)  // Add this
-                    .lineLimit(nil)
-            }
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(title): \(desc)")
     }
 }
 

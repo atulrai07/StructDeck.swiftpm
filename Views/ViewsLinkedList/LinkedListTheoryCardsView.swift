@@ -66,6 +66,7 @@ struct LinkedListTheoryCardsView: View {
                 LinkedListVisualizerView()
             }
             .presentationDetents([.large])
+            .presentationDragIndicator(.visible)
         }
     }
 }

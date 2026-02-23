@@ -9,7 +9,6 @@ extension Color {
 }
 
 import SwiftUI
-
 // A reusable background view containing two radial glows
 struct gradientAppBackground: View {
     var body: some View {
