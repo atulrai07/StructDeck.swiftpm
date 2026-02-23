@@ -22,7 +22,7 @@ struct OpeningScreenView: View {
                             .font(.title2)
                             .bold()
                             .foregroundStyle(.white)
-                            .padding()
+                            .padding(.horizontal)
                             .accessibilityAddTraits(.isHeader)
                         
                         // Linear Structures Card

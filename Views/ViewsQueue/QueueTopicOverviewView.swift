@@ -21,6 +21,12 @@ struct QueueTopicOverviewView: View {
                             OverviewStepRow(number: "2",
                                             title: "See it in action", desc: "Interactive visualization where you enqueue & dequeue elements.")
                             OverviewStepRow(number: "3", title: "Check your understanding", desc: "3 quick questions to confirm you're ready.")
+                            
+                            OverviewStepRow(
+                                number: "4",
+                                title: "Review your results",
+                                desc: "Get instant feedback on your quiz and complete the module."
+                            )
                         }
                         
                         // Time

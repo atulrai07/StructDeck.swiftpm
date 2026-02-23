@@ -39,6 +39,14 @@ struct BinaryTreeTopicOverviewView: View {
                             )
                             .accessibilityElement(children: .combine)
                             .accessibilityLabel("Step 3. Check your understanding. Verify your knowledge with a quiz of 6 questions.")
+                            
+                            OverviewStepRow(
+                                number: "4",
+                                title: "Review your results",
+                                desc: "Get instant feedback on your quiz and complete the module."
+                            )
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel("Step 4. Review your results. Get instant feedback on your quiz and complete the module.")
                         }
                         
                         // Time & Goal

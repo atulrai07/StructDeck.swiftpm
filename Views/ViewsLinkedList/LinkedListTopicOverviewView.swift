@@ -19,6 +19,11 @@ struct LinkedListTopicOverviewView: View {
                             OverviewStepRow(number: "1", title: "Learn the core idea", desc: "Understand Nodes, Data, and Pointers.")
                             OverviewStepRow(number: "2", title: "See it in action", desc: "Visualize how link list stores data by adding nodes to the chain.")
                             OverviewStepRow(number: "3", title: "Check your understanding", desc: "Verify your knowledge with a quick quiz of 3 questions.")
+                            OverviewStepRow(
+                                number: "4",
+                                title: "Review your results",
+                                desc: "Get instant feedback on your quiz and complete the module."
+                            )
                         }
                         
                         // Time
