@@ -161,15 +161,6 @@ struct BinaryTreeVisualizerView: View {
         }
         .navigationTitle("Binary Tree Visualizer")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar{
-            ToolbarItem(placement: .topBarTrailing){
-                Button{
-                    dismiss()
-                }label: {
-                    Text("Done")
-                }
-            }
-        }
         
     }
     

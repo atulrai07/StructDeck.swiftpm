@@ -114,15 +114,6 @@ struct StackVisualizerView: View {
                 .navigationBarTitleDisplayMode(.inline)
             }
             .background(Color.VisualizerBackgroundColor)
-            .toolbar{
-                ToolbarItem(placement: .topBarTrailing){
-                    Button{
-                        dismiss()
-                    }label:{
-                        Text("Done")
-                    }
-                }
-            }
         }
     }
     

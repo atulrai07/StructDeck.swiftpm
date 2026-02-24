@@ -123,12 +123,6 @@ struct QueueVisualizerView: View {
         .background(Color.VisualizerBackgroundColor)
         .navigationTitle("Queue Visualizer")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Done") { dismiss() }
-            }
-
-        }
     }
     
     // Logic

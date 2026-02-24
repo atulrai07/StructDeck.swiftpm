@@ -136,15 +136,6 @@ struct LinkedListVisualizerView: View {
             .frame(height:130)
             .navigationTitle("Linked List Visulaizer")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar{
-                ToolbarItem(placement: .topBarTrailing){
-                    Button{
-                        dismiss()
-                    }label: {
-                        Text("Done")
-                    }
-                }
-            }
         }
         .frame(maxHeight: .infinity)
         .background(Color.VisualizerBackgroundColor)
