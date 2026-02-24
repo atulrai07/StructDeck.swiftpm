@@ -36,7 +36,7 @@ struct BFSVisualizerView: View {
     
     // Layout parameters
     let depth = 4 // Levels 0, 1, 2, 3 -> Up to 15 nodes
-    let nodeRadius: CGFloat = 20
+    let nodeRadius: CGFloat = 18
     
     var body: some View {
         VStack(spacing: 0) {
@@ -160,7 +160,13 @@ struct BFSVisualizerView: View {
                             .background(Circle().fill(Color.blue.opacity(currentStepIndex < steps.count - 1 ? 1 : 0.3)))
                     }
                     .disabled(currentStepIndex >= steps.count - 1)
-                    .accessibilityLabel("Step Forward")
+                    .accessibilityLabel(
+                        """
+                        Step Forward. 
+                        \(currentStepIndex) of \(max(0, steps.count - 1)) steps completed. 
+                        \(currentStep?.stepDescription ?? "")
+                        """
+                    )
                 }
             }
             .padding(.vertical, 20)

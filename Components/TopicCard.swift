@@ -33,6 +33,7 @@ struct TopicCard: View {
                             .bold()
                             .foregroundStyle(.white)
                             .padding(.top,5)
+                        
 //                        Text(subtitle)
 //                            .font(.caption)
 //                            .foregroundStyle(.white.opacity(0.8))

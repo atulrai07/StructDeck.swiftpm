@@ -29,12 +29,12 @@ final class ParticleSystem: ObservableObject {
     @Published var tick: Int = 0
 
     // Physics tuning
-    private let particleCount  = 500
-    private let repulsionRadius  = 90.0
-    private let repulsionForce   = 15.0
-    private let returnSpeed      = 0.035
-    private let friction         = 0.80
-    private let maxDrift         = 0.30
+    private let particleCount = 500
+    private let repulsionRadius = 90.0
+    private let repulsionForce = 15.0
+    private let returnSpeed = 0.035
+    private let friction = 0.80
+    private let maxDrift = 0.30
 
     private(set) var particles: [Particle] = []
     private(set) var canvasSize: CGSize = .zero

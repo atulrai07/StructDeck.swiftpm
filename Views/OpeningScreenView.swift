@@ -43,7 +43,7 @@ struct OpeningScreenView: View {
                         // Algorithms Card
                         NavigationLink(destination: AlgorithmsDashboardView()) {
                             CollectionCard(
-                                title: "Algorithms\n",
+                                title: "Algorithms",
                                 books: [
                                     BookData(color: .orange, icon: "point.topleft.down.curvedto.point.bottomright.up"),
                                     BookData(color: .purple, icon: "arrow.up.and.down.and.arrow.left.and.right"),
@@ -59,7 +59,7 @@ struct OpeningScreenView: View {
                     
                     // "Popular Topics" Section
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("Popular Topics")
+                        Text("Featured Topics")
                             .font(.title2)
                             .bold()
                             .foregroundStyle(.white)
@@ -69,12 +69,12 @@ struct OpeningScreenView: View {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16) {
                                 // Stack
-                                NavigationLink(destination: TopicOverviewView()) {
+                                NavigationLink(destination: DijkstraTopicOverviewView()) {
                                     PopularTopicCard(
-                                        title: "Stack",
-                                        subtitle: "LIFO • 12 min",
-                                        icon: "square.stack.3d.up.fill",
-                                        colors: [.blue,.red, .purple]
+                                        title: "Dijkstra",
+                                        subtitle: "Shortest Path • 25 min",
+                                        icon: "point.topleft.down.curvedto.point.bottomright.up",
+                                        colors: [.red,.red ,.orange,.blue, .blue]
                                     )
                                 }
                                 .accessibilityLabel("Stack. Last In, First Out. 12 minutes.")
@@ -93,16 +93,16 @@ struct OpeningScreenView: View {
                                 .accessibilityHint("Double tap to learn about binary trees.")
                                 
                                 // Linked List
-                                NavigationLink(destination: LinkedListTopicOverviewView()) {
+                                NavigationLink(destination: BFSTopicOverviewView()) {
                                     PopularTopicCard(
-                                        title: "Linked List",
-                                        subtitle: "Pointers • 15 min",
-                                        icon: "link",
+                                        title: "BFS",
+                                        subtitle: "Traverse • 20 min",
+                                        icon: "arrow.up.and.down.and.arrow.left.and.right",
                                         colors: [.cyan, .blue,.white]
                                     )
                                 }
                                 .accessibilityLabel("Linked List. Pointer-based structure. 15 minutes.")
-                                .accessibilityHint("Double tap to learn about linked lists.")
+                                .accessibilityHint("coDouble tap to learn about linked lists.")
                             }
                             .padding(.horizontal)
                         }
@@ -110,7 +110,7 @@ struct OpeningScreenView: View {
                 }
                 .padding(.bottom, 40)
             }
-            .background(gradientAppBackground())
+            .background(particleGradientAppBackground())
             //.navigationTitle("Home")
             //.navigationBarTitleDisplayMode(.large)
             // Accessibility Button

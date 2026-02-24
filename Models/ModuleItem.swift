@@ -59,7 +59,15 @@ extension ModuleItem {
 extension ModuleItem {
     nonisolated(unsafe) static let algorithmModules: [ModuleItem] = [
         ModuleItem(
-            title: "Breadth-First Search",
+            title: "Dijkstra",
+            subtitle: "Shortest Path Algorithm",
+            cardBackground: AnyShapeStyle(.gray.opacity(0.3)),
+            iconName: "point.topleft.down.curvedto.point.bottomright.up",
+            time: "25 min",
+            destination: { AnyView(DijkstraTopicOverviewView()) }
+        ),
+        ModuleItem(
+            title: "BFS",
             subtitle: "Level-order Traversal",
             cardBackground: AnyShapeStyle(.gray.opacity(0.3)),
             iconName: "arrow.up.and.down.and.arrow.left.and.right",
@@ -67,20 +75,12 @@ extension ModuleItem {
             destination: { AnyView(BFSTopicOverviewView()) }
         ),
         ModuleItem(
-            title: "Depth-First Search",
+            title: "DFS",
             subtitle: "Depth-first Traversal",
             cardBackground: AnyShapeStyle(.gray.opacity(0.3)),
             iconName: "arrow.down.to.line",
             time: "20 min",
             destination: { AnyView(DFSTopicOverviewView()) }
-        ),
-        ModuleItem(
-            title: "Dijkstra",
-            subtitle: "Shortest Path Algorithm",
-            cardBackground: AnyShapeStyle(.gray.opacity(0.3)),
-            iconName: "point.topleft.down.curvedto.point.bottomright.up",
-            time: "25 min",
-            destination: { AnyView(DijkstraTopicOverviewView()) }
         )
     ]
 }
