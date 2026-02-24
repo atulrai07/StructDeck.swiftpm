@@ -21,6 +21,7 @@ struct DijkstraStep {
     var currentDistances: [Int: Int]
     var exploringEdge: GraphEdge?
     var shortestPathTree: Set<GraphEdge>
+    var activeNode: Int? // Added to track the currently focused node
     var stepDescription: String
 }
 
@@ -52,12 +53,11 @@ struct DijkstraVisualizerView: View {
                             }
                             .stroke(getEdgeColor(edge), lineWidth: getEdgeWidth(edge))
                             
-                            // Edge Weight
+                            // Edge Weight (Shrunk font and padding)
                             Text("\(edge.weight)")
-                                .font(.caption)
-                                .bold()
+                                .font(.system(size: 10, weight: .bold))
                                 .foregroundStyle(.white)
-                                .padding(4)
+                                .padding(3)
                                 .background(Color.blue.opacity(0.8))
                                 .clipShape(Circle())
                                 .position(
@@ -72,23 +72,22 @@ struct DijkstraVisualizerView: View {
                         ZStack {
                             Circle()
                                 .fill(getNodeColor(node.id))
-                                .frame(width: 40, height: 40)
+                                .frame(width: 30, height: 30) // Reduced from 40
                                 .overlay(Circle().stroke(Color.white, lineWidth: 2))
                             
                             Text("\(node.id)")
-                                .font(.headline)
+                                .font(.subheadline) // Adjusted to fit smaller node
                                 .foregroundStyle(.white)
                             
-                            // Distance Label
-                            if let step = currentStep, let dist = step.currentDistances[node.id] {
+                            // Distance Label (Only shown for active node)
+                            if let step = currentStep, let dist = step.currentDistances[node.id], step.activeNode == node.id {
                                 Text(dist == Int.max ? "∞" : "\(dist)")
-                                    .font(.caption2)
-                                    .bold()
+                                    .font(.system(size: 10, weight: .bold))
                                     .foregroundStyle(.white)
                                     .padding(4)
                                     .background(Color.red.opacity(0.8))
                                     .clipShape(Capsule())
-                                    .offset(y: -30)
+                                    .offset(y: -24) // Adjusted for smaller node
                             }
                         }
                         .position(node.position)
@@ -128,7 +127,7 @@ struct DijkstraVisualizerView: View {
                             .foregroundStyle(.gray)
                         Text(timeComplexity)
                             .font(.headline)
-                            .foregroundStyle(.orange)
+                            .foregroundStyle(.white)
                     }
                 }
                 
@@ -181,7 +180,7 @@ struct DijkstraVisualizerView: View {
     func getNodeColor(_ id: Int) -> Color {
         guard let step = currentStep else { return .gray }
         if id == 0 { return .orange } // Start node
-        if id == nodes.count - 1 { return .purple } // Destination node
+        if id == nodes.count - 1 { return .blue } // Destination node
         if step.visitedNodes.contains(id) { return .green }
         if step.currentDistances[id] != nil && step.currentDistances[id]! < Int.max { return .teal } // Discovered
         return .gray
@@ -230,35 +229,25 @@ struct DijkstraVisualizerView: View {
         let nodeCount = Int.random(in: 6...9)
         let padding: CGFloat = 50
         
-        // Generate random nodes ensuring they are somewhat spaced
+        // --- NEW CIRCULAR/ELLIPTICAL PLACEMENT LOGIC ---
+        let center = CGPoint(x: size.width / 2, y: size.height / 2)
+        // Ensure radius doesn't go negative on exceptionally small screens
+        let radiusX = max(10, (size.width / 2) - padding)
+        let radiusY = max(10, (size.height / 2) - padding)
+        
+        // Generate nodes distributed evenly along an ellipse
         for i in 0..<nodeCount {
-            var position: CGPoint
-            var tooClose = true
-            var attempts = 0
+            // Calculate angle: distribute around 2 * pi radians.
+            // Subtract pi/2 to start Node 0 near the top center (12 o'clock).
+            let angle = (CGFloat(2 * Double.pi) / CGFloat(nodeCount)) * CGFloat(i) - CGFloat(Double.pi / 2)
             
-            let safeWidth = max(size.width, padding * 2 + 10.0)
-            let safeHeight = max(size.height, padding * 2 + 10.0)
-            
-            repeat {
-                position = CGPoint(
-                    x: CGFloat.random(in: padding...(safeWidth - padding)),
-                    y: CGFloat.random(in: padding...(safeHeight - padding))
-                )
-                tooClose = false
-                for other in nodes {
-                    let dx = position.x - other.position.x
-                    let dy = position.y - other.position.y
-                    if sqrt(dx*dx + dy*dy) < 80 {
-                        tooClose = true
-                        break
-                    }
-                }
-                attempts += 1
-            } while tooClose && attempts < 50
+            let position = CGPoint(
+                x: center.x + radiusX * cos(angle),
+                y: center.y + radiusY * sin(angle)
+            )
             nodes.append(GraphNode(id: i, position: position))
         }
-        
-        // Ensure destination (last node) is roughly on the opposite side to start (0) optionally
+        // ----------------------------------------------
         
         // Connect nodes to form a connected graph
         for i in 1..<nodeCount {
@@ -268,8 +257,8 @@ struct DijkstraVisualizerView: View {
             edges.append(GraphEdge(source: target, destination: i, weight: weight))
         }
         
-        // Add some random extra edges
-        let extraEdges = Int.random(in: 2...5)
+        // Add some random extra edges (CAPPED at 1 or 2 to reduce clutter)
+        let extraEdges = Int.random(in: 1...2)
         for _ in 0..<extraEdges {
             let u = Int.random(in: 0..<nodeCount)
             let v = Int.random(in: 0..<nodeCount)
@@ -283,101 +272,119 @@ struct DijkstraVisualizerView: View {
     }
     
     func computeDijkstra() {
-        var distances = [Int: Int]()
-        var previousEdge = [Int: GraphEdge]()
-        for node in nodes { distances[node.id] = Int.max }
-        distances[0] = 0
-        
-        var visited = Set<Int>()
-        var sptSet = Set<GraphEdge>()
-        var unvisited = Set(nodes.map { $0.id })
-        
-        steps.append(DijkstraStep(
-            visitedNodes: visited,
-            currentDistances: distances,
-            exploringEdge: nil,
-            shortestPathTree: sptSet,
-            stepDescription: "Starting at Node 0. Initializing distances to infinity."
-        ))
-        
-        while !unvisited.isEmpty {
-            // Find unvisited node with min distance
-            var minNode = -1
-            var minDist = Int.max
-            for u in unvisited {
-                if distances[u]! < minDist {
-                    minDist = distances[u]!
-                    minNode = u
-                }
-            }
+            var distances = [Int: Int]()
+            var previousEdge = [Int: GraphEdge]()
+            for node in nodes { distances[node.id] = Int.max }
+            distances[0] = 0
             
-            if minNode == -1 { break } // Remaining nodes are inaccessible
-            
-            unvisited.remove(minNode)
-            visited.insert(minNode)
-            
-            if let edgeToHere = previousEdge[minNode] {
-                sptSet.insert(edgeToHere)
-            }
+            var visited = Set<Int>()
+            var sptSet = Set<GraphEdge>()
+            var unvisited = Set(nodes.map { $0.id })
             
             steps.append(DijkstraStep(
                 visitedNodes: visited,
                 currentDistances: distances,
                 exploringEdge: nil,
                 shortestPathTree: sptSet,
-                stepDescription: "Moved to Node \(minNode) with shortest known distance \(minDist)."
+                activeNode: 0, // Node 0 is initially active
+                stepDescription: "Starting at Node 0. Initializing distances to infinity."
             ))
             
-            if minNode == nodes.count - 1 {
+            while !unvisited.isEmpty {
+                // Find unvisited node with min distance
+                var minNode = -1
+                var minDist = Int.max
+                for u in unvisited {
+                    if distances[u]! < minDist {
+                        minDist = distances[u]!
+                        minNode = u
+                    }
+                }
+                
+                if minNode == -1 { break } // Remaining nodes are inaccessible
+                
+                unvisited.remove(minNode)
+                visited.insert(minNode)
+                
+                if let edgeToHere = previousEdge[minNode] {
+                    sptSet.insert(edgeToHere)
+                }
+                
                 steps.append(DijkstraStep(
                     visitedNodes: visited,
                     currentDistances: distances,
                     exploringEdge: nil,
                     shortestPathTree: sptSet,
-                    stepDescription: "Reached destination (Node \(minNode)). Shortest path found!"
+                    activeNode: minNode,
+                    stepDescription: "Moved to Node \(minNode) with shortest known distance \(minDist)."
                 ))
-                break
-            }
-            
-            // Explore neighbors
-            let adjEdges = edges.filter { $0.source == minNode || $0.destination == minNode }
-            for edge in adjEdges {
-                let neighbor = edge.source == minNode ? edge.destination : edge.source
-                if !visited.contains(neighbor) {
-                    // Show exploring
+                
+                if minNode == nodes.count - 1 {
+                    // --- THE FIX: BACKTRACK TO FIND THE EXACT PATH ---
+                    var exactPath = Set<GraphEdge>()
+                    var curr = minNode
+                    
+                    // Trace backwards from destination to start
+                    while let edge = previousEdge[curr] {
+                        exactPath.insert(edge)
+                        // Move to the node on the other side of this edge
+                        curr = (edge.source == curr) ? edge.destination : edge.source
+                    }
+                    
                     steps.append(DijkstraStep(
                         visitedNodes: visited,
                         currentDistances: distances,
-                        exploringEdge: edge,
-                        shortestPathTree: sptSet,
-                        stepDescription: "Exploring edge to Node \(neighbor) with weight \(edge.weight)."
+                        exploringEdge: nil,
+                        shortestPathTree: exactPath, // Inject only the final path here
+                        activeNode: minNode,
+                        stepDescription: "Reached destination (Node \(minNode)). Shortest path found!"
                     ))
-                    
-                    let newDist = minDist + edge.weight
-                    if newDist < distances[neighbor]! {
-                        distances[neighbor] = newDist
-                        previousEdge[neighbor] = edge
+                    break
+                    // -------------------------------------------------
+                }
+                
+                // Explore neighbors
+                let adjEdges = edges.filter { $0.source == minNode || $0.destination == minNode }
+                for edge in adjEdges {
+                    let neighbor = edge.source == minNode ? edge.destination : edge.source
+                    if !visited.contains(neighbor) {
+                        // Show exploring
                         steps.append(DijkstraStep(
                             visitedNodes: visited,
                             currentDistances: distances,
                             exploringEdge: edge,
                             shortestPathTree: sptSet,
-                            stepDescription: "Found shorter path to Node \(neighbor). Distance updated to \(newDist)."
+                            activeNode: minNode, // Still operating from minNode
+                            stepDescription: "Exploring edge to Node \(neighbor) with weight \(edge.weight)."
                         ))
-                    } else {
-                        steps.append(DijkstraStep(
-                            visitedNodes: visited,
-                            currentDistances: distances,
-                            exploringEdge: edge,
-                            shortestPathTree: sptSet,
-                            stepDescription: "Path to Node \(neighbor) via Node \(minNode) is not shorter."
-                        ))
+                        
+                        let newDist = minDist + edge.weight
+                        if newDist < distances[neighbor]! {
+                            distances[neighbor] = newDist
+                            previousEdge[neighbor] = edge
+                            steps.append(DijkstraStep(
+                                visitedNodes: visited,
+                                currentDistances: distances,
+                                exploringEdge: edge,
+                                shortestPathTree: sptSet,
+                                activeNode: minNode, // Keep active node to show distance context
+                                stepDescription: "Found shorter path to Node \(neighbor). Distance updated to \(newDist)."
+                            ))
+                        } else {
+                            steps.append(DijkstraStep(
+                                visitedNodes: visited,
+                                currentDistances: distances,
+                                exploringEdge: edge,
+                                shortestPathTree: sptSet,
+                                activeNode: minNode,
+                                stepDescription: "Path to Node \(neighbor) via Node \(minNode) is not shorter."
+                            ))
+                        }
                     }
                 }
             }
+            currentStepIndex = 0
         }
-        currentStepIndex = 0
-    }
 }
 
 #Preview {

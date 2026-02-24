@@ -87,7 +87,7 @@ struct BFSVisualizerView: View {
                                         .font(.caption)
                                         .bold()
                                         .frame(width: 30, height: 30)
-                                        .background(Color.purple)
+                                        .background(Color.blue)
                                         .foregroundStyle(.white)
                                         .clipShape(RoundedRectangle(cornerRadius: 6))
                                 }
@@ -136,7 +136,7 @@ struct BFSVisualizerView: View {
                             .foregroundStyle(.gray)
                         Text(timeComplexity)
                             .font(.headline)
-                            .foregroundStyle(.orange)
+                            .foregroundStyle(.white)
                     }
                 }
                 
@@ -147,7 +147,7 @@ struct BFSVisualizerView: View {
                             .font(.title)
                             .foregroundStyle(currentStepIndex > 0 ? .white : .gray)
                             .padding()
-                            .background(Circle().fill(Color.purple.opacity(currentStepIndex > 0 ? 1 : 0.3)))
+                            .background(Circle().fill(Color.blue.opacity(currentStepIndex > 0 ? 1 : 0.3)))
                     }
                     .disabled(currentStepIndex == 0)
                     .accessibilityLabel("Step Backward")
@@ -157,7 +157,7 @@ struct BFSVisualizerView: View {
                             .font(.title)
                             .foregroundStyle(currentStepIndex < steps.count - 1 ? .white : .gray)
                             .padding()
-                            .background(Circle().fill(Color.purple.opacity(currentStepIndex < steps.count - 1 ? 1 : 0.3)))
+                            .background(Circle().fill(Color.blue.opacity(currentStepIndex < steps.count - 1 ? 1 : 0.3)))
                     }
                     .disabled(currentStepIndex >= steps.count - 1)
                     .accessibilityLabel("Step Forward")
@@ -192,7 +192,7 @@ struct BFSVisualizerView: View {
         guard let step = currentStep else { return .gray }
         if step.exploringNode == id { return .yellow }
         if step.visitedNodes.contains(id) { return .green }
-        if step.queue.contains(id) { return .purple } // Discovered but not explored
+        if step.queue.contains(id) { return .blue } // Discovered but not explored
         return .gray
     }
     
