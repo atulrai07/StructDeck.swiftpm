@@ -27,8 +27,8 @@ struct CollectionCard: View {
             ZStack(alignment: .trailing) {
                 ForEach(Array(books.enumerated()), id: \.offset) { index, book in
                     BookView(color: book.color, icon: book.icon)
-                        .offset(x: CGFloat(index * -35)) // Fan out to the left
-                        .zIndex(Double(books.count - index)) // Front items on top
+                        .offset(x: CGFloat(index * -35)) 
+                        .zIndex(Double(books.count - index))
                         .scaleEffect(index == books.count - 1 ? 1.0 : 0.95) // Front item slightly larger
                 }
             }
