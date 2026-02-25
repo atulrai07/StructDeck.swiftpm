@@ -14,7 +14,18 @@ struct ModuleItem: Identifiable {
     let cardBackground: AnyShapeStyle
     let iconName: String
     let time: String
+    let isLocked: Bool
     let destination: () -> AnyView
+    
+    init(title: String, subtitle: String, cardBackground: AnyShapeStyle, iconName: String, time: String, isLocked: Bool = false, destination: @escaping () -> AnyView) {
+        self.title = title
+        self.subtitle = subtitle
+        self.cardBackground = cardBackground
+        self.iconName = iconName
+        self.time = time
+        self.isLocked = isLocked
+        self.destination = destination
+    }
 }
 
 // MARK: - Data Structures
@@ -51,6 +62,15 @@ extension ModuleItem {
             iconName: "square.stack.3d.up.fill",
             time: "12 min",
             destination: { AnyView(TopicOverviewView()) }
+        ),
+        ModuleItem(
+            title: "Upcoming",
+            subtitle: "More modules coming soon",
+            cardBackground: AnyShapeStyle(.gray.opacity(0.15)),
+            iconName: "lock.fill",
+            time: "",
+            isLocked: true,
+            destination: { AnyView(EmptyView()) }
         )
     ]
 }
@@ -81,6 +101,15 @@ extension ModuleItem {
             iconName: "arrow.down.to.line",
             time: "20 min",
             destination: { AnyView(DFSTopicOverviewView()) }
+        ),
+        ModuleItem(
+            title: "Upcoming",
+            subtitle: "More modules coming soon",
+            cardBackground: AnyShapeStyle(.gray.opacity(0.15)),
+            iconName: "lock.fill",
+            time: "",
+            isLocked: true,
+            destination: { AnyView(EmptyView()) }
         )
     ]
 }

@@ -7,11 +7,20 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var hasSeenOnboarding = false
+    
     var body: some View {
         NavigationStack{
             OpeningScreenView()
         }
         .preferredColorScheme(.dark)
+        .fullScreenCover(isPresented: Binding(
+            get: { !hasSeenOnboarding },
+            set: { if !$0 { hasSeenOnboarding = true } }
+        )) {
+            OnboardingView(hasSeenOnboarding: $hasSeenOnboarding)
+                .preferredColorScheme(.dark)
+        }
     }
 }
 

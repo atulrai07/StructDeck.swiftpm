@@ -29,8 +29,7 @@ struct AlgorithmsDashboardView: View {
             VStack(alignment: .leading, spacing: 20) {
                 //The Loop: Generate Cards from Data
                 ForEach(filteredModules) { item in
-                    NavigationLink(destination: item.destination()) {
-                        // Topic cards is in Components
+                    if item.isLocked {
                         TopicCard(
                             title: item.title,
                             subtitle: item.subtitle,
@@ -38,10 +37,24 @@ struct AlgorithmsDashboardView: View {
                             iconName: item.iconName,
                             time: item.time
                         )
-                        .padding(.bottom,5)
+                        .opacity(0.6)
+                        .padding(.bottom, 5)
+                        .accessibilityLabel("\(item.title). \(item.subtitle).")
+                    } else {
+                        NavigationLink(destination: item.destination()) {
+                            // Topic cards is in Components
+                            TopicCard(
+                                title: item.title,
+                                subtitle: item.subtitle,
+                                cardBackground: item.cardBackground,
+                                iconName: item.iconName,
+                                time: item.time
+                            )
+                            .padding(.bottom,5)
+                        }
+                        .accessibilityLabel("\(item.title). \(item.subtitle). \(item.time).")
+                        .accessibilityHint("Double tap to open the \(item.title) module.")
                     }
-                    .accessibilityLabel("\(item.title). \(item.subtitle). \(item.time).")
-                    .accessibilityHint("Double tap to open the \(item.title) module.")
                 }
                 
                 //Show message if no results found

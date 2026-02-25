@@ -98,7 +98,7 @@ struct OpeningScreenView: View {
                                         title: "BFS",
                                         subtitle: "Traverse • 20 min",
                                         icon: "arrow.up.and.down.and.arrow.left.and.right",
-                                        colors: [.cyan, .blue,.white]
+                                        colors: [.blue,.purple,.red]
                                     )
                                 }
                                 .accessibilityLabel("Linked List. Pointer-based structure. 15 minutes.")
@@ -110,7 +110,7 @@ struct OpeningScreenView: View {
                 }
                 .padding(.bottom, 40)
             }
-            .background(particleGradientAppBackground())
+            .background(gradientAppBackground())
             //.navigationTitle("Home")
             //.navigationBarTitleDisplayMode(.large)
             // Accessibility Button

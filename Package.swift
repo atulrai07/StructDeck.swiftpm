@@ -20,7 +20,7 @@ let package = Package(
             teamIdentifier: "5273NF3L3W",
             displayVersion: "1.0",
             bundleVersion: "1",
-            appIcon: .placeholder(icon: .lightningBolt),
+            appIcon: .asset("AppIcon"),
             accentColor: .presetColor(.pink),
             supportedDeviceFamilies: [
                 .pad,
@@ -31,7 +31,8 @@ let package = Package(
                 .landscapeRight,
                 .landscapeLeft,
                 .portraitUpsideDown(.when(deviceFamilies: [.pad]))
-            ]
+            ],
+            appCategory: .education
         )
     ],
     targets: [
@@ -40,5 +41,5 @@ let package = Package(
             path: "."
         )
     ],
-    swiftLanguageVersions: [.v6]
+    swiftLanguageVersions: [.version("6")]
 )
