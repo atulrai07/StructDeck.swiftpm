@@ -9,7 +9,7 @@ struct AlgorithmsDashboardView: View {
     //Search State
     @State private var searchText = ""
     
-    //The Data Source (defined in Models/ModuleItem.swift)
+    //The Data Source 
     let modules = ModuleItem.algorithmModules
     
     //Logic for search

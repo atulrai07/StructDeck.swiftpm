@@ -8,13 +8,13 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "StructDeck",
+    name: "StructViz",
     platforms: [
         .iOS("16.0")
     ],
     products: [
         .iOSApplication(
-            name: "StructDeck",
+            name: "StructViz",
             targets: ["AppModule"],
             bundleIdentifier: "com.atul.StructDeck",
             teamIdentifier: "5273NF3L3W",

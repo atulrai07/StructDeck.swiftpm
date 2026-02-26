@@ -27,7 +27,7 @@ struct AccessibilityFeatureRow: View {
                 Text(desc)
                     .font(.subheadline)
                     .foregroundStyle(.gray)
-                    .fixedSize(horizontal: false, vertical: true)  // Add this
+                    .fixedSize(horizontal: false, vertical: true)
                     .lineLimit(nil)
             }
         }

@@ -28,7 +28,7 @@ struct ModuleItem: Identifiable {
     }
 }
 
-// MARK: - Data Structures
+// Data Structures
 extension ModuleItem {
     nonisolated(unsafe) static let dataStructureModules: [ModuleItem] = [
         ModuleItem(
@@ -75,7 +75,7 @@ extension ModuleItem {
     ]
 }
 
-// MARK: - Algorithms
+// Algorithms
 extension ModuleItem {
     nonisolated(unsafe) static let algorithmModules: [ModuleItem] = [
         ModuleItem(

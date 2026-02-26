@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: - Main Onboarding View
+// Main Onboarding View
 struct OnboardingView: View {
     @Binding var hasSeenOnboarding: Bool
     @State private var currentPage = 0
@@ -95,7 +95,7 @@ struct OnboardingView: View {
     }
 }
 
-// MARK: - Screen 1: Welcome
+// Welcome
 struct OnboardingWelcomePage: View {
     @State private var logoScale: CGFloat = 0.5
     @State private var logoOpacity: Double = 0
@@ -110,8 +110,7 @@ struct OnboardingWelcomePage: View {
                 // Outer glow
                 RoundedRectangle(cornerRadius: 32)
                     .fill()
-                    .frame(width: 202, height: 202)
-                    .shadow(color: Color(red: 0.6, green: 0.2, blue: 0.8).opacity(0.6), radius: 40, x: 0, y: 10)
+                    .frame(width: 201, height: 201)
                 
                 Image("appLogo")
                     .resizable()
@@ -150,7 +149,7 @@ struct OnboardingWelcomePage: View {
     }
 }
 
-// MARK: - Screen 2: Theory Cards (Fan-out Animation)
+// Theory Cards (Fan-out Animation)
 struct OnboardingTheoryCardsPage: View {
     @State private var fanned = false
     @State private var textOpacity: Double = 0
@@ -387,24 +386,6 @@ struct OnboardingQuizPage: View {
             // Illustration area
             ZStack {
                 // Blue checklist badge — bottom left
-                QuizBadge(
-                    icon: "checkmark.square.fill",
-                    secondaryIcon: "checkmark.square.fill",
-                    gradientColors: [Color(red: 0.1, green: 0.5, blue: 1), Color(red: 0.2, green: 0.35, blue: 0.9)],
-                    size: 80
-                )
-                .offset(x: -70, y: 30)
-                .scaleEffect(showChecklist ? 1 : 0.3)
-                .opacity(showChecklist ? 1 : 0)
-                
-                // Small edit badge on checklist
-                Image(systemName: "pencil.circle.fill")
-                    .font(.system(size: 22))
-                    .foregroundStyle(.white)
-                    .background(Circle().fill(Color.blue).frame(width: 22, height: 22))
-                    .offset(x: -28, y: -2)
-                    .scaleEffect(showChecklist ? 1 : 0)
-                    .opacity(showChecklist ? 1 : 0)
                 
                 // Orange trophy badge — top center
                 ZStack {
@@ -412,7 +393,7 @@ struct OnboardingQuizPage: View {
                         icon: "trophy.fill",
                         secondaryIcon: nil,
                         gradientColors: [Color.orange, Color(red: 0.95, green: 0.6, blue: 0.1)],
-                        size: 80
+                        size: 180
                     )
                     
                     // MASTERY label
@@ -423,22 +404,12 @@ struct OnboardingQuizPage: View {
                         .padding(.vertical, 4)
                         .background(Color.black.opacity(0.4))
                         .clipShape(Capsule())
-                        .offset(y: 50)
+                        .offset(y: 150)
                 }
                 .offset(x: 0, y: -70)
                 .scaleEffect(showTrophy ? 1 : 0.3)
                 .opacity(showTrophy ? 1 : 0)
                 
-                // Purple lightbulb badge — right
-                QuizBadge(
-                    icon: "lightbulb.fill",
-                    secondaryIcon: nil,
-                    gradientColors: [Color(red: 0.6, green: 0.2, blue: 0.8), Color(red: 0.5, green: 0.15, blue: 0.7)],
-                    size: 70
-                )
-                .offset(x: 80, y: 20)
-                .scaleEffect(showBulb ? 1 : 0.3)
-                .opacity(showBulb ? 1 : 0)
                 
                 // Quiz Status pill — bottom center
                 HStack(spacing: 10) {
@@ -552,7 +523,6 @@ struct QuizBadge: View {
     }
 }
 
-// MARK: - Preview
 #Preview {
     OnboardingView(hasSeenOnboarding: .constant(false))
         .preferredColorScheme(.dark)

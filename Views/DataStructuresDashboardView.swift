@@ -11,7 +11,7 @@ struct DataStructuresDashboardView: View {
     //Search State
     @State private var searchText = ""
     
-    //The Data Source (defined in Models/ModuleItem.swift)
+    //The Data Source
     let modules = ModuleItem.dataStructureModules
     
     //Logic for search

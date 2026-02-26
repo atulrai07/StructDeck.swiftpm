@@ -29,7 +29,7 @@ struct CollectionCard: View {
                     BookView(color: book.color, icon: book.icon)
                         .offset(x: CGFloat(index * -35)) 
                         .zIndex(Double(books.count - index))
-                        .scaleEffect(index == books.count - 1 ? 1.0 : 0.95) // Front item slightly larger
+                        .scaleEffect(index == books.count - 1 ? 1.0 : 0.95)
                 }
             }
             .padding(.trailing, 24)

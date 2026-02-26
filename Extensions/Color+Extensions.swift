@@ -1,4 +1,4 @@
-// MARK: - App Background View
+// App Background View
 
 import SwiftUI
 extension Color {

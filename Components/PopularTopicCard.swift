@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: - 2. The Popular Topic Card (Square at bottom)
+// The Popular Topic Card (Square at bottom)
 struct PopularTopicCard: View {
     let title: String
     let subtitle: String

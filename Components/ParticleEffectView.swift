@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 import UIKit
 
-// MARK: - Particle Model
+// Particle Model
 struct Particle {
     var x: Double
     var y: Double
@@ -23,7 +23,7 @@ struct Particle {
     var opacity: Double
 }
 
-// MARK: - Particle System (drives the animation loop)
+// Particles
 final class ParticleSystem: ObservableObject {
 
     @Published var tick: Int = 0
@@ -82,7 +82,7 @@ final class ParticleSystem: ObservableObject {
         for i in particles.indices {
             var p = particles[i]
 
-            // 1. Repulsion from finger
+            // Repulsion from finger
             if let tp = touch {
                 let dx   = p.x - Double(tp.x)
                 let dy   = p.y - Double(tp.y)
@@ -94,19 +94,19 @@ final class ParticleSystem: ObservableObject {
                 }
             }
 
-            // 2. Spring back toward origin
+            // Spring back toward origin
             p.vx += (p.originX - p.x) * returnSpeed
             p.vy += (p.originY - p.y) * returnSpeed
 
-            // 3. Friction damping
+            // Friction damping
             p.vx *= friction
             p.vy *= friction
 
-            // 4. Integrate position
+            // Integrate position
             p.x += p.vx
             p.y += p.vy
 
-            // 5. Slowly drift the origin
+            // Slowly drift the origin
             p.originX += p.driftVX * 0.04
             p.originY += p.driftVY * 0.04
 
@@ -127,8 +127,6 @@ final class ParticleSystem: ObservableObject {
     }
 }
 
-// MARK: - Global Window Touch Tracker
-// This allows the background to see touches even if a ScrollView is on top of it.
 struct WindowTouchTracker: UIViewRepresentable {
     var onTouch: (CGPoint?) -> Void
 
@@ -158,7 +156,6 @@ class TouchTrackingUIView: UIView {
             newGesture.onTouch = { [weak self] point in
                 self?.onTouch?(point)
             }
-            // Crucial settings to avoid breaking your app's main interactions
             newGesture.cancelsTouchesInView = false
             newGesture.delaysTouchesBegan = false
             newGesture.delegate = newGesture
@@ -195,14 +192,13 @@ class GlobalTouchRecognizer: UIGestureRecognizer, UIGestureRecognizerDelegate {
         onTouch?(nil)
     }
 
-    // Allows normal app gestures (like scrolling) to continue simultaneously
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
 }
 
 
-// MARK: - ParticleEffectView
+// ParticleEffectView
 struct ParticleEffectView: View {
     @StateObject private var system = ParticleSystem()
 
