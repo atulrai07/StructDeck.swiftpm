@@ -2,13 +2,12 @@
 //  OpeningScreenView.swift
 //  DSAK
 //
-//  Created by Atul on 17/02/26.
+//  Created by Atul on 07/02/26.
 //
 
 import SwiftUI
 
 struct OpeningScreenView: View {
-    // State to control the presentation of the Accessibility Sheet
     @State private var showAccessibilitySheet = false
     
     var body: some View {
@@ -111,9 +110,6 @@ struct OpeningScreenView: View {
                 .padding(.bottom, 40)
             }
             .background(gradientAppBackground())
-            //.navigationTitle("Home")
-            //.navigationBarTitleDisplayMode(.large)
-            // Accessibility Button
             .toolbar {
                 if #available(iOS 26.0, *) {
                     ToolbarItem(placement: .subtitle) {

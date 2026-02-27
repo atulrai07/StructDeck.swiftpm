@@ -69,7 +69,7 @@ struct LinkedListQuizView: View {
                 }
                 .padding(.horizontal)
                 
-                // Feedback (Now Always Visible)
+                // Feedback
                 VStack(spacing: 16) {
                     // Feedback Text
                     Text(selectedOption == nil ? " " : (isCorrect ? questions[currentQuestionIndex].explanation : "Not quite. Try again!"))

@@ -151,7 +151,7 @@ struct BinaryTreeTheoryCardCell: View {
     }
 }
 
-// MARK: - Compatibility Modifiers
+//Compatibility Modifiers
 
 struct ContainerFrameModifier: ViewModifier {
     func body(content: Content) -> some View {

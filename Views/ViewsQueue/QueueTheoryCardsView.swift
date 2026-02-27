@@ -99,7 +99,7 @@ struct QueueTheoryCardCell: View {
                     .foregroundStyle(.gray)
                     .padding(.horizontal, 20)
             }
-            .accessibilityElement(children: .combine) // Combine title and body text to read seamlessly
+            .accessibilityElement(children: .combine) // Combine title and body text to read both of them and read them combined.
             
             Spacer()
             
@@ -118,7 +118,7 @@ struct QueueTheoryCardCell: View {
                     .padding(.horizontal, 40)
                     .padding(.bottom, 50)
                 }
-                .accessibilityHint("Navigates to the Queue Quiz.") // Explain button action
+                .accessibilityHint("Navigates to the Queue Quiz.")
             } else {
                 Image(systemName: "chevron.compact.down")
                     .font(.system(size: 40))

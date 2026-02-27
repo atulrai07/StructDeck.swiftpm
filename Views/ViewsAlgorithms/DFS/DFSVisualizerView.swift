@@ -2,6 +2,7 @@
 //  DFSVisualizerView.swift
 //  DSAK
 //
+//  Created by Atul on 09/02/26.
 
 import SwiftUI
 
@@ -34,8 +35,7 @@ struct DFSVisualizerView: View {
     
     let timeComplexity = "O(V + E)"
     
-    // Layout parameters
-    let depth = 4 // Levels 0, 1, 2, 3 -> Up to 15 nodes
+    let depth = 4 // Levels
     let nodeRadius: CGFloat = 20
     
     var body: some View {
@@ -179,7 +179,7 @@ struct DFSVisualizerView: View {
         
     }
     
-    // MARK: - Helper Getters
+    //Helper Getters
     
     var currentStep: DFSStep? {
         if steps.isEmpty { return nil }
@@ -190,7 +190,7 @@ struct DFSVisualizerView: View {
         guard let step = currentStep else { return .gray }
         if step.exploringNode == id { return .yellow }
         if step.visitedNodes.contains(id) { return .green }
-        if step.stack.contains(id) { return .blue } // Discovered but not explored
+        if step.stack.contains(id) { return .blue }
         return .gray
     }
     
@@ -207,8 +207,6 @@ struct DFSVisualizerView: View {
         if step.visitedNodes.contains(edge.destination) { return 4 }
         return 2
     }
-    
-    // MARK: - Logic
     
     func stepForward() {
         if currentStepIndex < steps.count - 1 {
@@ -234,10 +232,7 @@ struct DFSVisualizerView: View {
         currentStepIndex = 0
         
         let width = size.width
-        let height = size.height - 100 // Leave space for stack UI
-        
-        // Generate a random binary tree using an array up to index 14
-        // Ensure at least 10 nodes are generated
+        let height = size.height - 100
         var activeNodes = [Bool](repeating: false, count: 15)
         
         repeat {
@@ -246,7 +241,7 @@ struct DFSVisualizerView: View {
             
             for i in 0..<7 {
                 if activeNodes[i] {
-                    let hasLeft = Bool.random() || i < 2 // First two levels always branch
+                    let hasLeft = Bool.random() || i < 2
                     let hasRight = Bool.random() || i < 2
                     
                     if hasLeft { activeNodes[2 * i + 1] = true }
@@ -310,7 +305,6 @@ struct DFSVisualizerView: View {
                     stepDescription: "Pop Node \(current). Mark as visited."
                 ))
                 
-                // Find children (neighbors). Since it's a stack, pushing right then left makes it visit left first.
                 let childrenEdges = edges.filter { $0.source == current }
                 let children = childrenEdges.map { $0.destination }.sorted(by: >)
                 

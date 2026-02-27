@@ -149,7 +149,7 @@ struct OnboardingWelcomePage: View {
     }
 }
 
-// Theory Cards (Fan-out Animation)
+// Theory Cards
 struct OnboardingTheoryCardsPage: View {
     @State private var fanned = false
     @State private var textOpacity: Double = 0
@@ -183,7 +183,6 @@ struct OnboardingTheoryCardsPage: View {
                     .frame(width: 30, height: 30)
                     .offset(x: 100, y: 90)
                 
-                // Fan-out Cards
                 ForEach(Array(cardColors.enumerated()), id: \.offset) { index, color in
                     FanCard(color: color, icon: cardIcons[index])
                         .rotationEffect(
@@ -261,7 +260,6 @@ struct FanCard: View {
     }
 }
 
-// MARK: - Screen 3: Interactive Visualizers (Stack Push Animation)
 struct OnboardingVisualizerPage: View {
     @State private var visibleElements: [Bool] = [false, false, false, false]
     @State private var showLabels = false
@@ -349,7 +347,6 @@ struct OnboardingVisualizerPage: View {
             Spacer()
         }
         .onAppear {
-            // Push elements one by one from bottom to top
             for i in (0..<stackValues.count).reversed() {
                 let delay = Double(stackValues.count - 1 - i) * 0.25 + 0.3
                 withAnimation(.spring(response: 0.5, dampingFraction: 0.7).delay(delay)) {
@@ -371,7 +368,6 @@ struct OnboardingVisualizerPage: View {
     }
 }
 
-// MARK: - Screen 4: Test Your Knowledge (Quiz Animation)
 struct OnboardingQuizPage: View {
     @State private var showChecklist = false
     @State private var showTrophy = false
@@ -382,12 +378,7 @@ struct OnboardingQuizPage: View {
     var body: some View {
         VStack(spacing: 28) {
             Spacer()
-            
-            // Illustration area
             ZStack {
-                // Blue checklist badge — bottom left
-                
-                // Orange trophy badge — top center
                 ZStack {
                     QuizBadge(
                         icon: "trophy.fill",
@@ -396,7 +387,6 @@ struct OnboardingQuizPage: View {
                         size: 180
                     )
                     
-                    // MASTERY label
                     Text("MASTERY")
                         .font(.system(size: 10, weight: .bold, design: .rounded))
                         .foregroundStyle(.white)
@@ -410,8 +400,6 @@ struct OnboardingQuizPage: View {
                 .scaleEffect(showTrophy ? 1 : 0.3)
                 .opacity(showTrophy ? 1 : 0)
                 
-                
-                // Quiz Status pill — bottom center
                 HStack(spacing: 10) {
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundStyle(.green)

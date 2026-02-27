@@ -87,7 +87,7 @@ struct StackQuizView: View {
                 }
                 .padding(.horizontal)
                 
-                // Feedback & Navigation Area (Now Always Visible)
+                // Feedback & Navigation Area
                 VStack(spacing: 16) {
                     // Feedback Text
                     Text(selectedOption == nil ? " " : (isCorrect ? questions[currentQuestionIndex].explanation : "Not quite, select another option"))
@@ -95,7 +95,7 @@ struct StackQuizView: View {
                         .foregroundStyle(isCorrect ? .green : .red)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
-                        .frame(minHeight: 40, alignment: .top) // minHeight prevents the button from jumping up/down when text is empty
+                        .frame(minHeight: 40, alignment: .top)
                     
                     // Navigation Buttons
                     if currentQuestionIndex < questions.count - 1 {
@@ -130,7 +130,7 @@ struct StackQuizView: View {
         }
     }
     
-    // MARK: - Logic
+    // Logic
     
     func handleOptionSelection(_ index: Int) {
         selectedOption = index
@@ -148,7 +148,6 @@ struct StackQuizView: View {
     }
     
     func nextQuestion() {
-        // Reset state for next question
         currentQuestionIndex += 1
         selectedOption = nil
         isCorrect = false
@@ -164,7 +163,6 @@ struct StackQuizView: View {
     }
 }
 
-// Reusable Button
 struct PrimaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label

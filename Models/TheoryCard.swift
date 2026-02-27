@@ -6,16 +6,16 @@
 //
 import SwiftUI
 
-// 1. The Data Structure
+// The Data Structure
 struct TheoryCard: Identifiable {
     let id = UUID()
     let title: String
     let bodyText: String
     let iconName: String
-    let isBridge: Bool // Marks the final "Transition" card to the visualizer
+    let isBridge: Bool
 }
 
-// 2. The Static Content (Data Source)
+// The Static Content (Data Source)
 struct TheoryData {
 
     static let stackCards: [TheoryCard] = [
@@ -216,7 +216,7 @@ struct TheoryData {
             TheoryCard(
                 title: "Memory Layout",
                 bodyText: "Arrays need a solid block of memory. Linked Lists are scattered; each node points to the next one.",
-                iconName: "square.grid.3x3.fill", // scattered vs block
+                iconName: "square.grid.3x3.fill",
                 isBridge: false
             ),
             // Card 3

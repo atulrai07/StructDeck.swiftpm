@@ -53,27 +53,18 @@ struct TopicCard: View {
                     Text(subtitle)
                         .font(.caption)
                         .foregroundStyle(.white.opacity(0.8))
-                    
-//                    Text("•")
-//                    
-//                    Image(systemName: "clock")
-//                    Text(time)
                 }
                 .font(.caption2)
                 .fontWeight(.bold)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
-                .background(.ultraThinMaterial.opacity(0.3)) // Glass effect
+                .background(.ultraThinMaterial.opacity(0.3))
                 .cornerRadius(20)
                 .foregroundStyle(.white)
                 
-                // Bottom Row: Time
                 HStack {
                     Image(systemName: "clock")
                     Text(time)
-//                    Text("•")
-//                    Image(systemName: "square.grid.2x2")
-//                    Text("Interactive Module")
                 }
                 .font(.caption)
                 .fontWeight(.medium)

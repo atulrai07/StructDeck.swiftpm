@@ -1,6 +1,6 @@
 //
 //  AccessibilityFeatureRow.swift
-//  StructDeck
+//  StructViz
 //
 //  Created by Atul on 23/02/26.
 //

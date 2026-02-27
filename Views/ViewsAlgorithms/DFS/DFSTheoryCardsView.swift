@@ -2,14 +2,14 @@
 //  DFSTheoryCardsView.swift
 //  DSAK
 //
+//  Created by Atul on 09/02/26.
+
 
 import SwiftUI
 
 struct DFSTheoryCardsView: View {
     @Environment(\.dismiss) var dismiss
-
-    
-    // Page Number State
+    // Page Number
     @State private var currentCardID: TheoryCard.ID?
     
     // LOAD DFS DATA

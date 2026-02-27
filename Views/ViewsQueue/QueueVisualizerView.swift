@@ -6,7 +6,6 @@
 //
 import SwiftUI
 
-// MARK: - Queue Mode
 enum QueueMode: String, CaseIterable {
     case standard = "Standard Queue"
     case circular = "Circular Queue"
@@ -21,7 +20,6 @@ enum QueueMode: String, CaseIterable {
     }
 }
 
-// MARK: - Slot Model for Fixed Array
 struct QueueSlot: Identifiable {
     let id = UUID()
     var value: Int? = nil
@@ -32,7 +30,6 @@ struct QueueVisualizerView: View {
     
     let capacity = 6
     
-    // MARK: - State
     @State private var currentMode: QueueMode = .standard
     @State private var slots: [QueueSlot] = []
     @State private var frontIndex: Int = 0
@@ -63,7 +60,6 @@ struct QueueVisualizerView: View {
         }
     }
     
-    // MARK: - Title
     private var navigationTitle: String {
         switch currentMode {
         case .standard: return "Queue Visualizer"
@@ -72,7 +68,7 @@ struct QueueVisualizerView: View {
         }
     }
     
-    // MARK: - Dropdown Menu
+    // Dropdown Menu
     @ViewBuilder
     private var modeMenu: some View {
         Menu {
@@ -91,7 +87,7 @@ struct QueueVisualizerView: View {
         .disabled(isAnimating)
     }
     
-    // MARK: - Canvas
+    // Canvas
     @ViewBuilder
     private var canvasView: some View {
         if currentMode == .circular {
@@ -101,7 +97,7 @@ struct QueueVisualizerView: View {
         }
     }
     
-    // MARK: - Linear Canvas (Standard, Priority, Deque)
+    // Linear Canvas
     @ViewBuilder
     private var linearCanvas: some View {
         VStack(spacing: 4) {
@@ -216,7 +212,7 @@ struct QueueVisualizerView: View {
         return .gray.opacity(0.3)
     }
     
-    // MARK: - Circular Canvas
+    // Circular Canvas
     @ViewBuilder
     private var circularCanvas: some View {
         ZStack {
@@ -416,7 +412,7 @@ struct QueueVisualizerView: View {
         }
     }
     
-    // MARK: - Code Snippet
+    // Code Snippet
     @ViewBuilder
     private var codeSnippetView: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -449,7 +445,7 @@ struct QueueVisualizerView: View {
         .frame(height: 126)
     }
     
-    // MARK: - Initialization
+    // Initialization
     func initializeSlots() {
         slots = (0..<capacity).map { _ in QueueSlot() }
         frontIndex = 0
@@ -457,7 +453,7 @@ struct QueueVisualizerView: View {
         itemCount = 0
     }
     
-    // MARK: - Mode Switching
+    // Mode Switching
     func switchMode(to mode: QueueMode) {
         guard !isAnimating else { return }
         withAnimation(.easeInOut(duration: 0.3)) {
@@ -476,7 +472,7 @@ struct QueueVisualizerView: View {
         }
     }
     
-    // MARK: - Standard / Circular Enqueue
+    //Standard and Circular Enqueue
     func enqueueItem() {
         guard itemCount < capacity else { return }
         let newValue = Int.random(in: 10...99)
@@ -519,7 +515,7 @@ struct QueueVisualizerView: View {
         }
     }
     
-    // MARK: - Dequeue
+    //Dequeue
     func dequeueItem() {
         guard itemCount > 0 else { return }
         let generator = UIImpactFeedbackGenerator(style: .rigid)
@@ -558,7 +554,7 @@ struct QueueVisualizerView: View {
         }
     }
     
-    // MARK: - Deque Operations
+    // Deque Operations
     func addFront() {
         guard itemCount < capacity else { return }
         let newValue = Int.random(in: 10...99)
@@ -706,7 +702,7 @@ struct QueueVisualizerView: View {
     }
 }
 
-// haptic is not compatible with ios 17 and <
+// haptic is not compatible with ios 17 and < so i have used if else fix.
 extension View {
     func queueHaptic(trigger: [Int]) -> some View {
         Group {

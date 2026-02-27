@@ -2,6 +2,7 @@
 //  DijkstraQuizView.swift
 //  DSAK
 //
+//  Created by Atul on 11/02/26.
 
 import SwiftUI
 
@@ -113,7 +114,7 @@ struct DijkstraQuizView: View {
         }
     }
     
-    // MARK: - Logic Functions
+    // Logic Functions
     
     func handleOptionSelection(_ index: Int) {
         selectedOption = index

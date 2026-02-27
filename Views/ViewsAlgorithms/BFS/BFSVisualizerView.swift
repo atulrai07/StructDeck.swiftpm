@@ -2,6 +2,7 @@
 //  BFSVisualizerView.swift
 //  DSAK
 //
+//  Created by Atul on 08/02/26.
 
 import SwiftUI
 
@@ -34,8 +35,7 @@ struct BFSVisualizerView: View {
     
     let timeComplexity = "O(V + E)"
     
-    // Layout parameters
-    let depth = 4 // Levels 0, 1, 2, 3 -> Up to 15 nodes
+    let depth = 4 //level
     let nodeRadius: CGFloat = 18
     
     var body: some View {
@@ -187,7 +187,7 @@ struct BFSVisualizerView: View {
         .background(Color.VisualizerBackgroundColor)
     }
     
-    // MARK: - Helper Getters
+    // Helper Getters
     
     var currentStep: BFSStep? {
         if steps.isEmpty { return nil }
@@ -216,7 +216,7 @@ struct BFSVisualizerView: View {
         return 2
     }
     
-    // MARK: - Logic
+    // Logic
     
     func stepForward() {
         if currentStepIndex < steps.count - 1 {
@@ -242,10 +242,7 @@ struct BFSVisualizerView: View {
         currentStepIndex = 0
         
         let width = size.width
-        let height = size.height - 100 // Leave space for queue UI
-        
-        // Generate a random binary tree using an array up to index 14
-        // Ensure at least 10 nodes are generated
+        let height = size.height - 100
         var activeNodes = [Bool](repeating: false, count: 15)
         
         repeat {
@@ -318,7 +315,7 @@ struct BFSVisualizerView: View {
             
             // Find children (neighbors)
             let childrenEdges = edges.filter { $0.source == current }
-            let children = childrenEdges.map { $0.destination }.sorted() // Visit left to right usually
+            _ = childrenEdges.map { $0.destination }.sorted()
             
             for childEdges in childrenEdges {
                 let child = childEdges.destination

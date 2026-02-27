@@ -6,7 +6,6 @@
 //
 import SwiftUI
 
-// MARK: - Linked List Mode
 enum LinkedListMode: String, CaseIterable {
     case singlyLinked = "Singly Linked"
     case doublyLinked = "Doubly Linked"
@@ -23,12 +22,10 @@ enum LinkedListMode: String, CaseIterable {
 
 struct LinkedListVisualizerView: View {
     @Environment(\.dismiss) var dismiss
-    
-    // MARK: - State
     @State private var listItems: [Int] = []
     @State private var codeSnippet: String = "LinkedList<Integer> list = new LinkedList<>();"
     
-    // MARK: - Mode & Animation
+    // Mode & Animation
     @State private var currentMode: LinkedListMode = .singlyLinked
     @State private var highlightedIndex: Int? = nil
     @State private var isAnimating: Bool = false
@@ -54,7 +51,7 @@ struct LinkedListVisualizerView: View {
         }
     }
     
-    // MARK: - Navigation Title
+    // Navigation Title
     private var navigationTitle: String {
         switch currentMode {
         case .singlyLinked: return "Linked List Visualizer"
@@ -63,7 +60,7 @@ struct LinkedListVisualizerView: View {
         }
     }
     
-    // MARK: - Dropdown Menu
+    // Dropdown Menu
     @ViewBuilder
     private var modeMenu: some View {
         Menu {
@@ -82,7 +79,7 @@ struct LinkedListVisualizerView: View {
         .disabled(isAnimating)
     }
     
-    // MARK: - Canvas
+    // Canvas
     @ViewBuilder
     private var canvasView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -173,7 +170,7 @@ struct LinkedListVisualizerView: View {
         .padding(.horizontal, 10)
     }
     
-    // MARK: - Controls
+    // Controls add delete
     @ViewBuilder
     private var controlButtons: some View {
         HStack(spacing: 30) {
@@ -264,7 +261,7 @@ struct LinkedListVisualizerView: View {
         .disabled(listItems.isEmpty || isAnimating)
     }
     
-    // MARK: - Code Snippet
+    // Code Snippet
     @ViewBuilder
     private var codeSnippetView: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -294,7 +291,7 @@ struct LinkedListVisualizerView: View {
         .frame(height: 130)
     }
     
-    // MARK: - Arrow Color
+    // Arrow Color
     private func arrowColor(at index: Int) -> Color {
         guard let highlighted = highlightedIndex else { return .gray }
         if index < highlighted {
@@ -324,7 +321,7 @@ struct LinkedListVisualizerView: View {
         }
     }
     
-    // MARK: - Logic
+    // Logic
     
     func addHead() {
         guard listItems.count < 5 else { return }
@@ -363,7 +360,7 @@ struct LinkedListVisualizerView: View {
         }
     }
     
-    // MARK: - Traversal
+    // Traversal
     func runTraversal() {
         guard !listItems.isEmpty, !isAnimating else { return }
         
@@ -415,7 +412,7 @@ struct LinkedListVisualizerView: View {
     }
 }
 
-// MARK: - Node View (supports highlight + doubly linked)
+// Node View
 struct LinkedListNodeView: View {
     let value: Int
     var isHighlighted: Bool = false

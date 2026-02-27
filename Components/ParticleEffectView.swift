@@ -1,6 +1,6 @@
 //
 //  ParticleEffectView.swift
-//  StructDeck
+//  StructViz
 //
 //  Created by Atul on 24/02/26.
 //

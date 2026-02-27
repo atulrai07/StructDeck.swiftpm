@@ -2,6 +2,7 @@
 //  DFSQuizView.swift
 //  DSAK
 //
+//  Created by Atul on 09/02/26.
 
 import SwiftUI
 
@@ -113,7 +114,7 @@ struct DFSQuizView: View {
         }
     }
     
-    // MARK: - Logic Functions
+    //Logic Functions
     
     func handleOptionSelection(_ index: Int) {
         selectedOption = index

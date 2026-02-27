@@ -13,7 +13,7 @@ struct StackVisualizerView: View {
     // State for the Visual Stack Items
     @State private var stackItems: [Int] = []
     
-    // State for the "Reactive Code"
+    // State for the java code
     @State private var codeSnippet: String = "Stack<Integer> stack = new Stack<>();"
     
     var body: some View {
@@ -48,7 +48,7 @@ struct StackVisualizerView: View {
                 .accessibilityLabel(stackItems.isEmpty ? "Empty Stack." : "Stack containing \(stackItems.count) items. The top item is \(stackItems.last!).")
                 .accessibilityHint("Use the Push and Pop buttons below to modify the stack.")
                 
-                // 3. CONTROLS (Middle)
+                // CONTROLS
                 HStack(spacing: 50) {
                     Button(action: popItem) {
                         VStack {
@@ -81,7 +81,7 @@ struct StackVisualizerView: View {
                 .padding(.vertical, 20)
                 .modifier(SensoryFeedbackModifier(trigger: stackItems))
                 
-                // 4. CODE INSIGHT (Bottom)
+                // CODE INSIGHT (Bottom)
                 VStack(alignment: .leading, spacing: 8) {
                     Text("JAVA CODE INSIGHT")
                         .font(.caption2)
@@ -117,7 +117,7 @@ struct StackVisualizerView: View {
         }
     }
     
-    // MARK: - Logic Functions
+    // Logic Functions
     
     func pushItem() {
         guard stackItems.count < 6 else { return }

@@ -51,14 +51,14 @@ struct TopicOverviewView: View {
                                     .accessibilityHidden(true)
                                 Text("Estimated time: 10 minutes")
                             }
-                            .accessibilityElement(children: .combine) // Groups icon and text for VO
+                            .accessibilityElement(children: .combine)
                             
                             HStack(alignment: .top) {
                                 Image(systemName: "target")
                                     .accessibilityHidden(true)
                                 Text("Goal: Understand Stack well enough to start coding")
                             }
-                            .accessibilityElement(children: .combine) // Groups icon and text for VO
+                            .accessibilityElement(children: .combine)
                         }
                         .font(.subheadline)
                         .foregroundStyle(.gray)

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: - Mode Enum
+// Mode Enum
 enum VisualizerMode: String, CaseIterable {
     case binaryTree = "Binary Tree"
     case bst = "BST"
@@ -46,12 +46,12 @@ enum VisualizerMode: String, CaseIterable {
 struct BinaryTreeVisualizerView: View {
     @Environment(\.dismiss) var dismiss
     
-    // MARK: - Tree State
+    // Tree State
     @State private var rootNode: TreeNode? = nil
     @State private var codeSnippet: String = "BinaryTree tree = new BinaryTree();"
     @State private var updateTrigger = UUID()
     
-    // MARK: - Mode & Animation State
+    // Mode & Animation State
     @State private var currentMode: VisualizerMode = .binaryTree
     @State private var highlightedNodeID: UUID? = nil
     @State private var visitedNodeIDs: Set<UUID> = []
@@ -84,7 +84,6 @@ struct BinaryTreeVisualizerView: View {
         }
     }
     
-    // MARK: - Extracted Subviews
     
     @ViewBuilder
     private var treeCanvas: some View {
@@ -423,7 +422,7 @@ struct BinaryTreeVisualizerView: View {
         }
     }
     
-    // MARK: - BST Insert (Animated)
+    // BST Insert
     func insertBST() {
         let newValue = Int.random(in: 10...99)
         let generator = UIImpactFeedbackGenerator(style: .medium)
@@ -440,7 +439,6 @@ struct BinaryTreeVisualizerView: View {
             return
         }
         
-        // Build the path from root to insertion point
         var path: [TreeNode] = []
         var current: TreeNode? = rootNode
         var goLeft: [Bool] = []
@@ -497,7 +495,7 @@ struct BinaryTreeVisualizerView: View {
         }
     }
     
-    // MARK: - Traversal Animations
+    // Traversal Animations
     func runTraversal() {
         guard let root = rootNode, !isAnimating else { return }
         
@@ -580,12 +578,11 @@ struct BinaryTreeVisualizerView: View {
     
     @MainActor
     func visitNode(_ node: TreeNode) async {
-        // Wait while paused
+        //pause fundtion
         while isPaused {
             try? await Task.sleep(nanoseconds: 100_000_000)
         }
         
-        // Highlight current node
         withAnimation(.easeInOut(duration: 0.25)) {
             highlightedNodeID = node.id
             let snippet: String
@@ -617,7 +614,7 @@ struct BinaryTreeVisualizerView: View {
         try? await Task.sleep(nanoseconds: 300_000_000)
     }
     
-    // MARK: - Delete Last Node
+    // Delete Last Node
     func deleteLastNode() {
         guard let root = rootNode else { return }
         let generator = UIImpactFeedbackGenerator(style: .rigid)
@@ -692,7 +689,7 @@ struct BinaryTreeVisualizerView: View {
     }
 }
 
-// MARK: - Recursive Tree Diagram
+// Recursive Tree Diagram
 struct TreeDiagramView: View {
     let node: TreeNode
     var highlightedNodeID: UUID? = nil
@@ -737,7 +734,7 @@ struct TreeDiagramView: View {
     }
 }
 
-// MARK: - Preference Key for Line Drawing
+// Preference Key for Line Drawing
 struct NodeBoundsKey: PreferenceKey {
     static let defaultValue: [UUID: Anchor<CGPoint>] = [:]
     
@@ -749,7 +746,7 @@ struct NodeBoundsKey: PreferenceKey {
     }
 }
 
-// MARK: - Node Circle View
+// Node Circle View
 struct NodeCircleView: View {
     let value: Int
     var isHighlighted: Bool = false

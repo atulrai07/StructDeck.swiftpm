@@ -12,11 +12,11 @@ extension Color {
 struct particleGradientAppBackground: View {
     var body: some View {
         ZStack {
-            // 1. The Base Dark Color
+            //The Base Dark Color
             Color(red: 2/255, green: 6/255, blue: 11/255)
                 .ignoresSafeArea()
             
-            // 2. Top Leading Glow
+            //Top Leading Glow
             RadialGradient(
                 stops: [
                     Gradient.Stop(color: Color(red: 20/255, green: 76/255, blue: 107/255), location: 0.0),
@@ -32,7 +32,7 @@ struct particleGradientAppBackground: View {
             )
             .ignoresSafeArea()
             
-            // 3. Bottom Trailing Glow
+            //Bottom Trailing Glow
             RadialGradient(
                 stops: [
                     Gradient.Stop(color: Color(red: 20/255, green: 76/255, blue: 107/255), location: 0.0),
@@ -48,9 +48,9 @@ struct particleGradientAppBackground: View {
             )
             .ignoresSafeArea()
             
-            // 4. The Interactive Grain Effect Layer
+            //The Interactive Grain Effect Layer
             ParticleEffectView()
-                .allowsHitTesting(false) // Particles don't block normal app touches
+                .allowsHitTesting(false)
         }
     }
 }
@@ -82,7 +82,7 @@ struct gradientAppBackground: View {
                 endRadius: 500
             )
             .ignoresSafeArea()
-            // 3. Bottom Trailing Glow
+            // Bottom Trailing Glow
             RadialGradient(
                 stops: [
                     Gradient.Stop(color: Color(red: 20/255, green: 76/255, blue: 107/255), location: 0.0),

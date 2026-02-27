@@ -72,7 +72,6 @@ struct BinaryTreeQuizView: View {
                 }
                 .padding(.horizontal)
                 
-                // Feedback & Next Button (Now Always Visible)
                 VStack(spacing: 16) {
                     // Feedback Text
                     Text(selectedOption == nil ? " " : (isCorrect ? questions[currentQuestionIndex].explanation : "Not quite. Try again!"))
@@ -115,7 +114,7 @@ struct BinaryTreeQuizView: View {
         }
     }
     
-    // MARK: - Logic Functions
+    //Logic Functions
     
     func handleOptionSelection(_ index: Int) {
         selectedOption = index
