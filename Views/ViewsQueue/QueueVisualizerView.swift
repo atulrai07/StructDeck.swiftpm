@@ -35,17 +35,21 @@ struct QueueVisualizerView: View {
     @State private var frontIndex: Int = 0
     @State private var rearIndex: Int = -1
     @State private var itemCount: Int = 0
-    @State private var codeSnippet: String = "Queue<Integer> q = new LinkedList<>();"
+    @State private var codeHistory: [String] = ["Queue<Integer> q = new LinkedList<>();"]
     @State private var isAnimating: Bool = false
     @State private var highlightedSlotIndex: Int? = nil
     
     var body: some View {
-        VStack(spacing: 0) {
-            Spacer()
-            canvasView
-            Spacer()
-            controlButtons
-            codeSnippetView
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(spacing: 20) {
+                canvasView
+                    .frame(minHeight: currentMode == .circular ? 280 : 180)
+                
+                controlButtons
+                
+                ExpandableCodeInsightView(codeHistory: codeHistory, dataStructure: "Queue")
+            }
+            .padding(.vertical)
         }
         .background(Color.VisualizerBackgroundColor)
         .navigationTitle(navigationTitle)
@@ -412,39 +416,6 @@ struct QueueVisualizerView: View {
         }
     }
     
-    // Code Snippet
-    @ViewBuilder
-    private var codeSnippetView: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("JAVA CODE INSIGHT")
-                .font(.caption2)
-                .fontWeight(.bold)
-                .foregroundStyle(.gray)
-                .padding(.horizontal)
-                .accessibilityHidden(true)
-            
-            HStack {
-                Text(codeSnippet)
-                    .font(.system(.body, design: .monospaced))
-                    .foregroundStyle(.green)
-                    .contentTransition(.numericText())
-                Spacer()
-            }
-            .padding()
-            .background(Color(uiColor: .secondarySystemBackground).opacity(0.1))
-            .cornerRadius(12)
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-            )
-            .padding(.horizontal)
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("Java Code Snippet: \(codeSnippet)")
-        }
-        .padding(.bottom, 30)
-        .frame(height: 126)
-    }
-    
     // Initialization
     func initializeSlots() {
         slots = (0..<capacity).map { _ in QueueSlot() }
@@ -463,11 +434,11 @@ struct QueueVisualizerView: View {
             
             switch mode {
             case .standard:
-                codeSnippet = "Queue<Integer> q = new LinkedList<>();"
+                codeHistory = ["Queue<Integer> q = new LinkedList<>();"]
             case .circular:
-                codeSnippet = "// Circular: rear = (rear+1) % cap"
+                codeHistory = ["// Circular: rear = (rear+1) % cap", "Queue<Integer> q = new CircularQueue<>(6);"]
             case .deque:
-                codeSnippet = "Deque<Integer> dq = new ArrayDeque<>();"
+                codeHistory = ["Deque<Integer> dq = new ArrayDeque<>();"]
             }
         }
     }
@@ -486,7 +457,7 @@ struct QueueVisualizerView: View {
             nextRear = rearIndex + 1
             guard nextRear < capacity else {
                 withAnimation {
-                    codeSnippet = "// ERROR: Array full! No wrap-around."
+                    codeHistory.append("// ERROR: Array full! No wrap-around.")
                 }
                 return
             }
@@ -497,7 +468,6 @@ struct QueueVisualizerView: View {
             // Highlight target slot
             withAnimation(.easeInOut(duration: 0.3)) {
                 highlightedSlotIndex = nextRear
-                codeSnippet = "rear = \(currentMode == .circular ? "(rear+1) % \(capacity)" : "rear + 1"); // → \(nextRear)"
             }
             try? await Task.sleep(nanoseconds: 400_000_000)
             
@@ -506,7 +476,7 @@ struct QueueVisualizerView: View {
                 slots[nextRear].value = newValue
                 rearIndex = nextRear
                 itemCount += 1
-                codeSnippet = "q[\(nextRear)] = \(newValue); // size=\(itemCount)"
+                codeHistory.append("q.add(\(newValue)); // size=\(itemCount)")
                 highlightedSlotIndex = nil
             }
             
@@ -525,7 +495,6 @@ struct QueueVisualizerView: View {
         Task { @MainActor in
             withAnimation(.easeInOut(duration: 0.3)) {
                 highlightedSlotIndex = frontIndex
-                codeSnippet = "// Dequeue from front[\(frontIndex)]"
             }
             try? await Task.sleep(nanoseconds: 400_000_000)
             
@@ -539,14 +508,14 @@ struct QueueVisualizerView: View {
                 if itemCount == 0 {
                     frontIndex = 0
                     rearIndex = -1
-                    codeSnippet = "q.poll(); // removed \(removedValue), empty"
+                    codeHistory.append("q.poll(); // removed \(removedValue), empty")
                 } else {
                     if currentMode == .circular {
                         frontIndex = (frontIndex + 1) % capacity
                     } else {
                         frontIndex += 1
                     }
-                    codeSnippet = "q.poll(); // removed \(removedValue)"
+                    codeHistory.append("q.poll(); // removed \(removedValue)")
                 }
             }
             try? await Task.sleep(nanoseconds: 200_000_000)
@@ -570,7 +539,7 @@ struct QueueVisualizerView: View {
         }
         
         guard slots[newFront].value == nil else {
-            withAnimation { codeSnippet = "// No space at front!" }
+            withAnimation { codeHistory.append("// No space at front!") }
             return
         }
         
@@ -578,7 +547,6 @@ struct QueueVisualizerView: View {
         Task { @MainActor in
             withAnimation(.easeInOut(duration: 0.3)) {
                 highlightedSlotIndex = newFront
-                codeSnippet = "dq.addFirst(\(newValue));"
             }
             try? await Task.sleep(nanoseconds: 400_000_000)
             
@@ -587,7 +555,7 @@ struct QueueVisualizerView: View {
                 frontIndex = newFront
                 itemCount += 1
                 if itemCount == 1 { rearIndex = newFront }
-                codeSnippet = "dq[\(newFront)] = \(newValue); // addFirst"
+                codeHistory.append("dq.addFirst(\(newValue));")
                 highlightedSlotIndex = nil
             }
             try? await Task.sleep(nanoseconds: 200_000_000)
@@ -610,7 +578,7 @@ struct QueueVisualizerView: View {
         }
         
         guard slots[newRear].value == nil else {
-            withAnimation { codeSnippet = "// No space at rear!" }
+            withAnimation { codeHistory.append("// No space at rear!") }
             return
         }
         
@@ -618,7 +586,6 @@ struct QueueVisualizerView: View {
         Task { @MainActor in
             withAnimation(.easeInOut(duration: 0.3)) {
                 highlightedSlotIndex = newRear
-                codeSnippet = "dq.addLast(\(newValue));"
             }
             try? await Task.sleep(nanoseconds: 400_000_000)
             
@@ -627,7 +594,7 @@ struct QueueVisualizerView: View {
                 rearIndex = newRear
                 itemCount += 1
                 if itemCount == 1 { frontIndex = newRear }
-                codeSnippet = "dq[\(newRear)] = \(newValue); // addLast"
+                codeHistory.append("dq.addLast(\(newValue));")
                 highlightedSlotIndex = nil
             }
             try? await Task.sleep(nanoseconds: 200_000_000)
@@ -644,7 +611,6 @@ struct QueueVisualizerView: View {
         Task { @MainActor in
             withAnimation(.easeInOut(duration: 0.3)) {
                 highlightedSlotIndex = frontIndex
-                codeSnippet = "dq.pollFirst();"
             }
             try? await Task.sleep(nanoseconds: 400_000_000)
             
@@ -657,10 +623,10 @@ struct QueueVisualizerView: View {
                 if itemCount == 0 {
                     frontIndex = 0
                     rearIndex = -1
-                    codeSnippet = "dq.pollFirst(); // \(removed), empty"
+                    codeHistory.append("dq.pollFirst(); // removed \(removed), empty")
                 } else {
                     frontIndex = (frontIndex + 1) % capacity
-                    codeSnippet = "dq.pollFirst(); // removed \(removed)"
+                    codeHistory.append("dq.pollFirst(); // removed \(removed)")
                 }
             }
             try? await Task.sleep(nanoseconds: 200_000_000)
@@ -677,7 +643,6 @@ struct QueueVisualizerView: View {
         Task { @MainActor in
             withAnimation(.easeInOut(duration: 0.3)) {
                 highlightedSlotIndex = rearIndex
-                codeSnippet = "dq.pollLast();"
             }
             try? await Task.sleep(nanoseconds: 400_000_000)
             
@@ -690,10 +655,10 @@ struct QueueVisualizerView: View {
                 if itemCount == 0 {
                     frontIndex = 0
                     rearIndex = -1
-                    codeSnippet = "dq.pollLast(); // \(removed), empty"
+                    codeHistory.append("dq.pollLast(); // removed \(removed), empty")
                 } else {
                     rearIndex = (rearIndex - 1 + capacity) % capacity
-                    codeSnippet = "dq.pollLast(); // removed \(removed)"
+                    codeHistory.append("dq.pollLast(); // removed \(removed)")
                 }
             }
             try? await Task.sleep(nanoseconds: 200_000_000)

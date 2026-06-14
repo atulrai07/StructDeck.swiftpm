@@ -48,7 +48,7 @@ struct BinaryTreeVisualizerView: View {
     
     // Tree State
     @State private var rootNode: TreeNode? = nil
-    @State private var codeSnippet: String = "BinaryTree tree = new BinaryTree();"
+    @State private var codeHistory: [String] = ["BinaryTree tree = new BinaryTree();"]
     @State private var updateTrigger = UUID()
     
     // Mode & Animation State
@@ -63,16 +63,19 @@ struct BinaryTreeVisualizerView: View {
         ZStack {
             Color.VisualizerBackgroundColor.ignoresSafeArea()
             
-            VStack(spacing: 0) {
-                Spacer()
-                treeCanvas
-                
-                if currentMode.isTraversal && !outputArray.isEmpty {
-                    outputArrayView
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(spacing: 16) {
+                    treeCanvas
+                    
+                    if currentMode.isTraversal && !outputArray.isEmpty {
+                        outputArrayView
+                    }
+                    
+                    controlButtons
+                    
+                    ExpandableCodeInsightView(codeHistory: codeHistory, dataStructure: "Binary Tree")
                 }
-                
-                controlButtons
-                codeSnippetView
+                .padding(.vertical)
             }
         }
         .navigationTitle(currentMode.navigationTitle)
@@ -279,37 +282,7 @@ struct BinaryTreeVisualizerView: View {
         .accessibilityHint("Double tap to add a new node to the tree.")
     }
     
-    @ViewBuilder
-    private var codeSnippetView: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("JAVA CODE INSIGHT")
-                .font(.caption2)
-                .fontWeight(.bold)
-                .foregroundStyle(.gray)
-                .padding(.horizontal)
-                .accessibilityHidden(true)
-            
-            HStack {
-                Text(codeSnippet)
-                    .font(.system(.body, design: .monospaced))
-                    .foregroundStyle(.green)
-                    .contentTransition(.numericText())
-                Spacer()
-            }
-            .padding()
-            .background(Color(uiColor: .secondarySystemBackground).opacity(0.1))
-            .cornerRadius(12)
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-            )
-            .padding(.horizontal)
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("Java Code Snippet: \(codeSnippet)")
-        }
-        .padding(.bottom, 30)
-        .frame(height: 140)
-    }
+
     
     // MARK: - Dropdown Menu
     @ViewBuilder
@@ -341,19 +314,19 @@ struct BinaryTreeVisualizerView: View {
             
             switch mode {
             case .binaryTree:
-                codeSnippet = rootNode == nil
+                codeHistory = [rootNode == nil
                     ? "BinaryTree tree = new BinaryTree();"
-                    : "// Level-order insertion mode"
+                    : "// Level-order insertion mode"]
             case .bst:
-                codeSnippet = rootNode == nil
+                codeHistory = [rootNode == nil
                     ? "BST bst = new BST();"
-                    : "// BST insertion mode"
+                    : "// BST insertion mode"]
             case .inOrder:
-                codeSnippet = "inOrder(node.left); visit(node); inOrder(node.right);"
+                codeHistory = ["inOrder(node.left); visit(node); inOrder(node.right);"]
             case .preOrder:
-                codeSnippet = "visit(node); preOrder(node.left); preOrder(node.right);"
+                codeHistory = ["visit(node); preOrder(node.left); preOrder(node.right);"]
             case .postOrder:
-                codeSnippet = "postOrder(node.left); postOrder(node.right); visit(node);"
+                codeHistory = ["postOrder(node.left); postOrder(node.right); visit(node);"]
             }
         }
     }
@@ -397,10 +370,10 @@ struct BinaryTreeVisualizerView: View {
         withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
             if rootNode == nil {
                 rootNode = TreeNode(value: newValue)
-                codeSnippet = "root = new Node(\(newValue));"
+                codeHistory.append("root = new Node(\(newValue));")
             } else {
                 insertIntoFirstAvailableSpot(root: rootNode!, value: newValue)
-                codeSnippet = "tree.insert(\(newValue));"
+                codeHistory.append("tree.insert(\(newValue));")
             }
             updateTrigger = UUID()
         }
@@ -433,7 +406,7 @@ struct BinaryTreeVisualizerView: View {
         if rootNode == nil {
             withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
                 rootNode = TreeNode(value: newValue)
-                codeSnippet = "root = new Node(\(newValue));"
+                codeHistory.append("root = new Node(\(newValue));")
                 updateTrigger = UUID()
             }
             return
@@ -459,14 +432,14 @@ struct BinaryTreeVisualizerView: View {
         // Animate traversal then insert
         isAnimating = true
         Task { @MainActor in
-            codeSnippet = "// Inserting \(newValue) into BST..."
+            codeHistory.append("// Inserting \(newValue) into BST...")
             
             for (i, node) in path.enumerated() {
                 withAnimation(.easeInOut(duration: 0.3)) {
                     highlightedNodeID = node.id
                     if i < goLeft.count {
                         let direction = goLeft[i] ? "left" : "right"
-                        codeSnippet = "\(newValue) \(goLeft[i] ? "<" : ">=") \(node.value) → go \(direction)"
+                        codeHistory.append("\(newValue) \(goLeft[i] ? "<" : ">=") \(node.value) → go \(direction)")
                     }
                 }
                 try? await Task.sleep(nanoseconds: 600_000_000)
@@ -481,7 +454,7 @@ struct BinaryTreeVisualizerView: View {
                     } else {
                         lastNode.right = newNode
                     }
-                    codeSnippet = "node.\(lastDirection ? "left" : "right") = new Node(\(newValue));"
+                    codeHistory.append("node.\(lastDirection ? "left" : "right") = new Node(\(newValue));")
                     updateTrigger = UUID()
                 }
             }
@@ -526,7 +499,7 @@ struct BinaryTreeVisualizerView: View {
             withAnimation(.easeOut(duration: 0.3)) {
                 highlightedNodeID = nil
                 isAnimating = false
-                codeSnippet = "// Traversal complete! [\(outputArray.map { String($0) }.joined(separator: ", "))]"
+                codeHistory.append("// Traversal complete! [\(outputArray.map { String($0) }.joined(separator: ", "))]")
             }
         }
     }
@@ -596,7 +569,7 @@ struct BinaryTreeVisualizerView: View {
             default:
                 snippet = "visit(\(node.value))"
             }
-            codeSnippet = snippet
+            codeHistory.append(snippet)
         }
         
         let haptic = UIImpactFeedbackGenerator(style: .light)
@@ -626,7 +599,7 @@ struct BinaryTreeVisualizerView: View {
         withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
             if root.left == nil && root.right == nil {
                 rootNode = nil
-                codeSnippet = "tree.clear();"
+                codeHistory.append("tree.clear();")
                 updateTrigger = UUID()
                 return
             }
@@ -655,7 +628,7 @@ struct BinaryTreeVisualizerView: View {
                 } else if parent.left?.id == target.id {
                     parent.left = nil
                 }
-                codeSnippet = "tree.removeLast();"
+                codeHistory.append("tree.removeLast(); // removed \(target.value)")
             }
             
             updateTrigger = UUID()
@@ -670,7 +643,7 @@ struct BinaryTreeVisualizerView: View {
         
         withAnimation {
             rootNode = nil
-            codeSnippet = currentMode == .bst ? "BST bst = new BST();" : "BinaryTree tree = new BinaryTree();"
+            codeHistory = [currentMode == .bst ? "BST bst = new BST();" : "BinaryTree tree = new BinaryTree();"]
             updateTrigger = UUID()
         }
     }

@@ -23,7 +23,7 @@ enum LinkedListMode: String, CaseIterable {
 struct LinkedListVisualizerView: View {
     @Environment(\.dismiss) var dismiss
     @State private var listItems: [Int] = []
-    @State private var codeSnippet: String = "LinkedList<Integer> list = new LinkedList<>();"
+    @State private var codeHistory: [String] = ["LinkedList<Integer> list = new LinkedList<>();"]
     
     // Mode & Animation
     @State private var currentMode: LinkedListMode = .singlyLinked
@@ -33,14 +33,17 @@ struct LinkedListVisualizerView: View {
     @State private var traversalComplete: Bool = false
     
     var body: some View {
-        VStack(spacing: 20) {
-            Spacer()
-            canvasView
-            Spacer()
-            controlButtons
-            codeSnippetView
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(spacing: 20) {
+                canvasView
+                    .frame(minHeight: 180)
+                
+                controlButtons
+                
+                ExpandableCodeInsightView(codeHistory: codeHistory, dataStructure: "Linked List")
+            }
+            .padding(.vertical)
         }
-        .frame(maxHeight: .infinity)
         .background(Color.VisualizerBackgroundColor)
         .navigationTitle(navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
@@ -217,7 +220,7 @@ struct LinkedListVisualizerView: View {
         Button {
             clearAnimationState()
             withAnimation {
-                codeSnippet = "// Ready to traverse"
+                codeHistory = ["// Ready to traverse", "LinkedList<Integer> list = new LinkedList<>();"]
             }
         } label: {
             VStack {
@@ -261,36 +264,6 @@ struct LinkedListVisualizerView: View {
         .disabled(listItems.isEmpty || isAnimating)
     }
     
-    // Code Snippet
-    @ViewBuilder
-    private var codeSnippetView: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("JAVA CODE INSIGHT")
-                .font(.caption2)
-                .fontWeight(.bold)
-                .foregroundStyle(.gray)
-                .padding(.horizontal)
-            
-            HStack {
-                Text(codeSnippet)
-                    .font(.system(.body, design: .monospaced))
-                    .foregroundStyle(.green)
-                    .contentTransition(.numericText())
-                Spacer()
-            }
-            .padding()
-            .background(Color(uiColor: .secondarySystemBackground).opacity(0.1))
-            .cornerRadius(12)
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-            )
-            .padding(.horizontal)
-        }
-        .padding(.top, 30)
-        .frame(height: 130)
-    }
-    
     // Arrow Color
     private func arrowColor(at index: Int) -> Color {
         guard let highlighted = highlightedIndex else { return .gray }
@@ -312,11 +285,11 @@ struct LinkedListVisualizerView: View {
             
             switch mode {
             case .singlyLinked:
-                codeSnippet = "LinkedList<Integer> list = new LinkedList<>();"
+                codeHistory = ["LinkedList<Integer> list = new LinkedList<>();"]
             case .doublyLinked:
-                codeSnippet = "// Doubly linked: prev ↔ next pointers"
+                codeHistory = ["// Doubly linked: prev ↔ next pointers", "LinkedList<Integer> list = new LinkedList<>();"]
             case .traversal:
-                codeSnippet = "// Tap Traverse to walk the list"
+                codeHistory = ["// Tap Traverse to walk the list", "LinkedList<Integer> list = new LinkedList<>();"]
             }
         }
     }
@@ -335,9 +308,9 @@ struct LinkedListVisualizerView: View {
         
         withAnimation {
             if currentMode == .doublyLinked {
-                codeSnippet = "list.addFirst(\(newValue)); // rewire prev"
+                codeHistory.append("list.addFirst(\(newValue)); // rewire prev")
             } else {
-                codeSnippet = "list.addFirst(\(newValue));"
+                codeHistory.append("list.addFirst(\(newValue));")
             }
         }
     }
@@ -347,15 +320,16 @@ struct LinkedListVisualizerView: View {
         let generator = UIImpactFeedbackGenerator(style: .rigid)
         generator.impactOccurred()
         
+        let removedValue = listItems.first ?? 0
         withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
             _ = listItems.removeFirst()
         }
         
         withAnimation {
             if currentMode == .doublyLinked {
-                codeSnippet = "list.removeFirst(); // update prev"
+                codeHistory.append("list.removeFirst(); // update prev; removed \(removedValue)")
             } else {
-                codeSnippet = "list.removeFirst();"
+                codeHistory.append("list.removeFirst(); // removed \(removedValue)")
             }
         }
     }
@@ -373,7 +347,7 @@ struct LinkedListVisualizerView: View {
         
         Task { @MainActor in
             withAnimation {
-                codeSnippet = "Node curr = head;"
+                codeHistory.append("Node curr = head;")
             }
             try? await Task.sleep(nanoseconds: 400_000_000)
             
@@ -385,7 +359,7 @@ struct LinkedListVisualizerView: View {
                 
                 withAnimation(.easeInOut(duration: 0.3)) {
                     highlightedIndex = i
-                    codeSnippet = "// visiting node[\(i)] = \(listItems[i])"
+                    codeHistory.append("// visiting node[\(i)] = \(listItems[i])")
                 }
                 
                 let haptic = UIImpactFeedbackGenerator(style: .light)
@@ -399,7 +373,7 @@ struct LinkedListVisualizerView: View {
                 highlightedIndex = nil
                 isAnimating = false
                 traversalComplete = true
-                codeSnippet = "// curr == null → traversal complete!"
+                codeHistory.append("// curr == null → traversal complete!")
             }
         }
     }

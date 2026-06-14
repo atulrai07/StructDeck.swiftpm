@@ -14,106 +14,82 @@ struct StackVisualizerView: View {
     @State private var stackItems: [Int] = []
     
     // State for the java code
-    @State private var codeSnippet: String = "Stack<Integer> stack = new Stack<>();"
+    @State private var codeHistory: [String] = ["Stack<Integer> stack = new Stack<>();"]
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 20) {
-                
-                // VISUALIZATION AREA (canvas)
-                ZStack(alignment: .bottom) {
-                    RoundedRectangle(cornerRadius: 12)
-                        .strokeBorder(Color.gray.opacity(0.3), lineWidth: 2)
-                        .frame(width: 140, height: 350)
-                        .background(.gray.opacity(0.1))
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(spacing: 20) {
                     
-                    VStack(spacing: 4) {
-                        ForEach(stackItems.reversed(), id: \.self) { item in
-                            Text("\(item)")
-                                .font(.headline)
-                                .bold()
-                                .foregroundStyle(.white)
-                                .frame(width: 120, height: 50)
-                                .background(Color.blue)
-                                .cornerRadius(8)
-                                .transition(.move(edge: .top).combined(with: .opacity))
-                        }
-                    }
-                    .padding(.bottom, 10)
-                    .animation(.spring(response: 0.4, dampingFraction: 0.7), value: stackItems)
-                }
-                .frame(maxHeight: .infinity)
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel(stackItems.isEmpty ? "Empty Stack." : "Stack containing \(stackItems.count) items. The top item is \(stackItems.last!).")
-                .accessibilityHint("Use the Push and Pop buttons below to modify the stack.")
-                
-                // CONTROLS
-                HStack(spacing: 50) {
-                    Button(action: popItem) {
-                        VStack {
-                            Image(systemName: "arrow.up.circle")
-                                .font(.system(size: 44))
-                            Text("Pop")
-                                .font(.caption)
-                                .bold()
-                        }
-                        .foregroundStyle(stackItems.isEmpty ? .gray : .red)
-                    }
-                    .disabled(stackItems.isEmpty)
-                    .accessibilityLabel("Pop")
-                    .accessibilityHint("Removes the top item from the stack.")
-                    
-                    Button(action: pushItem) {
-                        VStack {
-                            Image(systemName: "arrow.down.circle.fill")
-                                .font(.system(size: 44))
-                            Text("Push")
-                                .font(.caption)
-                                .bold()
-                        }
-                        .foregroundStyle(stackItems.count >= 6 ? .gray : .blue)
-                    }
-                    .disabled(stackItems.count >= 6)
-                    .accessibilityLabel("Push")
-                    .accessibilityHint("Adds a random number to the top of the stack.")
-                }
-                .padding(.vertical, 20)
-                .modifier(SensoryFeedbackModifier(trigger: stackItems))
-                
-                // CODE INSIGHT (Bottom)
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("JAVA CODE INSIGHT")
-                        .font(.caption2)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.gray)
-                        .padding(.horizontal)
-                        .accessibilityHidden(true)
-                    
-                    HStack {
-                        Text(codeSnippet)
-                            .font(.system(.body, design: .monospaced))
-                            .foregroundStyle(.green)
-                            .contentTransition(.numericText())
-                        Spacer()
-                    }
-                    .padding()
-                    .background(Color(uiColor: .secondarySystemBackground).opacity(0.1))
-                    .cornerRadius(12)
-                    .overlay(
+                    // VISUALIZATION AREA (canvas)
+                    ZStack(alignment: .bottom) {
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                    )
-                    .padding(.horizontal)
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Java Code Snippet: \(codeSnippet)")
+                            .strokeBorder(Color.gray.opacity(0.3), lineWidth: 2)
+                            .frame(width: 140, height: 350)
+                            .background(.gray.opacity(0.1))
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                        
+                        VStack(spacing: 4) {
+                            ForEach(stackItems.reversed(), id: \.self) { item in
+                                Text("\(item)")
+                                    .font(.headline)
+                                    .bold()
+                                    .foregroundStyle(.white)
+                                    .frame(width: 120, height: 50)
+                                    .background(Color.blue)
+                                    .cornerRadius(8)
+                                    .transition(.move(edge: .top).combined(with: .opacity))
+                            }
+                        }
+                        .padding(.bottom, 10)
+                        .animation(.spring(response: 0.4, dampingFraction: 0.7), value: stackItems)
+                    }
+                    .frame(height: 360)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(stackItems.isEmpty ? "Empty Stack." : "Stack containing \(stackItems.count) items. The top item is \(stackItems.last!).")
+                    .accessibilityHint("Use the Push and Pop buttons below to modify the stack.")
+                    
+                    // CONTROLS
+                    HStack(spacing: 50) {
+                        Button(action: popItem) {
+                            VStack {
+                                Image(systemName: "arrow.up.circle")
+                                    .font(.system(size: 44))
+                                Text("Pop")
+                                    .font(.caption)
+                                    .bold()
+                            }
+                            .foregroundStyle(stackItems.isEmpty ? .gray : .red)
+                        }
+                        .disabled(stackItems.isEmpty)
+                        .accessibilityLabel("Pop")
+                        .accessibilityHint("Removes the top item from the stack.")
+                        
+                        Button(action: pushItem) {
+                            VStack {
+                                Image(systemName: "arrow.down.circle.fill")
+                                    .font(.system(size: 44))
+                                Text("Push")
+                                    .font(.caption)
+                                    .bold()
+                            }
+                            .foregroundStyle(stackItems.count >= 6 ? .gray : .blue)
+                        }
+                        .disabled(stackItems.count >= 6)
+                        .accessibilityLabel("Push")
+                        .accessibilityHint("Adds a random number to the top of the stack.")
+                    }
+                    .padding(.vertical, 20)
+                    .modifier(SensoryFeedbackModifier(trigger: stackItems))
+                    
+                    // CODE INSIGHT (Bottom)
+                    ExpandableCodeInsightView(codeHistory: codeHistory, dataStructure: "Stack")
                 }
-                .padding(.bottom, 30)
-                .frame(height:130)
-                .navigationTitle("Stack Visualizer")
-                .navigationBarTitleDisplayMode(.inline)
+                .padding(.vertical)
             }
             .background(Color.VisualizerBackgroundColor)
+            .navigationTitle("Stack Visualizer")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
     
@@ -124,15 +100,15 @@ struct StackVisualizerView: View {
         let newValue = Int.random(in: 10...99)
         stackItems.append(newValue)
         withAnimation {
-            codeSnippet = "stack.push(\(newValue));"
+            codeHistory.append("stack.push(\(newValue));")
         }
     }
     
     func popItem() {
         guard !stackItems.isEmpty else { return }
-        _ = stackItems.popLast()
+        let poppedValue = stackItems.popLast() ?? 0
         withAnimation {
-            codeSnippet = "stack.pop();"
+            codeHistory.append("stack.pop(); // popped \(poppedValue)")
         }
     }
 }
