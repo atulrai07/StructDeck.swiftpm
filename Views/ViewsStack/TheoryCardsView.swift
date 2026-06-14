@@ -113,6 +113,9 @@ struct TheoryCardCell: View {
                     .padding(.bottom, 50)
                 }
                 .accessibilityHint("Navigates to the Stack Quiz.")
+                .onAppear {
+                    UserProgressManager.shared.markTheoryCompleted(moduleId: "stack", moduleName: "Stack", category: "dataStructure")
+                }
             } else {
                 Image(systemName: "chevron.compact.down")
                     .font(.system(size: 40))

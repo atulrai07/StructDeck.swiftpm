@@ -121,6 +121,9 @@ struct DijkstraTheoryCardCell: View {
                 }
                 .accessibilityLabel("Take the Quiz")
                 .accessibilityHint("Double tap to start the Dijkstra quiz.")
+                .onAppear {
+                    UserProgressManager.shared.markTheoryCompleted(moduleId: "dijkstra", moduleName: "Dijkstra", category: "algorithm")
+                }
             } else {
                 Image(systemName: "chevron.compact.down")
                     .font(.system(size: 40))

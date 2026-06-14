@@ -119,6 +119,9 @@ struct QueueTheoryCardCell: View {
                     .padding(.bottom, 50)
                 }
                 .accessibilityHint("Navigates to the Queue Quiz.")
+                .onAppear {
+                    UserProgressManager.shared.markTheoryCompleted(moduleId: "queue", moduleName: "Queue", category: "dataStructure")
+                }
             } else {
                 Image(systemName: "chevron.compact.down")
                     .font(.system(size: 40))

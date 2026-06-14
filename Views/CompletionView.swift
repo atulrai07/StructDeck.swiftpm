@@ -10,8 +10,14 @@ import SwiftUI
 struct CompletionView: View {
     @Environment(\.dismiss) var dismiss
     
+    let moduleId: String
+    let moduleName: String
+    let category: String
     let correctCount: Int
     let totalCount: Int
+    let isAIQuiz: Bool
+    
+    @State private var pastAttempts: [QuizAttempt] = []
     
     private var scoreMessage: String {
         let percentage = totalCount > 0 ? (Double(correctCount) / Double(totalCount)) * 100 : 0
@@ -27,7 +33,7 @@ struct CompletionView: View {
     }
     
     var body: some View {
-        VStack(spacing: 30) {
+        VStack(spacing: 20) {
             Spacer()
             
             // 1. Success Icon
@@ -45,10 +51,10 @@ struct CompletionView: View {
                     .foregroundStyle(.white)
                     .shadow(radius: 10)
             }
-            .padding(.bottom, 20)
+            .padding(.bottom, 10)
             
             // 2. Score Text
-            VStack(spacing: 12) {
+            VStack(spacing: 8) {
                 Text("\(correctCount) / \(totalCount)")
                     .font(.system(size: 48, weight: .bold, design: .rounded))
                     .foregroundStyle(.white)
@@ -67,6 +73,46 @@ struct CompletionView: View {
                 CompletionBadge(icon: "book.fill", text: "Concept")
                 CompletionBadge(icon: "eye.fill", text: "Visuals")
                 CompletionBadge(icon: "checkmark.shield.fill", text: "Quiz")
+            }
+            
+            // 4. Past Attempts History
+            if !pastAttempts.isEmpty {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Past Attempts")
+                        .font(.headline)
+                        .foregroundStyle(.white.opacity(0.8))
+                        .padding(.horizontal, 4)
+                    
+                    ScrollView {
+                        VStack(spacing: 8) {
+                            ForEach(pastAttempts) { attempt in
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text(attempt.wasAIGenerated ? "AI Generated Quiz" : "Standard Quiz")
+                                            .font(.subheadline)
+                                            .bold()
+                                            .foregroundStyle(.white)
+                                        Text(attempt.attemptDate.formatted(date: .abbreviated, time: .shortened))
+                                            .font(.caption)
+                                            .foregroundStyle(.gray)
+                                    }
+                                    
+                                    Spacer()
+                                    
+                                    Text("\(attempt.correctCount) / \(attempt.totalCount)")
+                                        .font(.system(.body, design: .rounded))
+                                        .bold()
+                                        .foregroundStyle(attempt.correctCount == attempt.totalCount ? .green : .blue)
+                                }
+                                .padding()
+                                .background(Color.white.opacity(0.05))
+                                .cornerRadius(12)
+                            }
+                        }
+                    }
+                    .frame(maxHeight: 140)
+                }
+                .padding(.horizontal)
             }
             
             Spacer()
@@ -89,6 +135,24 @@ struct CompletionView: View {
         .padding()
         .background(gradientAppBackground())
         .navigationBarHidden(true)
+        .onAppear {
+            UserProgressManager.shared.recordQuizAttempt(
+                moduleId: moduleId,
+                moduleName: moduleName,
+                category: category,
+                correctCount: correctCount,
+                totalCount: totalCount,
+                wasAIGenerated: isAIQuiz
+            )
+            
+            // Refresh past attempts from database
+            if let progress = UserProgressManager.shared.getModuleProgress(moduleId: moduleId) {
+                // We display previous attempts excluding the current one to see improvement, or including all attempts sorted by date.
+                // The user request says "the user should also be able to see how much did he score in the previous quizes"
+                // Sort attempts by newest first.
+                pastAttempts = progress.quizAttempts.sorted(by: { $0.attemptDate > $1.attemptDate })
+            }
+        }
     }
 }
 
@@ -114,6 +178,6 @@ struct CompletionBadge: View {
 }
 
 #Preview {
-    CompletionView(correctCount: 2, totalCount: 3)
+    CompletionView(moduleId: "stack", moduleName: "Stack", category: "dataStructure", correctCount: 2, totalCount: 3, isAIQuiz: false)
         .preferredColorScheme(.dark)
 }

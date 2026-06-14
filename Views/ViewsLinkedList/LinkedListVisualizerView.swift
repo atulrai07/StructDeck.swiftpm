@@ -52,6 +52,9 @@ struct LinkedListVisualizerView: View {
                 modeMenu
             }
         }
+        .onAppear {
+            UserProgressManager.shared.markVisualizerVisited(moduleId: "linkedList", moduleName: "Linked List", category: "dataStructure")
+        }
     }
     
     // Navigation Title

@@ -90,6 +90,9 @@ struct StackVisualizerView: View {
             .background(Color.VisualizerBackgroundColor)
             .navigationTitle("Stack Visualizer")
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                UserProgressManager.shared.markVisualizerVisited(moduleId: "stack", moduleName: "Stack", category: "dataStructure")
+            }
         }
     }
     

@@ -14,6 +14,29 @@ struct TopicCard: View {
     let iconName: String
     let time: String
     
+    var theoryCompleted: Bool = false
+    var visualizerVisited: Bool = false
+    var quizCompleted: Bool = false
+    
+    private var progressText: String? {
+        let count = [theoryCompleted, visualizerVisited, quizCompleted].filter { $0 }.count
+        if count == 3 {
+            return "Completed"
+        } else if count > 0 {
+            return "\(Int(Double(count) / 3.0 * 100))%"
+        }
+        return nil
+    }
+    
+    private var progressColor: Color {
+        let count = [theoryCompleted, visualizerVisited, quizCompleted].filter { $0 }.count
+        if count == 3 {
+            return .green
+        } else {
+            return .orange
+        }
+    }
+    
     var body: some View {
         ZStack {
             // Background Gradient
@@ -33,19 +56,28 @@ struct TopicCard: View {
                             .bold()
                             .foregroundStyle(.white)
                             .padding(.top,5)
-                        
-//                        Text(subtitle)
-//                            .font(.caption)
-//                            .foregroundStyle(.white.opacity(0.8))
-                        
                     }
                     
                     Spacer()
+                    
+                    if let progressText = progressText {
+                        Text(progressText)
+                            .font(.caption2)
+                            .bold()
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(progressColor.opacity(0.8))
+                            .clipShape(Capsule())
+                            .padding(.trailing, 4)
+                            .padding(.top, 8)
+                    }
                     
                     Image(systemName: "chevron.right")
                         .font(.title3)
                         .bold()
                         .foregroundStyle(.white.opacity(0.6))
+                        .padding(.top, 8)
                 }
                 
                 // Middle Row: Learning Path

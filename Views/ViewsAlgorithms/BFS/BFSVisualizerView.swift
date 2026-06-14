@@ -197,6 +197,9 @@ struct BFSVisualizerView: View {
             }
         }
         .background(Color.VisualizerBackgroundColor)
+        .onAppear {
+            UserProgressManager.shared.markVisualizerVisited(moduleId: "bfs", moduleName: "BFS", category: "algorithm")
+        }
     }
     
     // Helper Getters

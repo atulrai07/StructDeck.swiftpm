@@ -189,6 +189,9 @@ struct DFSVisualizerView: View {
             .accessibilityLabel("Generate a New Tree")
         }
         .background(Color.VisualizerBackgroundColor)
+        .onAppear {
+            UserProgressManager.shared.markVisualizerVisited(moduleId: "dfs", moduleName: "DFS", category: "algorithm")
+        }
         
     }
     

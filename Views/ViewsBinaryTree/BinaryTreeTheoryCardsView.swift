@@ -122,6 +122,9 @@ struct BinaryTreeTheoryCardCell: View {
                 }
                 .accessibilityLabel("Take the Quiz")
                 .accessibilityHint("Double tap to start the Binary Tree quiz.")
+                .onAppear {
+                    UserProgressManager.shared.markTheoryCompleted(moduleId: "binaryTree", moduleName: "Binary Tree", category: "dataStructure")
+                }
             } else {
                 Image(systemName: "chevron.compact.down")
                     .font(.system(size: 40))

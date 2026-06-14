@@ -85,6 +85,9 @@ struct BinaryTreeVisualizerView: View {
                 modeMenu
             }
         }
+        .onAppear {
+            UserProgressManager.shared.markVisualizerVisited(moduleId: "binaryTree", moduleName: "Binary Tree", category: "dataStructure")
+        }
     }
     
     

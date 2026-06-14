@@ -108,6 +108,9 @@ struct LinkedListTheoryCardCell: View {
                     .padding(.horizontal, 40)
                     .padding(.bottom, 50)
                 }
+                .onAppear {
+                    UserProgressManager.shared.markTheoryCompleted(moduleId: "linkedList", moduleName: "Linked List", category: "dataStructure")
+                }
             } else {
                 Image(systemName: "chevron.compact.down")
                     .font(.system(size: 40))

@@ -129,7 +129,14 @@ struct StackQuizView: View {
                                     .opacity(isCorrect ? 1.0 : 0.5)
                                 } else {
                                     // Link to Completion Screen
-                                    NavigationLink(destination: CompletionView(correctCount: questions.count - wrongAnswers, totalCount: questions.count)) {
+                                    NavigationLink(destination: CompletionView(
+                                        moduleId: "stack",
+                                        moduleName: "Stack",
+                                        category: "dataStructure",
+                                        correctCount: questions.count - wrongAnswers,
+                                        totalCount: questions.count,
+                                        isAIQuiz: isAIQuiz
+                                    )) {
                                         Text("See Results")
                                             .font(.headline)
                                             .bold()

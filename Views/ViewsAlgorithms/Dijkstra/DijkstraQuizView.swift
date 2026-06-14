@@ -117,7 +117,14 @@ struct DijkstraQuizView: View {
                                         .opacity(isCorrect ? 1.0 : 0.5)
                                         .accessibilityHint(isCorrect ? "Double tap to go to the next question." : "Answer correctly to proceed.")
                                 } else {
-                                    NavigationLink(destination: CompletionView(correctCount: questions.count - wrongAnswers, totalCount: questions.count)) {
+                                    NavigationLink(destination: CompletionView(
+                                        moduleId: "dijkstra",
+                                        moduleName: "Dijkstra",
+                                        category: "algorithm",
+                                        correctCount: questions.count - wrongAnswers,
+                                        totalCount: questions.count,
+                                        isAIQuiz: isAIQuiz
+                                    )) {
                                         Text("See Results")
                                             .font(.headline)
                                             .bold()

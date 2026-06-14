@@ -118,7 +118,14 @@ struct QueueQuizView: View {
                                         .disabled(!isCorrect)
                                         .opacity(isCorrect ? 1.0 : 0.5)
                                 } else {
-                                    NavigationLink(destination: CompletionView(correctCount: questions.count - wrongAnswers, totalCount: questions.count)) {
+                                    NavigationLink(destination: CompletionView(
+                                        moduleId: "queue",
+                                        moduleName: "Queue",
+                                        category: "dataStructure",
+                                        correctCount: questions.count - wrongAnswers,
+                                        totalCount: questions.count,
+                                        isAIQuiz: isAIQuiz
+                                    )) {
                                         Text("See Results")
                                             .font(.headline)
                                             .bold()

@@ -61,6 +61,7 @@ struct QueueVisualizerView: View {
         }
         .onAppear {
             initializeSlots()
+            UserProgressManager.shared.markVisualizerVisited(moduleId: "queue", moduleName: "Queue", category: "dataStructure")
         }
     }
     

@@ -121,6 +121,9 @@ struct BFSTheoryCardCell: View {
                 }
                 .accessibilityLabel("Take the Quiz")
                 .accessibilityHint("Double tap to start the BFS quiz.")
+                .onAppear {
+                    UserProgressManager.shared.markTheoryCompleted(moduleId: "bfs", moduleName: "BFS", category: "algorithm")
+                }
             } else {
                 Image(systemName: "chevron.compact.down")
                     .font(.system(size: 40))

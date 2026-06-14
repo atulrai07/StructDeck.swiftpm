@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ModuleItem: Identifiable {
     let id = UUID()
+    let moduleId: String
     let title: String
     let subtitle: String
     let cardBackground: AnyShapeStyle
@@ -17,7 +18,8 @@ struct ModuleItem: Identifiable {
     let isLocked: Bool
     let destination: () -> AnyView
     
-    init(title: String, subtitle: String, cardBackground: AnyShapeStyle, iconName: String, time: String, isLocked: Bool = false, destination: @escaping () -> AnyView) {
+    init(moduleId: String, title: String, subtitle: String, cardBackground: AnyShapeStyle, iconName: String, time: String, isLocked: Bool = false, destination: @escaping () -> AnyView) {
+        self.moduleId = moduleId
         self.title = title
         self.subtitle = subtitle
         self.cardBackground = cardBackground
@@ -32,6 +34,7 @@ struct ModuleItem: Identifiable {
 extension ModuleItem {
     nonisolated(unsafe) static let dataStructureModules: [ModuleItem] = [
         ModuleItem(
+            moduleId: "binaryTree",
             title: "Binary Tree",
             subtitle: "Hierarchical Tree Structure",
             cardBackground: AnyShapeStyle(.gray.opacity(0.3)),
@@ -40,6 +43,7 @@ extension ModuleItem {
             destination: { AnyView(BinaryTreeTopicOverviewView()) }
         ),
         ModuleItem(
+            moduleId: "linkedList",
             title: "Linked List",
             subtitle: "Nodes connected using pointers",
             cardBackground: AnyShapeStyle(.gray.opacity(0.3)),
@@ -48,6 +52,7 @@ extension ModuleItem {
             destination: { AnyView(LinkedListTopicOverviewView()) }
         ),
         ModuleItem(
+            moduleId: "queue",
             title: "Queue",
             subtitle: "First In, First Out (FIFO)",
             cardBackground: AnyShapeStyle(.gray.opacity(0.3)),
@@ -56,6 +61,7 @@ extension ModuleItem {
             destination: { AnyView(QueueTopicOverviewView()) }
         ),
         ModuleItem(
+            moduleId: "stack",
             title: "Stack",
             subtitle: "Last In, First Out (LIFO)",
             cardBackground: AnyShapeStyle(.gray.opacity(0.3)),
@@ -64,6 +70,7 @@ extension ModuleItem {
             destination: { AnyView(TopicOverviewView()) }
         ),
         ModuleItem(
+            moduleId: "dsUpcoming",
             title: "Upcoming",
             subtitle: "More modules coming soon",
             cardBackground: AnyShapeStyle(.gray.opacity(0.15)),
@@ -79,6 +86,7 @@ extension ModuleItem {
 extension ModuleItem {
     nonisolated(unsafe) static let algorithmModules: [ModuleItem] = [
         ModuleItem(
+            moduleId: "dijkstra",
             title: "Dijkstra",
             subtitle: "Shortest Path Algorithm",
             cardBackground: AnyShapeStyle(.gray.opacity(0.3)),
@@ -87,6 +95,7 @@ extension ModuleItem {
             destination: { AnyView(DijkstraTopicOverviewView()) }
         ),
         ModuleItem(
+            moduleId: "bfs",
             title: "BFS",
             subtitle: "Level-order Traversal",
             cardBackground: AnyShapeStyle(.gray.opacity(0.3)),
@@ -95,6 +104,7 @@ extension ModuleItem {
             destination: { AnyView(BFSTopicOverviewView()) }
         ),
         ModuleItem(
+            moduleId: "dfs",
             title: "DFS",
             subtitle: "Depth-first Traversal",
             cardBackground: AnyShapeStyle(.gray.opacity(0.3)),
@@ -103,6 +113,7 @@ extension ModuleItem {
             destination: { AnyView(DFSTopicOverviewView()) }
         ),
         ModuleItem(
+            moduleId: "algoUpcoming",
             title: "Upcoming",
             subtitle: "More modules coming soon",
             cardBackground: AnyShapeStyle(.gray.opacity(0.15)),

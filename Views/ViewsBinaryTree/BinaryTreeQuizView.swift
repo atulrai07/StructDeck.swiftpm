@@ -117,7 +117,14 @@ struct BinaryTreeQuizView: View {
                                         .opacity(isCorrect ? 1.0 : 0.5)
                                         .accessibilityHint(isCorrect ? "Double tap to go to the next question." : "Answer correctly to proceed.")
                                 } else {
-                                    NavigationLink(destination: CompletionView(correctCount: questions.count - wrongAnswers, totalCount: questions.count)) {
+                                    NavigationLink(destination: CompletionView(
+                                        moduleId: "binaryTree",
+                                        moduleName: "Binary Tree",
+                                        category: "dataStructure",
+                                        correctCount: questions.count - wrongAnswers,
+                                        totalCount: questions.count,
+                                        isAIQuiz: isAIQuiz
+                                    )) {
                                         Text("See Results")
                                             .font(.headline)
                                             .bold()

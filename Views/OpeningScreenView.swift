@@ -8,7 +8,24 @@
 import SwiftUI
 
 struct OpeningScreenView: View {
-    @State private var showAccessibilitySheet = false
+    @State private var recentModule: ModuleProgress? = nil
+    @State private var overallCompletedCount = 0
+    @State private var overallCompletionPercent = 0.0
+    @State private var refreshTrigger = UUID()
+    
+    private var hasAnyProgress: Bool {
+        overallCompletionPercent > 0 || overallCompletedCount > 0 || recentModule != nil
+    }
+    
+    private func getDestination(for moduleId: String) -> AnyView? {
+        if let match = ModuleItem.dataStructureModules.first(where: { $0.moduleId == moduleId }) {
+            return match.destination()
+        }
+        if let match = ModuleItem.algorithmModules.first(where: { $0.moduleId == moduleId }) {
+            return match.destination()
+        }
+        return nil
+    }
     
     var body: some View {
         NavigationStack {
@@ -106,6 +123,105 @@ struct OpeningScreenView: View {
                             .padding(.horizontal)
                         }
                     }
+                    
+                    if hasAnyProgress {
+                        // Progress Summary & Continue Learning Row/Stack
+                        VStack(alignment: .leading, spacing: 16) {
+                            Text("Your Progress")
+                                .font(.title2)
+                                .bold()
+                                .foregroundStyle(.white)
+                                .padding(.horizontal)
+                                .accessibilityAddTraits(.isHeader)
+                            
+                            HStack(spacing: 16) {
+                                // Overall Stats Card
+                                VStack(alignment: .leading, spacing: 12) {
+                                    Text("Overall Progress")
+                                        .font(.caption)
+                                        .bold()
+                                        .foregroundStyle(.gray)
+                                    
+                                    HStack(spacing: 12) {
+                                        ZStack {
+                                            Circle()
+                                                .stroke(Color.white.opacity(0.1), lineWidth: 6)
+                                                .frame(width: 50, height: 50)
+                                            Circle()
+                                                .trim(from: 0, to: CGFloat(overallCompletionPercent / 100.0))
+                                                .stroke(
+                                                    LinearGradient(colors: [.blue, .purple], startPoint: .top, endPoint: .bottom),
+                                                    style: StrokeStyle(lineWidth: 6, lineCap: .round)
+                                                )
+                                                .frame(width: 50, height: 50)
+                                                .rotationEffect(.degrees(-90))
+                                            
+                                            Text("\(Int(overallCompletionPercent))%")
+                                                .font(.caption)
+                                                .bold()
+                                                .foregroundStyle(.white)
+                                        }
+                                        
+                                        VStack(alignment: .leading, spacing: 2) {
+                                            Text("\(overallCompletedCount) of 7")
+                                                .font(.subheadline)
+                                                .bold()
+                                                .foregroundStyle(.white)
+                                            Text("Completed")
+                                                .font(.caption)
+                                                .foregroundStyle(.gray)
+                                        }
+                                    }
+                                }
+                                .padding()
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(Color.white.opacity(0.05))
+                                .cornerRadius(20)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                                )
+                                
+                                // Continue Learning Card
+                                if let recent = recentModule, let dest = getDestination(for: recent.moduleId) {
+                                    NavigationLink(destination: dest) {
+                                        VStack(alignment: .leading, spacing: 12) {
+                                            Text("Continue Learning")
+                                                .font(.caption)
+                                                .bold()
+                                                .foregroundStyle(.orange)
+                                            
+                                            Text(recent.moduleName)
+                                                .font(.headline)
+                                                .bold()
+                                                .foregroundStyle(.white)
+                                                .lineLimit(1)
+                                            
+                                            HStack {
+                                                Text("Resume Module")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundStyle(.gray)
+                                                Image(systemName: "arrow.right")
+                                                    .font(.caption)
+                                                    .foregroundStyle(.gray)
+                                            }
+                                        }
+                                        .padding()
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .background(Color.white.opacity(0.05))
+                                        .cornerRadius(20)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 20)
+                                                .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                                        )
+                                    }
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
+                        .id(refreshTrigger)
+                    }
                 }
                 .padding(.bottom, 40)
             }
@@ -127,23 +243,20 @@ struct OpeningScreenView: View {
                             .bold()
                     }
                 }
-                
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showAccessibilitySheet = true
-                    } label: {
-                        Image(systemName: "accessibility.fill")
-                    }
-                    .accessibilityLabel("Accessibility Information")
-                    .accessibilityHint("Double tap to view accessibility features and settings.")
-                }
             }
-            
-            // sheet for accessibility
-            .sheet(isPresented: $showAccessibilitySheet) {
-                AccessibilityInfoView()
-                    .presentationDetents([.fraction(0.75)])
-                    .presentationDragIndicator(.visible)
+            .onAppear {
+                let allProg = UserProgressManager.shared.getAllProgress()
+                let recent = UserProgressManager.shared.getRecentModules(limit: 1)
+                recentModule = recent.first
+                
+                let completed = allProg.filter { $0.theoryCompleted && $0.visualizerVisited && $0.quizCompleted }
+                overallCompletedCount = completed.count
+                
+                let totalModules = 7.0
+                let totalPercent = allProg.reduce(0.0) { $0 + $1.completionPercentage }
+                overallCompletionPercent = totalPercent / totalModules
+                
+                refreshTrigger = UUID()
             }
         }
     }

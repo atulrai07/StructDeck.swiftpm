@@ -14,6 +14,8 @@ struct DataStructuresDashboardView: View {
     //The Data Source
     let modules = ModuleItem.dataStructureModules
     
+    @State private var refreshTrigger = UUID()
+    
     //Logic for search
     var filteredModules: [ModuleItem] {
         if searchText.isEmpty {
@@ -26,18 +28,29 @@ struct DataStructuresDashboardView: View {
         }
     }
     
+    private func getProgress(for moduleId: String) -> (theory: Bool, visualizer: Bool, quiz: Bool) {
+        if let progress = UserProgressManager.shared.getModuleProgress(moduleId: moduleId) {
+            return (progress.theoryCompleted, progress.visualizerVisited, progress.quizCompleted)
+        }
+        return (false, false, false)
+    }
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 //The Loop: Generate Cards from Data
                 ForEach(filteredModules) { item in
+                    let prog = getProgress(for: item.moduleId)
                     if item.isLocked {
                         TopicCard(
                             title: item.title,
                             subtitle: item.subtitle,
                             cardBackground: item.cardBackground,
                             iconName: item.iconName,
-                            time: item.time
+                            time: item.time,
+                            theoryCompleted: prog.theory,
+                            visualizerVisited: prog.visualizer,
+                            quizCompleted: prog.quiz
                         )
                         .opacity(0.6)
                         .padding(.bottom, 5)
@@ -50,7 +63,10 @@ struct DataStructuresDashboardView: View {
                                 subtitle: item.subtitle,
                                 cardBackground: item.cardBackground,
                                 iconName: item.iconName,
-                                time: item.time
+                                time: item.time,
+                                theoryCompleted: prog.theory,
+                                visualizerVisited: prog.visualizer,
+                                quizCompleted: prog.quiz
                             )
                             .padding(.bottom,5)
                         }
@@ -58,6 +74,7 @@ struct DataStructuresDashboardView: View {
                         .accessibilityHint("Double tap to open the \(item.title) module.")
                     }
                 }
+                .id(refreshTrigger)
                 
                 //Show message if no results found
                 if filteredModules.isEmpty {
@@ -76,6 +93,9 @@ struct DataStructuresDashboardView: View {
         .navigationBarTitleDisplayMode(.large)
         // Modifier
         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search topics")
+        .onAppear {
+            refreshTrigger = UUID()
+        }
     }
 }
 

@@ -182,6 +182,9 @@ struct DijkstraVisualizerView: View {
             }
         }
         .background(Color.VisualizerBackgroundColor)
+        .onAppear {
+            UserProgressManager.shared.markVisualizerVisited(moduleId: "dijkstra", moduleName: "Dijkstra", category: "algorithm")
+        }
     }
     
     // MARK: - Helper Getters
