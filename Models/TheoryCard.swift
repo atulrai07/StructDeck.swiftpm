@@ -31,7 +31,7 @@ struct TheoryData {
         // Card 2
         TheoryCard(
             title: "LIFO Rule",
-            bodyText: "Stack follows LIFO — Last In, First Out.\n\nThe element added last is removed first.",
+            bodyText: "Stack follows LIFO   Last In, First Out.\n\nThe element added last is removed first.",
             iconName: "arrow.up.arrow.down",
             isBridge: false
         ),
@@ -47,7 +47,7 @@ struct TheoryData {
         // Card 4
         TheoryCard(
             title: "Stack Structure",
-            bodyText: "A Stack has only one accessible end — the top.\n\nElements in the middle cannot be accessed directly.",
+            bodyText: "A Stack has only one accessible end   the top.\n\nElements in the middle cannot be accessed directly.",
             iconName: "rectangle.stack.fill",
             isBridge: false
         ),
@@ -103,7 +103,7 @@ struct TheoryData {
         // Card 11
         TheoryCard(
             title: "Time Complexity",
-            bodyText: "Push, Pop, and Peek operations usually take constant time — O(1).",
+            bodyText: "Push, Pop, and Peek operations usually take constant time   O(1).",
             iconName: "clock.fill",
             isBridge: false
         ),
@@ -427,7 +427,7 @@ struct TheoryData {
             ),
             TheoryCard(
                 title: "Graphs & Weights",
-                bodyText: "A graph is made of 'nodes' (intersections) and 'edges' (roads connecting them).\n\nIn Dijkstra, these edges have 'weights' or costs—like distance, time, or toll fees. The goal is to find the path with the absolute lowest total weight.",
+                bodyText: "A graph is made of 'nodes' (intersections) and 'edges' (roads connecting them).\n\nIn Dijkstra, these edges have 'weights' or costs like distance, time, or toll fees. The goal is to find the path with the absolute lowest total weight.",
                 iconName: "point.3.connected.trianglepath.dotted",
                 isBridge: false
             ),
@@ -496,7 +496,7 @@ struct TheoryData {
         ),
         TheoryCard(
             title: "The Queue (FIFO)",
-            bodyText: "To maintain its strict 'level-by-level' order, BFS relies on a Queue data structure. [Image of a FIFO queue data structure]\n\nA Queue follows the First-In-First-Out (FIFO) principle—just like waiting in line at a grocery store. The first node added to the line is the first one to be explored.",
+            bodyText: "To maintain its strict 'level-by-level' order, BFS relies on a Queue data structure. [Image of a FIFO queue data structure]\n\nA Queue follows the First-In-First-Out (FIFO) principle just like waiting in line at a grocery store. The first node added to the line is the first one to be explored.",
             iconName: "tray.2.fill",
             isBridge: false
         ),
@@ -520,7 +520,7 @@ struct TheoryData {
         ),
         TheoryCard(
             title: "The Shortest Path Guarantee",
-            bodyText: "Because it expands uniformly, BFS is mathematically guaranteed to find the absolute shortest path between two points—but ONLY on an unweighted graph.\n\nIf all edges have the same cost, the very first time BFS stumbles upon your destination, you know for a fact there is no shorter route.",
+            bodyText: "Because it expands uniformly, BFS is mathematically guaranteed to find the absolute shortest path between two points but ONLY on an unweighted graph.\n\nIf all edges have the same cost, the very first time BFS stumbles upon your destination, you know for a fact there is no shorter route.",
             iconName: "ruler.fill",
             isBridge: false
         ),

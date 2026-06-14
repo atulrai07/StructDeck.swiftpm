@@ -122,7 +122,7 @@ struct OnboardingWelcomePage: View {
             .opacity(logoOpacity)
             
             // App Name
-            Text("StructViz")
+            Text("  Visulo")
                 .font(.system(size: 36, weight: .bold, design: .rounded))
                 .foregroundStyle(.white)
                 .opacity(textOpacity)

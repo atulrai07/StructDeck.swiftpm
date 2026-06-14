@@ -1,6 +1,6 @@
 //
 //  AIExplainService.swift
-//  StructViz
+//    Visulo
 //
 //  Created by Atul on 12/06/26.
 //

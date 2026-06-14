@@ -1,6 +1,6 @@
 //
 //  ParticleEffectView.swift
-//  StructViz
+//    Visulo
 //
 //  Created by Atul on 24/02/26.
 //

@@ -115,6 +115,32 @@ final class UserProgressManager {
         }
     }
     
+    private func getModuleDetails(for moduleId: String) -> (name: String, category: String) {
+        switch moduleId {
+        case "binaryTree": return ("Binary Tree", "dataStructure")
+        case "linkedList": return ("Linked List", "dataStructure")
+        case "queue":      return ("Queue", "dataStructure")
+        case "stack":      return ("Stack", "dataStructure")
+        case "dijkstra":   return ("Dijkstra", "algorithm")
+        case "bfs":        return ("BFS", "algorithm")
+        case "dfs":        return ("DFS", "algorithm")
+        default:           return (moduleId.capitalized, "unknown")
+        }
+    }
+    
+    func updateLastCardIndex(moduleId: String, cardIndex: Int) {
+        let details = getModuleDetails(for: moduleId)
+        let progress = getOrCreateProgress(moduleId: moduleId, moduleName: details.name, category: details.category)
+        progress.lastCardIndex = cardIndex
+        progress.lastStudiedAt = Date()
+        try? context?.save()
+    }
+    
+    func getLastCardIndex(moduleId: String) -> Int {
+        guard let progress = getModuleProgress(moduleId: moduleId) else { return 0 }
+        return progress.lastCardIndex
+    }
+    
     func getAllProgress() -> [ModuleProgress] {
         guard let context = context else { return [] }
         let descriptor = FetchDescriptor<ModuleProgress>()

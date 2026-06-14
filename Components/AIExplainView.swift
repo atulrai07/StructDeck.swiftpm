@@ -1,6 +1,6 @@
 //
 //  AIExplainView.swift
-//  StructViz
+//    Visulo
 //
 //  Created by Atul on 12/06/26.
 //
@@ -149,10 +149,7 @@ struct AIExplainSheetView: View {
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 30)
                             } else {
-                                Text(LocalizedStringKey(explanation))
-                                    .font(.body)
-                                    .foregroundColor(.white.opacity(0.9))
-                                    .lineSpacing(6)
+                                FormattedTextView(text: explanation)
                                     .transition(.opacity)
                             }
                         }

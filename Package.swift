@@ -8,15 +8,15 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "StructViz",
+    name: "Visulo",
     platforms: [
         .iOS("17.0")
     ],
     products: [
         .iOSApplication(
-            name: "StructViz",
+            name: "Visulo",
             targets: ["AppModule"],
-            bundleIdentifier: "com.atul.StructViz",
+            bundleIdentifier: "com.atul.Visulo",
             teamIdentifier: "5273NF3L3W",
             displayVersion: "1.0",
             bundleVersion: "1",

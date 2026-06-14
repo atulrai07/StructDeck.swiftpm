@@ -1,6 +1,6 @@
 //
 //  AccessibilityFeatureRow.swift
-//  StructViz
+//    Visulo
 //
 //  Created by Atul on 23/02/26.
 //
@@ -37,5 +37,11 @@ struct AccessibilityFeatureRow: View {
 }
 
 #Preview {
-    AccessibilityInfoView()
+    AccessibilityFeatureRow(
+        icon: "waveform",
+        title: "Haptic Feedback",
+        desc: "Feel the data structures move with physical vibrations."
+    )
+    .preferredColorScheme(.dark)
+    .padding()
 }

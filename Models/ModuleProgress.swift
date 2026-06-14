@@ -11,12 +11,13 @@ final class ModuleProgress {
     var quizCompleted: Bool
     var bestScore: Int?
     var totalQuestions: Int?
+    var lastCardIndex: Int = 0
     var lastStudiedAt: Date?
     
     @Relationship(deleteRule: .cascade, inverse: \QuizAttempt.moduleProgress)
     var quizAttempts: [QuizAttempt] = []
     
-    init(moduleId: String, moduleName: String, category: String, theoryCompleted: Bool = false, visualizerVisited: Bool = false, quizCompleted: Bool = false, bestScore: Int? = nil, totalQuestions: Int? = nil, lastStudiedAt: Date? = nil) {
+    init(moduleId: String, moduleName: String, category: String, theoryCompleted: Bool = false, visualizerVisited: Bool = false, quizCompleted: Bool = false, bestScore: Int? = nil, totalQuestions: Int? = nil, lastCardIndex: Int = 0, lastStudiedAt: Date? = nil) {
         self.moduleId = moduleId
         self.moduleName = moduleName
         self.category = category
@@ -25,6 +26,7 @@ final class ModuleProgress {
         self.quizCompleted = quizCompleted
         self.bestScore = bestScore
         self.totalQuestions = totalQuestions
+        self.lastCardIndex = lastCardIndex
         self.lastStudiedAt = lastStudiedAt
         self.quizAttempts = []
     }

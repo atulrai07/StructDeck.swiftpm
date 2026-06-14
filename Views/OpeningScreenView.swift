@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct OpeningScreenView: View {
+    @State private var showAppleIntelligenceSheet = false
+    
     @State private var recentModule: ModuleProgress? = nil
     @State private var overallCompletedCount = 0
     @State private var overallCompletionPercent = 0.0
@@ -27,9 +29,29 @@ struct OpeningScreenView: View {
         return nil
     }
     
+    private func getResumeDestination(for moduleId: String) -> AnyView? {
+        switch moduleId {
+        case "stack":
+            return AnyView(TheoryCardsView())
+        case "queue":
+            return AnyView(QueueTheoryCardsView())
+        case "linkedList":
+            return AnyView(LinkedListTheoryCardsView())
+        case "binaryTree":
+            return AnyView(BinaryTreeTheoryCardsView())
+        case "dijkstra":
+            return AnyView(DijkstraTheoryCardsView())
+        case "bfs":
+            return AnyView(BFSTheoryCardsView())
+        case "dfs":
+            return AnyView(DFSTheoryCardsView())
+        default:
+            return nil
+        }
+    }
+    
     var body: some View {
-        NavigationStack {
-            ScrollView(showsIndicators: false) {
+        ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 30) {
                     
                     // "Start Learning" Section
@@ -150,7 +172,7 @@ struct OpeningScreenView: View {
                                             Circle()
                                                 .trim(from: 0, to: CGFloat(overallCompletionPercent / 100.0))
                                                 .stroke(
-                                                    LinearGradient(colors: [.blue, .purple], startPoint: .top, endPoint: .bottom),
+                                                    Color.white,
                                                     style: StrokeStyle(lineWidth: 6, lineCap: .round)
                                                 )
                                                 .frame(width: 50, height: 50)
@@ -183,7 +205,7 @@ struct OpeningScreenView: View {
                                 )
                                 
                                 // Continue Learning Card
-                                if let recent = recentModule, let dest = getDestination(for: recent.moduleId) {
+                                if let recent = recentModule, let dest = getResumeDestination(for: recent.moduleId) {
                                     NavigationLink(destination: dest) {
                                         VStack(alignment: .leading, spacing: 12) {
                                             Text("Continue Learning")
@@ -234,8 +256,6 @@ struct OpeningScreenView: View {
                             .bold()
                             .padding(.trailing, 200)
                     }
-                    
-    
                 } else {
                     ToolbarItem(placement: .topBarLeading) {
                         Text("Home")
@@ -243,6 +263,21 @@ struct OpeningScreenView: View {
                             .bold()
                     }
                 }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showAppleIntelligenceSheet = true
+                    } label: {
+                        Image(systemName: "apple.intelligence")
+                    }
+                    .accessibilityLabel("Apple Intelligence Information")
+                    .accessibilityHint("Double tap to view Apple Intelligence features.")
+                }
+            }
+            .sheet(isPresented: $showAppleIntelligenceSheet) {
+                AppleIntelligenceInfoView()
+                    .presentationDetents([.fraction(0.75)])
+                    .presentationDragIndicator(.visible)
             }
             .onAppear {
                 let allProg = UserProgressManager.shared.getAllProgress()
@@ -260,7 +295,6 @@ struct OpeningScreenView: View {
             }
         }
     }
-}
 
 #Preview {
     NavigationStack {

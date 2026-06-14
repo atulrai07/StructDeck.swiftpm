@@ -57,13 +57,11 @@ struct QueueQuizView: View {
                             
                             // Question
                             VStack(alignment: .leading, spacing: 12) {
-                                Text(questions[currentQuestionIndex].question)
-                                    .font(.title2)
-                                    .bold()
-                                    .foregroundStyle(.white)
-                                    .multilineTextAlignment(.leading)
-                                    .fixedSize(horizontal: false, vertical: true)
-                                    .accessibilityAddTraits(.isHeader)
+                                FormattedTextView(
+                                    text: questions[currentQuestionIndex].question,
+                                    defaultFont: .title3,
+                                    defaultColor: .white
+                                )
                             }
                             .padding(.horizontal)
                             
@@ -100,16 +98,22 @@ struct QueueQuizView: View {
                             .padding(.horizontal)
                             
                             // Feedback
-                            VStack(spacing: 16) {
+                             VStack(spacing: 16) {
                                 // Feedback Text
-                                Text(selectedOption == nil ? " " : (isCorrect ? questions[currentQuestionIndex].explanation : "Not quite. Try again!"))
-                                    .font(.subheadline)
-                                    .foregroundStyle(isCorrect ? .green : .red)
-                                    .multilineTextAlignment(.center)
+                                if selectedOption == nil {
+                                    Text(" ")
+                                        .frame(minHeight: 40)
+                                } else {
+                                    let feedbackText = isCorrect ? questions[currentQuestionIndex].explanation : "Not quite. Try again!"
+                                    FormattedTextView(
+                                        text: feedbackText,
+                                        defaultFont: .subheadline,
+                                        defaultColor: isCorrect ? .green : .red,
+                                        alignment: .center
+                                    )
                                     .padding(.horizontal)
-                                    .lineLimit(nil)
-                                    .fixedSize(horizontal: false, vertical: true)
                                     .frame(minHeight: 40, alignment: .top)
+                                }
                                 
                                 // Navigation Buttons
                                 if currentQuestionIndex < questions.count - 1 {

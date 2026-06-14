@@ -1,6 +1,6 @@
 //
 //  ExpandableCodeInsightView.swift
-//  StructViz
+//    Visulo
 //
 //  Created by Atul on 14/06/26.
 //

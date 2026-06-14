@@ -32,7 +32,17 @@ struct TheoryCardsView: View {
             .modifier(ScrollPositionModifier(currentCardID: $currentCardID))
             .onAppear {
                 if currentCardID == nil {
-                    currentCardID = cards.first?.id
+                    let savedIndex = UserProgressManager.shared.getLastCardIndex(moduleId: "stack")
+                    if savedIndex < cards.count {
+                        currentCardID = cards[savedIndex].id
+                    } else {
+                        currentCardID = cards.first?.id
+                    }
+                }
+            }
+            .onChange(of: currentCardID) { oldValue, newValue in
+                if let id = newValue, let index = cards.firstIndex(where: { $0.id == id }) {
+                    UserProgressManager.shared.updateLastCardIndex(moduleId: "stack", cardIndex: index)
                 }
             }
         }
