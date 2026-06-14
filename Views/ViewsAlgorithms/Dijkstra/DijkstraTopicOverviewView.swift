@@ -69,8 +69,6 @@ struct DijkstraTopicOverviewView: View {
                         .foregroundStyle(.gray)
                         .padding(.top, 10)
                         
-                        Spacer(minLength: 50)
-                        
                         // Start Button
                         NavigationLink {
                             DijkstraTheoryCardsView()

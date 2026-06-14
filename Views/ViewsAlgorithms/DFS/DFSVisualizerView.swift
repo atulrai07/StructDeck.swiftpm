@@ -22,6 +22,7 @@ struct DFSStep {
     var exploringNode: Int?
     var exploringEdge: DFSTreeEdge?
     var stepDescription: String
+    var codeStatement: String
 }
 
 struct DFSVisualizerView: View {
@@ -38,134 +39,146 @@ struct DFSVisualizerView: View {
     let depth = 4 // Levels
     let nodeRadius: CGFloat = 20
     
+    var codeHistory: [String] {
+        if steps.isEmpty {
+            return ["stack.push(0);"]
+        }
+        return steps.prefix(currentStepIndex + 1).map { $0.codeStatement }
+    }
+    
     var body: some View {
-        VStack(spacing: 0) {
-            // Visualizer Canvas Area
-            GeometryReader { geometry in
-                ZStack {
-                    Color.VisualizerBackgroundColor.opacity(0.8)
-                    
-                    // Draw Edges
-                    ForEach(edges, id: \.self) { edge in
-                        if let srcNode = nodes.first(where: { $0.id == edge.source }),
-                           let dstNode = nodes.first(where: { $0.id == edge.destination }) {
-                            Path { path in
-                                path.move(to: srcNode.position)
-                                path.addLine(to: dstNode.position)
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(spacing: 0) {
+                // Visualizer Canvas Area
+                GeometryReader { geometry in
+                    ZStack {
+                        Color.VisualizerBackgroundColor.opacity(0.8)
+                        
+                        // Draw Edges
+                        ForEach(edges, id: \.self) { edge in
+                            if let srcNode = nodes.first(where: { $0.id == edge.source }),
+                               let dstNode = nodes.first(where: { $0.id == edge.destination }) {
+                                Path { path in
+                                    path.move(to: srcNode.position)
+                                    path.addLine(to: dstNode.position)
+                                }
+                                .stroke(getEdgeColor(edge), lineWidth: getEdgeWidth(edge))
                             }
-                            .stroke(getEdgeColor(edge), lineWidth: getEdgeWidth(edge))
+                        }
+                        
+                        // Draw Nodes
+                        ForEach(nodes) { node in
+                            ZStack {
+                                Circle()
+                                    .fill(getNodeColor(node.id))
+                                    .frame(width: nodeRadius * 2, height: nodeRadius * 2)
+                                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                                
+                                Text("\(node.id)")
+                                    .font(.headline)
+                                    .foregroundStyle(.white)
+                            }
+                            .position(node.position)
+                        }
+                        
+                        // Draw Stack
+                        if let step = currentStep {
+                            VStack(alignment: .leading) {
+                                Text("Stack (LIFO)")
+                                    .font(.caption)
+                                    .foregroundStyle(.gray)
+                                HStack {
+                                    Text("Bottom")
+                                        .font(.caption2)
+                                        .foregroundStyle(.white)
+                                    ForEach(step.stack, id: \.self) { sNode in
+                                        Text("\(sNode)")
+                                            .font(.caption)
+                                            .bold()
+                                            .frame(width: 30, height: 30)
+                                            .background(Color.blue)
+                                            .foregroundStyle(.black)
+                                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                                    }
+                                    Text("Top")
+                                        .font(.caption2)
+                                        .foregroundStyle(.white)
+                                }
+                            }
+                            .padding()
+                            .background(Color.white.opacity(0.1))
+                            .cornerRadius(12)
+                            .position(x: geometry.size.width / 2, y: geometry.size.height - 50)
                         }
                     }
+                    .onAppear {
+                        if nodes.isEmpty {
+                            generateRandomTree()
+                        }
+                    }
+                }
+                .frame(height: 350)
+                
+                // Controls & Stats Area
+                VStack(spacing: 16) {
+                    // Info Text
+                    Text(currentStep?.stepDescription ?? "Generate a tree to start.")
+                        .font(.subheadline)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.white)
+                        .frame(height: 50)
+                        .padding(.horizontal)
                     
-                    // Draw Nodes
-                    ForEach(nodes) { node in
-                        ZStack {
-                            Circle()
-                                .fill(getNodeColor(node.id))
-                                .frame(width: nodeRadius * 2, height: nodeRadius * 2)
-                                .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                            
-                            Text("\(node.id)")
+                    HStack(spacing: 40) {
+                        VStack {
+                            Text("Steps Taken")
+                                .font(.caption)
+                                .foregroundStyle(.gray)
+                            Text("\(currentStepIndex) / \(max(0, steps.count - 1))")
                                 .font(.headline)
                                 .foregroundStyle(.white)
                         }
-                        .position(node.position)
-                    }
-                    
-                    // Draw Stack
-                    if let step = currentStep {
-                        VStack(alignment: .leading) {
-                            Text("Stack (LIFO)")
+                        
+                        VStack {
+                            Text("Time Complexity")
                                 .font(.caption)
                                 .foregroundStyle(.gray)
-                            HStack {
-                                Text("Bottom")
-                                    .font(.caption2)
-                                    .foregroundStyle(.white)
-                                ForEach(step.stack, id: \.self) { sNode in
-                                    Text("\(sNode)")
-                                        .font(.caption)
-                                        .bold()
-                                        .frame(width: 30, height: 30)
-                                        .background(Color.blue)
-                                        .foregroundStyle(.black)
-                                        .clipShape(RoundedRectangle(cornerRadius: 6))
-                                }
-                                Text("Top")
-                                    .font(.caption2)
-                                    .foregroundStyle(.white)
-                            }
+                            Text(timeComplexity)
+                                .font(.headline)
+                                .foregroundStyle(.white)
                         }
-                        .padding()
-                        .background(Color.white.opacity(0.1))
-                        .cornerRadius(12)
-                        .position(x: geometry.size.width / 2, y: geometry.size.height - 50)
-                    }
-                }
-                .onAppear {
-                    if nodes.isEmpty {
-                        generateRandomTree()
-                    }
-                }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            
-            // Controls & Stats Area
-            VStack(spacing: 16) {
-                // Info Text
-                Text(currentStep?.stepDescription ?? "Generate a tree to start.")
-                    .font(.subheadline)
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.white)
-                    .frame(height: 50)
-                    .padding(.horizontal)
-                
-                HStack(spacing: 40) {
-                    VStack {
-                        Text("Steps Taken")
-                            .font(.caption)
-                            .foregroundStyle(.gray)
-                        Text("\(currentStepIndex) / \(max(0, steps.count - 1))")
-                            .font(.headline)
-                            .foregroundStyle(.white)
                     }
                     
-                    VStack {
-                        Text("Time Complexity")
-                            .font(.caption)
-                            .foregroundStyle(.gray)
-                        Text(timeComplexity)
-                            .font(.headline)
-                            .foregroundStyle(.white)
+                    // Navigation Buttons
+                    HStack(spacing: 30) {
+                        Button(action: stepBackward) {
+                            Image(systemName: "backward.fill")
+                                .font(.title)
+                                .foregroundStyle(currentStepIndex > 0 ? .white : .gray)
+                                .padding()
+                                .background(Circle().fill(Color.blue.opacity(currentStepIndex > 0 ? 1 : 0.3)))
+                        }
+                        .disabled(currentStepIndex == 0)
+                        .accessibilityLabel("Step Backward")
+                        
+                        Button(action: stepForward) {
+                            Image(systemName: "forward.fill")
+                                .font(.title)
+                                .foregroundStyle(currentStepIndex < steps.count - 1 ? .white : .gray)
+                                .padding()
+                                .background(Circle().fill(Color.blue
+                                    .opacity(currentStepIndex < steps.count - 1 ? 1 : 0.3)))
+                        }
+                        .disabled(currentStepIndex >= steps.count - 1)
+                        .accessibilityLabel("Step Forward")
                     }
                 }
+                .padding(.vertical, 20)
+                .background(Color(uiColor: .systemBackground).opacity(0))
                 
-                // Navigation Buttons
-                HStack(spacing: 30) {
-                    Button(action: stepBackward) {
-                        Image(systemName: "backward.fill")
-                            .font(.title)
-                            .foregroundStyle(currentStepIndex > 0 ? .white : .gray)
-                            .padding()
-                            .background(Circle().fill(Color.blue.opacity(currentStepIndex > 0 ? 1 : 0.3)))
-                    }
-                    .disabled(currentStepIndex == 0)
-                    .accessibilityLabel("Step Backward")
-                    
-                    Button(action: stepForward) {
-                        Image(systemName: "forward.fill")
-                            .font(.title)
-                            .foregroundStyle(currentStepIndex < steps.count - 1 ? .white : .gray)
-                            .padding()
-                            .background(Circle().fill(Color.blue
-                                .opacity(currentStepIndex < steps.count - 1 ? 1 : 0.3)))
-                    }
-                    .disabled(currentStepIndex >= steps.count - 1)
-                    .accessibilityLabel("Step Forward")
-                }
+                ExpandableCodeInsightView(codeHistory: codeHistory, dataStructure: "DFS")
+                    .padding(.bottom, 20)
             }
-            .padding(.vertical, 20)
-            .background(Color(uiColor: .systemBackground).opacity(0))
         }
         .navigationTitle("Depth-First Search")
         .navigationBarTitleDisplayMode(.inline)
@@ -221,7 +234,7 @@ struct DFSVisualizerView: View {
     }
     
     func generateRandomTree() {
-        let size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.6)
+        let size = CGSize(width: UIScreen.main.bounds.width, height: 350)
         generateTreeData(in: size)
     }
     
@@ -288,7 +301,8 @@ struct DFSVisualizerView: View {
             stack: stack,
             exploringNode: nil,
             exploringEdge: nil,
-            stepDescription: "Start at Root Node \(root). Push \(root) onto Stack."
+            stepDescription: "Start at Root Node \(root). Push \(root) onto Stack.",
+            codeStatement: "stack.push(\(root)); // start DFS"
         ))
         
         while !stack.isEmpty {
@@ -302,7 +316,8 @@ struct DFSVisualizerView: View {
                     stack: stack,
                     exploringNode: current,
                     exploringEdge: nil,
-                    stepDescription: "Pop Node \(current). Mark as visited."
+                    stepDescription: "Pop Node \(current). Mark as visited.",
+                    codeStatement: "int current = stack.pop(); // visiting Node \(current)"
                 ))
                 
                 let childrenEdges = edges.filter { $0.source == current }
@@ -316,7 +331,8 @@ struct DFSVisualizerView: View {
                         stack: stack,
                         exploringNode: current,
                         exploringEdge: childEdge,
-                        stepDescription: "Explore edge to Node \(child)."
+                        stepDescription: "Explore edge to Node \(child).",
+                        codeStatement: "// exploring edge from Node \(current) to \(child)"
                     ))
                     
                     if !visited.contains(child) {
@@ -326,7 +342,8 @@ struct DFSVisualizerView: View {
                             stack: stack,
                             exploringNode: current,
                             exploringEdge: childEdge,
-                            stepDescription: "Node \(child) discovered. Push \(child) onto Stack."
+                            stepDescription: "Node \(child) discovered. Push \(child) onto Stack.",
+                            codeStatement: "stack.push(\(child)); // discovered Node \(child)"
                         ))
                     }
                 }
@@ -336,7 +353,8 @@ struct DFSVisualizerView: View {
                     stack: stack,
                     exploringNode: nil,
                     exploringEdge: nil,
-                    stepDescription: "Pop Node \(current) but it is already visited. Skipping."
+                    stepDescription: "Pop Node \(current) but it is already visited. Skipping.",
+                    codeStatement: "int current = stack.pop(); // \(current) already visited, skipped"
                 ))
             }
         }
@@ -346,7 +364,8 @@ struct DFSVisualizerView: View {
             stack: [],
             exploringNode: nil,
             exploringEdge: nil,
-            stepDescription: "Stack is empty. DFS Traversal Complete."
+            stepDescription: "Stack is empty. DFS Traversal Complete.",
+            codeStatement: "// stack is empty: DFS traversal complete!"
         ))
         
         currentStepIndex = 0

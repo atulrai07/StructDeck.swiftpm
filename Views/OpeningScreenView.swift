@@ -58,7 +58,7 @@ struct OpeningScreenView: View {
                     
                     // "Popular Topics" Section
                     VStack(alignment: .leading, spacing: 16) {
-                        Text("Featured Topics")
+                        Text("Quick Start Modules")
                             .font(.title2)
                             .bold()
                             .foregroundStyle(.white)

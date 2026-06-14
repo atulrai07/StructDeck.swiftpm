@@ -15,7 +15,6 @@ struct TopicOverviewView: View {
             VStack(alignment: .leading, spacing: 0) {
                 ScrollView(showsIndicators:false) {
                     VStack(alignment: .leading, spacing: 24) {
-                        Spacer()
                         // Steps
                         VStack(spacing: 16) {
                             
@@ -64,8 +63,6 @@ struct TopicOverviewView: View {
                         .foregroundStyle(.gray)
                         .padding(.top, 10)
                         
-                        Spacer(minLength: 50)
-                        
                         // Navigation Button
                         NavigationLink {
                             TheoryCardsView()
@@ -81,7 +78,7 @@ struct TopicOverviewView: View {
                         }
                         .accessibilityHint("Opens the interactive theory cards for Stack.")
                     }
-                    .padding(.top,15)
+                    .padding(.top, 15)
                 }
             }
             .padding(.horizontal)

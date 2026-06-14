@@ -14,7 +14,6 @@ struct QueueTopicOverviewView: View {
             VStack(alignment: .leading, spacing: 0) {
                 ScrollView(showsIndicators:false) {
                     VStack(alignment: .leading, spacing: 24) {
-                        Spacer()
                         // Steps
                         VStack(spacing: 16) {
                             OverviewStepRow(number: "1", title: "Learn the core idea", desc: "Short, swipeable cards that explain how Queue works.")
@@ -49,8 +48,6 @@ struct QueueTopicOverviewView: View {
                         .foregroundStyle(.gray)
                         .padding(.top, 10)
                         
-                        Spacer(minLength: 50)
-                        
                         // Start Button
                         NavigationLink {
                             QueueTheoryCardsView()
@@ -68,7 +65,7 @@ struct QueueTopicOverviewView: View {
                         }
                         .accessibilityHint("Opens the interactive theory cards for Queue.")
                     }
-                    .padding(.top,15)
+                    .padding(.top, 15)
                 }
             }
             .padding(.horizontal)

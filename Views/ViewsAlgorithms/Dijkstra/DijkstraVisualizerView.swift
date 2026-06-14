@@ -24,6 +24,7 @@ struct DijkstraStep {
     var shortestPathTree: Set<GraphEdge>
     var activeNode: Int? // Added to track the currently focused node
     var stepDescription: String
+    var codeStatement: String
 }
 
 struct DijkstraVisualizerView: View {
@@ -37,126 +38,138 @@ struct DijkstraVisualizerView: View {
     
     let timeComplexity = "O(V + E log V)"
     
+    var codeHistory: [String] {
+        if steps.isEmpty {
+            return ["dijkstra.initializeDistances();"]
+        }
+        return steps.prefix(currentStepIndex + 1).map { $0.codeStatement }
+    }
+    
     var body: some View {
-        VStack(spacing: 0) {
-            // Visualizer Canvas Area
-            GeometryReader { geometry in
-                ZStack {
-                    Color.VisualizerBackgroundColor
-                    
-                    // Draw Edges
-                    ForEach(edges, id: \.self) { edge in
-                        if let srcNode = nodes.first(where: { $0.id == edge.source }),
-                           let dstNode = nodes.first(where: { $0.id == edge.destination }) {
-                            Path { path in
-                                path.move(to: srcNode.position)
-                                path.addLine(to: dstNode.position)
-                            }
-                            .stroke(getEdgeColor(edge), lineWidth: getEdgeWidth(edge))
-                            
-                            // Edge Weight (Shrunk font and padding)
-                            Text("\(edge.weight)")
-                                .font(.system(size: 10, weight: .bold))
-                                .foregroundStyle(.white)
-                                .padding(3)
-                                .background(Color.blue.opacity(0.8))
-                                .clipShape(Circle())
-                                .position(
-                                    x: (srcNode.position.x + dstNode.position.x) / 2,
-                                    y: (srcNode.position.y + dstNode.position.y) / 2
-                                )
-                        }
-                    }
-                    
-                    // Draw Nodes
-                    ForEach(nodes) { node in
-                        ZStack {
-                            Circle()
-                                .fill(getNodeColor(node.id))
-                                .frame(width: 30, height: 30) // Reduced from 40
-                                .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                            
-                            Text("\(node.id)")
-                                .font(.subheadline) // Adjusted to fit smaller node
-                                .foregroundStyle(.white)
-                            
-                            // Distance Label (Only shown for active node)
-                            if let step = currentStep, let dist = step.currentDistances[node.id], step.activeNode == node.id {
-                                Text(dist == Int.max ? "∞" : "\(dist)")
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(spacing: 0) {
+                // Visualizer Canvas Area
+                GeometryReader { geometry in
+                    ZStack {
+                        Color.VisualizerBackgroundColor
+                        
+                        // Draw Edges
+                        ForEach(edges, id: \.self) { edge in
+                            if let srcNode = nodes.first(where: { $0.id == edge.source }),
+                               let dstNode = nodes.first(where: { $0.id == edge.destination }) {
+                                Path { path in
+                                    path.move(to: srcNode.position)
+                                    path.addLine(to: dstNode.position)
+                                }
+                                .stroke(getEdgeColor(edge), lineWidth: getEdgeWidth(edge))
+                                
+                                // Edge Weight (Shrunk font and padding)
+                                Text("\(edge.weight)")
                                     .font(.system(size: 10, weight: .bold))
                                     .foregroundStyle(.white)
-                                    .padding(4)
-                                    .background(Color.red.opacity(0.8))
-                                    .clipShape(Capsule())
-                                    .offset(y: -24) // Adjusted for smaller node
+                                    .padding(3)
+                                    .background(Color.blue.opacity(0.8))
+                                    .clipShape(Circle())
+                                    .position(
+                                        x: (srcNode.position.x + dstNode.position.x) / 2,
+                                        y: (srcNode.position.y + dstNode.position.y) / 2
+                                    )
                             }
                         }
-                        .position(node.position)
+                        
+                        // Draw Nodes
+                        ForEach(nodes) { node in
+                            ZStack {
+                                Circle()
+                                    .fill(getNodeColor(node.id))
+                                    .frame(width: 30, height: 30) // Reduced from 40
+                                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                                
+                                Text("\(node.id)")
+                                    .font(.subheadline) // Adjusted to fit smaller node
+                                    .foregroundStyle(.white)
+                                
+                                // Distance Label (Only shown for active node)
+                                if let step = currentStep, let dist = step.currentDistances[node.id], step.activeNode == node.id {
+                                    Text(dist == Int.max ? "∞" : "\(dist)")
+                                        .font(.system(size: 10, weight: .bold))
+                                        .foregroundStyle(.white)
+                                        .padding(4)
+                                        .background(Color.red.opacity(0.8))
+                                        .clipShape(Capsule())
+                                        .offset(y: -24) // Adjusted for smaller node
+                                }
+                            }
+                            .position(node.position)
+                        }
+                    }
+                    .onAppear {
+                        if nodes.isEmpty {
+                            generateRandomGraph()
+                        }
                     }
                 }
-                .onAppear {
-                    if nodes.isEmpty {
-                        generateRandomGraph()
-                    }
-                }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            
-            // Controls & Stats Area
-            VStack(spacing: 16) {
-                // Info Text
-                Text(currentStep?.stepDescription ?? "Generate a graph to start.")
-                    .font(.subheadline)
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.white)
-                    .frame(height: 50)
-                    .padding(.horizontal)
+                .frame(height: 350)
                 
-                HStack(spacing: 40) {
-                    VStack {
-                        Text("Steps Taken")
-                            .font(.caption)
-                            .foregroundStyle(.gray)
-                        Text("\(currentStepIndex) / \(max(0, steps.count - 1))")
-                            .font(.headline)
-                            .foregroundStyle(.white)
+                // Controls & Stats Area
+                VStack(spacing: 16) {
+                    // Info Text
+                    Text(currentStep?.stepDescription ?? "Generate a graph to start.")
+                        .font(.subheadline)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.white)
+                        .frame(height: 50)
+                        .padding(.horizontal)
+                    
+                    HStack(spacing: 40) {
+                        VStack {
+                            Text("Steps Taken")
+                                .font(.caption)
+                                .foregroundStyle(.gray)
+                            Text("\(currentStepIndex) / \(max(0, steps.count - 1))")
+                                .font(.headline)
+                                .foregroundStyle(.white)
+                        }
+                        
+                        VStack {
+                            Text("Time Complexity")
+                                .font(.caption)
+                                .foregroundStyle(.gray)
+                            Text(timeComplexity)
+                                .font(.headline)
+                                .foregroundStyle(.white)
+                        }
                     }
                     
-                    VStack {
-                        Text("Time Complexity")
-                            .font(.caption)
-                            .foregroundStyle(.gray)
-                        Text(timeComplexity)
-                            .font(.headline)
-                            .foregroundStyle(.white)
+                    // Navigation Buttons (Forward/Backward)
+                    HStack(spacing: 30) {
+                        Button(action: stepBackward) {
+                            Image(systemName: "backward.fill")
+                                .font(.title)
+                                .foregroundStyle(currentStepIndex > 0 ? .white : .gray)
+                                .padding()
+                                .background(Circle().fill(Color.blue.opacity(currentStepIndex > 0 ? 1 : 0.3)))
+                        }
+                        .disabled(currentStepIndex == 0)
+                        .accessibilityLabel("Step Backward")
+                        
+                        Button(action: stepForward) {
+                            Image(systemName: "forward.fill")
+                                .font(.title)
+                                .foregroundStyle(currentStepIndex < steps.count - 1 ? .white : .gray)
+                                .padding()
+                                .background(Circle().fill(Color.blue.opacity(currentStepIndex < steps.count - 1 ? 1 : 0.3)))
+                        }
+                        .disabled(currentStepIndex >= steps.count - 1)
+                        .accessibilityLabel("Step Forward")
                     }
                 }
+                .padding(.vertical, 20)
+                .background(Color(uiColor: .systemBackground).opacity(0))
                 
-                // Navigation Buttons (Forward/Backward)
-                HStack(spacing: 30) {
-                    Button(action: stepBackward) {
-                        Image(systemName: "backward.fill")
-                            .font(.title)
-                            .foregroundStyle(currentStepIndex > 0 ? .white : .gray)
-                            .padding()
-                            .background(Circle().fill(Color.blue.opacity(currentStepIndex > 0 ? 1 : 0.3)))
-                    }
-                    .disabled(currentStepIndex == 0)
-                    .accessibilityLabel("Step Backward")
-                    
-                    Button(action: stepForward) {
-                        Image(systemName: "forward.fill")
-                            .font(.title)
-                            .foregroundStyle(currentStepIndex < steps.count - 1 ? .white : .gray)
-                            .padding()
-                            .background(Circle().fill(Color.blue.opacity(currentStepIndex < steps.count - 1 ? 1 : 0.3)))
-                    }
-                    .disabled(currentStepIndex >= steps.count - 1)
-                    .accessibilityLabel("Step Forward")
-                }
+                ExpandableCodeInsightView(codeHistory: codeHistory, dataStructure: "Dijkstra")
+                    .padding(.bottom, 20)
             }
-            .padding(.vertical, 20)
-            .background(Color(uiColor: .systemBackground).opacity(0))
         }
         .navigationTitle("Dijkstra's Algorithm")
         .navigationBarTitleDisplayMode(.inline)
@@ -216,8 +229,7 @@ struct DijkstraVisualizerView: View {
     }
     
     func generateRandomGraph() {
-        // Find current window size approx
-        let size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.6)
+        let size = CGSize(width: UIScreen.main.bounds.width, height: 350)
         generateGraphData(in: size)
     }
     
@@ -273,119 +285,125 @@ struct DijkstraVisualizerView: View {
     }
     
     func computeDijkstra() {
-            var distances = [Int: Int]()
-            var previousEdge = [Int: GraphEdge]()
-            for node in nodes { distances[node.id] = Int.max }
-            distances[0] = 0
+        var distances = [Int: Int]()
+        var previousEdge = [Int: GraphEdge]()
+        for node in nodes { distances[node.id] = Int.max }
+        distances[0] = 0
+        
+        var visited = Set<Int>()
+        var sptSet = Set<GraphEdge>()
+        var unvisited = Set(nodes.map { $0.id })
+        
+        steps.append(DijkstraStep(
+            visitedNodes: visited,
+            currentDistances: distances,
+            exploringEdge: nil,
+            shortestPathTree: sptSet,
+            activeNode: 0, // Node 0 is initially active
+            stepDescription: "Starting at Node 0. Initializing distances to infinity.",
+            codeStatement: "dijkstra.initializeDistances(); // dist[0] = 0, others = ∞"
+        ))
+        
+        while !unvisited.isEmpty {
+            // Find unvisited node with min distance
+            var minNode = -1
+            var minDist = Int.max
+            for u in unvisited {
+                if distances[u]! < minDist {
+                    minDist = distances[u]!
+                    minNode = u
+                }
+            }
             
-            var visited = Set<Int>()
-            var sptSet = Set<GraphEdge>()
-            var unvisited = Set(nodes.map { $0.id })
+            if minNode == -1 { break } // Remaining nodes are inaccessible
+            
+            unvisited.remove(minNode)
+            visited.insert(minNode)
+            
+            if let edgeToHere = previousEdge[minNode] {
+                sptSet.insert(edgeToHere)
+            }
             
             steps.append(DijkstraStep(
                 visitedNodes: visited,
                 currentDistances: distances,
                 exploringEdge: nil,
                 shortestPathTree: sptSet,
-                activeNode: 0, // Node 0 is initially active
-                stepDescription: "Starting at Node 0. Initializing distances to infinity."
+                activeNode: minNode,
+                stepDescription: "Moved to Node \(minNode) with shortest known distance \(minDist).",
+                codeStatement: "dijkstra.visitNode(\(minNode), \(minDist)); // visiting node \(minNode)"
             ))
             
-            while !unvisited.isEmpty {
-                // Find unvisited node with min distance
-                var minNode = -1
-                var minDist = Int.max
-                for u in unvisited {
-                    if distances[u]! < minDist {
-                        minDist = distances[u]!
-                        minNode = u
-                    }
-                }
+            if minNode == nodes.count - 1 {
+                // --- THE FIX: BACKTRACK TO FIND THE EXACT PATH ---
+                var exactPath = Set<GraphEdge>()
+                var curr = minNode
                 
-                if minNode == -1 { break } // Remaining nodes are inaccessible
-                
-                unvisited.remove(minNode)
-                visited.insert(minNode)
-                
-                if let edgeToHere = previousEdge[minNode] {
-                    sptSet.insert(edgeToHere)
+                // Trace backwards from destination to start
+                while let edge = previousEdge[curr] {
+                    exactPath.insert(edge)
+                    // Move to the node on the other side of this edge
+                    curr = (edge.source == curr) ? edge.destination : edge.source
                 }
                 
                 steps.append(DijkstraStep(
                     visitedNodes: visited,
                     currentDistances: distances,
                     exploringEdge: nil,
-                    shortestPathTree: sptSet,
+                    shortestPathTree: exactPath, // Inject only the final path here
                     activeNode: minNode,
-                    stepDescription: "Moved to Node \(minNode) with shortest known distance \(minDist)."
+                    stepDescription: "Reached destination (Node \(minNode)). Shortest path found!",
+                    codeStatement: "List<Node> path = dijkstra.getShortestPath(\(minNode)); // destination reached!"
                 ))
-                
-                if minNode == nodes.count - 1 {
-                    // --- THE FIX: BACKTRACK TO FIND THE EXACT PATH ---
-                    var exactPath = Set<GraphEdge>()
-                    var curr = minNode
-                    
-                    // Trace backwards from destination to start
-                    while let edge = previousEdge[curr] {
-                        exactPath.insert(edge)
-                        // Move to the node on the other side of this edge
-                        curr = (edge.source == curr) ? edge.destination : edge.source
-                    }
-                    
+                break
+                // -------------------------------------------------
+            }
+            
+            // Explore neighbors
+            let adjEdges = edges.filter { $0.source == minNode || $0.destination == minNode }
+            for edge in adjEdges {
+                let neighbor = edge.source == minNode ? edge.destination : edge.source
+                if !visited.contains(neighbor) {
+                    // Show exploring
                     steps.append(DijkstraStep(
                         visitedNodes: visited,
                         currentDistances: distances,
-                        exploringEdge: nil,
-                        shortestPathTree: exactPath, // Inject only the final path here
-                        activeNode: minNode,
-                        stepDescription: "Reached destination (Node \(minNode)). Shortest path found!"
+                        exploringEdge: edge,
+                        shortestPathTree: sptSet,
+                        activeNode: minNode, // Still operating from minNode
+                        stepDescription: "Exploring edge to Node \(neighbor) with weight \(edge.weight).",
+                        codeStatement: "dijkstra.exploreEdge(\(minNode), \(neighbor)); // edge weight = \(edge.weight)"
                     ))
-                    break
-                    // -------------------------------------------------
-                }
-                
-                // Explore neighbors
-                let adjEdges = edges.filter { $0.source == minNode || $0.destination == minNode }
-                for edge in adjEdges {
-                    let neighbor = edge.source == minNode ? edge.destination : edge.source
-                    if !visited.contains(neighbor) {
-                        // Show exploring
+                    
+                    let newDist = minDist + edge.weight
+                    if newDist < distances[neighbor]! {
+                        distances[neighbor] = newDist
+                        previousEdge[neighbor] = edge
                         steps.append(DijkstraStep(
                             visitedNodes: visited,
                             currentDistances: distances,
                             exploringEdge: edge,
                             shortestPathTree: sptSet,
-                            activeNode: minNode, // Still operating from minNode
-                            stepDescription: "Exploring edge to Node \(neighbor) with weight \(edge.weight)."
+                            activeNode: minNode, // Keep active node to show distance context
+                            stepDescription: "Found shorter path to Node \(neighbor). Distance updated to \(newDist).",
+                            codeStatement: "dijkstra.updateDistance(\(neighbor), \(newDist)); // updated via \(minNode)"
                         ))
-                        
-                        let newDist = minDist + edge.weight
-                        if newDist < distances[neighbor]! {
-                            distances[neighbor] = newDist
-                            previousEdge[neighbor] = edge
-                            steps.append(DijkstraStep(
-                                visitedNodes: visited,
-                                currentDistances: distances,
-                                exploringEdge: edge,
-                                shortestPathTree: sptSet,
-                                activeNode: minNode, // Keep active node to show distance context
-                                stepDescription: "Found shorter path to Node \(neighbor). Distance updated to \(newDist)."
-                            ))
-                        } else {
-                            steps.append(DijkstraStep(
-                                visitedNodes: visited,
-                                currentDistances: distances,
-                                exploringEdge: edge,
-                                shortestPathTree: sptSet,
-                                activeNode: minNode,
-                                stepDescription: "Path to Node \(neighbor) via Node \(minNode) is not shorter."
-                            ))
-                        }
+                    } else {
+                        steps.append(DijkstraStep(
+                            visitedNodes: visited,
+                            currentDistances: distances,
+                            exploringEdge: edge,
+                            shortestPathTree: sptSet,
+                            activeNode: minNode,
+                            stepDescription: "Path to Node \(neighbor) via Node \(minNode) is not shorter.",
+                            codeStatement: "// path to \(neighbor) via \(minNode) is not shorter"
+                        ))
                     }
                 }
             }
-            currentStepIndex = 0
         }
+        currentStepIndex = 0
+    }
 }
 
 #Preview {

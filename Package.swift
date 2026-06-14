@@ -16,7 +16,7 @@ let package = Package(
         .iOSApplication(
             name: "StructViz",
             targets: ["AppModule"],
-            bundleIdentifier: "com.atul.StructDeck",
+            bundleIdentifier: "com.atul.StructViz",
             teamIdentifier: "5273NF3L3W",
             displayVersion: "1.0",
             bundleVersion: "1",
